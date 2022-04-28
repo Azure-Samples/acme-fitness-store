@@ -8,17 +8,17 @@ products:
 - Azure Cache for Redis
 - Azure Active Directory
 description: "Deploy Microservice Apps to Azure"
-urlFragment: ""
+urlFragment: "acme-fitness-store"
 ---
 
-# Deploy Microservice Applications to Azure Spring Cloud
+# Deploy Spring Boot Apps to Azure
 
-Azure Spring cloud enables you to easily run Spring Boot and polyglot applications on Azure.
+Azure Spring Apps enables you to easily run Spring Boot and polyglot applications on Azure.
 
-This quickstart shows you how to deploy existing microservices written in Java, Python, and C# to Azure. When you're 
+This quickstart shows you how to deploy existing applications written in Java, Python, and C# to Azure. When you're 
 finished, you can continue to manage the application via the Azure CLI or switch to using the Azure Portal.
 
-* [Deploy Microservice Applications to Azure Spring Cloud](#deploy-microservice-applications-to-azure-spring-cloud)
+* [Deploy Applications to Azure Spring Cloud](#deploy-microservice-applications-to-azure-spring-cloud)
    * [What will you experience](#what-will-you-experience)
    * [What you will need](#what-you-will-need)
    * [Install the Azure CLI extension](#install-the-azure-cli-extension)
@@ -114,7 +114,7 @@ az extension add --name spring-cloud
 ```shell
 mkdir source-code
 cd source-code
-git clone --branch Azure https://github.com/spring-cloud-services-samples/acme_fitness_demo
+git clone https://github.com/Azure-Samples/acme-fitness-store
 cd acme_fitness_demo
 ```
 
@@ -330,10 +330,9 @@ Create a configuration repository for Application Configuration Service using th
 
 ```shell
 az spring-cloud application-configuration-service git repo add --name acme-fitness-store-config \
-    --label Azure \
+    --label main \
     --patterns "catalog/default,catalog/key-vault,identity/default,identity/key-vault,payment/default" \
-    --uri "https://github.com/spring-cloud-services-samples/acme_fitness_demo" \
-    --search-paths config
+    --uri "https://github.com/Azure-Samples/acme-fitness-store-config"
 ```
 
 ### Configure Tanzu Build Service
@@ -903,7 +902,7 @@ az spring-cloud app update --name ${FRONTEND_APP} \
 
 ## Next Steps
 
-In this quickstart, you've deployed polyglot microservices to Azure Spring Cloud using Azure CLI.
+In this quickstart, you've deployed polyglot applications to Azure Spring Cloud using Azure CLI.
 You also configured VMware Tanzu components in the enterprise tier. To learn more about
 Azure Spring Cloud or VMware Tanzu components, go to:
 
