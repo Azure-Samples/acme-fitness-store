@@ -8,7 +8,7 @@ terraform {
   }
 
   cloud {
-    organization = "acme-fitness-demo"
+    organization = "acme-fitness-store"
     workspaces {
       name = "development"
     }
