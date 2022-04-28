@@ -26,6 +26,8 @@ finished, you can continue to manage the application via the Azure CLI or switch
    * [Unit 1 - Deploy and Build Applications](#unit-1---deploy-and-build-applications)
    * [Unit 2 - Configure Single Sign On](#unit-2---configure-single-sign-on)
    * [Unit 3 - Securely Load Application Secrets](#unit-3---securely-load-application-secrets)
+   * [Unit 4 - Monitor end-to-end](#unit-4)
+   * [Unit 5 - Automate from idea to production](#unit-5)
 
 ## What will you experience
 You will:
