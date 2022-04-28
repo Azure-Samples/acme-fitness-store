@@ -115,7 +115,7 @@ az extension add --name spring-cloud
 mkdir source-code
 cd source-code
 git clone https://github.com/Azure-Samples/acme-fitness-store
-cd acme_fitness_demo
+cd acme-fitness-store
 ```
 
 ## Unit 1 - Deploy and Build Applications
