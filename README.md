@@ -944,6 +944,13 @@ az spring-cloud app restart -n ${PAYMENT_SERVICE_APP}
 
 Use the ACME Fitness Shop Application to generate some traffic. Move throughout the application, view the catalog, or place an order.
 
+To continuously generate traffic, use the traffic generator:
+
+```shell
+cd traffic-generator
+GATEWAY_URL=https://${GATEWAY_URL} ./gradlew gatlingRun-com.vmware.acme.simulation.GuestSimulation
+```
+
 ### Get the log stream for an Application
 
 USe the following command to get the latest 100 lines of app console logs from the Catalog Service.
