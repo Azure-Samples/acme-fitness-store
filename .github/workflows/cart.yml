@@ -13,10 +13,6 @@ env:
   CUSTOM_BUILDER: no-bindings-builder
   CART_SERVICE_APP: cart-service
   CART_SERVICE_CACHE_CONNECTION: cart_service_cache
-  AZURE_CACHE_NAME: ${{ secrets.TF_PROJECT_NAME }}-redis
-  POSTGRES_SERVER: ${{ secrets.TF_PROJECT_NAME }}-db-server
-  POSTGRES_SERVER_USER: ${{ secrets.POSTGRES_SERVER_USER }}
-  POSTGRES_SERVER_PASSWORD: ${{ secrets.POSTGRES_SERVER_PASSWORD }}
 
 jobs:
   build:

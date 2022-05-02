@@ -27,8 +27,7 @@ env:
   CART_SERVICE_CACHE_CONNECTION: cart_service_cache
   AZURE_CACHE_NAME: ${{ secrets.TF_PROJECT_NAME }}-redis
   POSTGRES_SERVER: ${{ secrets.TF_PROJECT_NAME }}-db-server
-  POSTGRES_SERVER_USER: ${{ secrets.POSTGRES_SERVER_USER }}
-  POSTGRES_SERVER_PASSWORD: ${{ secrets.POSTGRES_SERVER_PASSWORD }}
+  KEY_VAULT: ${{ secrets.TF_PROJECT_NAME }}-keyvault
 
 jobs:
   provision:
@@ -55,8 +54,6 @@ jobs:
           terraform plan -input=false \
             -var "project_name=${{ secrets.TF_PROJECT_NAME}}" \
             -var "resource_group_location=${{ secrets.AZURE_LOCATION }}" \
-            -var "dbadmin=${{ secrets.POSTGRES_SERVER_USER }}" \
-            -var "dbpassword=${{ secrets.POSTGRES_SERVER_PASSWORD }}"
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
         run: exit 1
@@ -65,8 +62,6 @@ jobs:
           terraform apply -auto-approve -input=false \
             -var "project_name=${{ secrets.TF_PROJECT_NAME}}" \
             -var "resource_group_location=${{ secrets.AZURE_LOCATION }}" \
-            -var "dbadmin=${{ secrets.POSTGRES_SERVER_USER }}" \
-            -var "dbpassword=${{ secrets.POSTGRES_SERVER_PASSWORD }}"
       - name: Set up Azure
         uses: azure/login@v1
         with:
@@ -115,6 +110,12 @@ jobs:
         run: |
           az spring-cloud application-configuration-service bind --app ${PAYMENT_SERVICE_APP}
           az spring-cloud application-configuration-service bind --app ${CATALOG_SERVICE_APP}
+      - name: Get DB Credentials
+        id: db-credentials
+        uses: Azure/get-keyvault-secrets@v1
+        with:
+          keyvault: ${{ env.KEY_VAULT }}
+          secrets: 'admin-username, admin-password'
       - name: Create Service Connectors
         run: ../.github/scripts/service-connectors.sh
         env:
@@ -130,8 +131,8 @@ jobs:
           CART_SERVICE_APP: ${{ env.CART_SERVICE_APP }}
           AZURE_CACHE_NAME: ${{ env.AZURE_CACHE_NAME }}
           POSTGRES_SERVER: ${{ env.POSTGRES_SERVER }}
-          POSTGRES_SERVER_USER: ${{ env.POSTGRES_SERVER_USER }}
-          POSTGRES_SERVER_PASSWORD: ${{ env.POSTGRES_SERVER_PASSWORD }}
+          POSTGRES_SERVER_USER: ${{ steps.db-credentials.outputs.admin-username }}
+          POSTGRES_SERVER_PASSWORD:  ${{ steps.db-credentials.outputs.admin-password }}
       - name: Configure Spring Cloud Gateway
         working-directory: azure/routes
         run: ../../.github/scripts/gateway.sh
