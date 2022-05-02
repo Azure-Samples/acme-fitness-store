@@ -26,7 +26,7 @@ finished, you can continue to manage the application via the Azure CLI or switch
    * [Unit 1 - Deploy and Build Applications](#unit-1---deploy-and-build-applications)
    * [Unit 2 - Configure Single Sign On](#unit-2---configure-single-sign-on)
    * [Unit 3 - Securely Load Application Secrets](#unit-3---securely-load-application-secrets)
-   * [Unit 4 - Monitor end-to-end](#unit-4)
+   * [Unit 4 - Monitor End-to-End](#unit-4---monitor-end-to-end)
    * [Unit 5 - Automate from idea to production](#unit-5)
 
 ## What will you experience
@@ -900,6 +900,185 @@ az spring-cloud app update --name ${CART_SERVICE_APP} \
     
 az spring-cloud app update --name ${FRONTEND_APP} \
     --env "KEYVAULT_URI=${KEYVAULT_URI}"
+```
+
+## Unit 4 - Monitor End-to-End
+
+### Add Instrumentation Key to Key Vault
+
+Retrieve the Instrumentation Key for Application Insights and add to Key Vault
+
+```shell
+export INSTRUMENTATION_KEY=$(az spring-cloud build-service builder buildpack-binding show -n default | jq -r '.properties.launchProperties.properties.connection_string')
+
+az keyvault secret set --vault-name ${KEY_VAULT} \
+    --name "ApplicationInsights--ConnectionString" --value ${INSTRUMENTATION_KEY}
+```
+
+### Update Sampling Rate
+
+Increase the sampling rate for the Application Insights binding.
+
+```shell
+az spring-cloud build-service builder buildpack-binding set \
+    --builder-name default \
+    -n default \
+    --type ApplicationInsights \
+    --properties sampling-rate=100 connection_string=${INSTRUMENTATION_KEY}
+```
+
+### Reload Applications
+
+Reload applications to activate Application Insights.
+
+```shell
+az spring-cloud app restart -n ${FRONTEND_APP}
+az spring-cloud app restart -n ${CART_SERVICE_APP}
+az spring-cloud app restart -n ${ORDER_SERVICE_APP}
+az spring-cloud app restart -n ${IDENTITY_SERVICE_APP}
+az spring-cloud app restart -n ${CATALOG_SERVICE_APP}
+az spring-cloud app restart -n ${PAYMENT_SERVICE_APP}
+```
+
+### Generate Traffic
+
+Use the ACME Fitness Shop Application to generate some traffic. Move throughout the application, view the catalog, or place an order.
+
+To continuously generate traffic, use the traffic generator:
+
+```shell
+cd traffic-generator
+GATEWAY_URL=https://${GATEWAY_URL} ./gradlew gatlingRun-com.vmware.acme.simulation.GuestSimulation
+```
+
+### Get the log stream for an Application
+
+Use the following command to get the latest 100 lines of app console logs from the Catalog Service.
+
+```shell
+az spring-cloud app logs \
+    -n ${CATALOG_SERVICE_APP} \
+    --lines 100
+```
+
+By adding the `-f` parameter you can get real-time log streaming from an app. Try log streaming for the Catalog Service.
+
+```shell
+az spring-cloud app logs \
+    -n ${CATALOG_SERVICE_APP} \
+    -f
+```
+
+You can use `az spring-cloud app logs -h` to explore more parameters and log stream functionalities.
+
+### Start monitoring apps and dependencies - in Application Insights
+
+Open the Application Insights created by Azure Spring Cloud and start monitoring Spring Boot applications. 
+You can find the Application Insights in the same Resource Group where you created an Azure Spring Cloud service instance.
+
+Navigate to the `Application Map` blade:
+
+![An image showing the Application Map of Azure Application Insights](media/application-map.png)
+
+Navigate to the `Peforamnce` blade:
+
+![An image showing the Performance Blade of Azure Application Insights](media/performance.png)
+
+Navigate to the `Performance/Dependenices` blade - you can see the performance number for dependencies,
+particularly SQL calls:
+
+![An image showing the Dependencies section of the Performance Blade of Azure Application Insights](media/performance_dependencies.png)
+
+Click on a SQL call to see the end-to-end transaction in context:
+
+![An image showing the end-to-end transaction of a SQL call](media/performance_sql.png)
+
+Navigate to the `Failures/Exceptions` blade - you can see a collection of exceptions:
+
+![An image showing application failures graphed](media/failures.png)
+
+Navigate to the `Metrics` blade - you can see metrics contributed by Spring Boot apps,
+Spring Cloud modules, and dependencies.
+The chart below shows `http_server_requests`, `hikaricp_connections`
+(JDBC Connections) and `spring_data_repository_invocations`.
+
+![An image showing metrics over time](media/metrics.png)
+
+
+Spring Boot registers a lot number of core metrics: JVM, CPU, Tomcat, Logback...
+The Spring Boot auto-configuration enables the instrumentation of requests handled by Spring MVC.
+The REST controllers `ProductController`, and `PaymentController` have been instrumented by the `@Timed` Micrometer annotation at class level.
+
+* `acme-catalog` application has the following custom metrics enabled:
+  * @Timed: `store.products`
+* `acem-payment` application has the following custom metrics enabled:
+  * @Timed: `store.payment`
+
+You can see these custom metrics in the `Metrics` blade:
+
+![An image showing custom metrics instrumented by Micrometer](./media/custom-metrics.png)
+
+Navigate to the `Live Metrics` blade - you can see live metrics on screen with low latencies < 1 second:
+
+![An image showing the live metrics of all applications](media/live-metrics.png)
+
+### Start monitoring ACME Fitness Store's logs and metrics in Azure Log Analytics
+
+Open the Log Analytics that you created - you can find the Log Analytics in the same
+Resource Group where you created an Azure Spring Cloud service instance.
+
+In the Log Analytics page, selects `Logs` blade and run any of the sample queries supplied below
+for Azure Spring Cloud.
+
+Type and run the following Kusto query to see application logs:
+```sql
+    AppPlatformLogsforSpring 
+    | where TimeGenerated > ago(24h) 
+    | limit 500
+    | sort by TimeGenerated
+```
+
+Type and run the following Kusto query to see `catalog-service` application logs:
+```sql
+    AppPlatformLogsforSpring 
+    | where AppName has "catalog"
+    | limit 500
+    | sort by TimeGenerated
+```
+
+Type and run the following Kusto query  to see errors and exceptions thrown by each app:
+```sql
+    AppPlatformLogsforSpring 
+    | where Log contains "error" or Log contains "exception"
+    | extend FullAppName = strcat(ServiceName, "/", AppName)
+    | summarize count_per_app = count() by FullAppName, ServiceName, AppName, _ResourceId
+    | sort by count_per_app desc 
+    | render piechart
+```
+
+Type and run the following Kusto query to see all in the inbound calls into Azure Spring Cloud:
+```sql
+    AppPlatformIngressLogs
+    | project TimeGenerated, RemoteAddr, Host, Request, Status, BodyBytesSent, RequestTime, ReqId, RequestHeaders
+    | sort by TimeGenerated
+```
+
+Type and run the following Kusto query to see all the logs from the managed Spring Cloud
+Config Gateway managed by Azure Spring Cloud:
+```sql
+    AppPlatformSystemLogs
+    | where LogType contains "SpringCloudGateway"
+    | project TimeGenerated, Level, LogType, ServiceName, Log
+    | sort by TimeGenerated
+```
+
+Type and run the following Kusto query to see all the logs from the managed Spring Cloud
+Service Registry managed by Azure Spring Cloud:
+```sql
+    AppPlatformSystemLogs
+    | where LogType contains "ServiceRegistry"
+    | project TimeGenerated, Level, LogType, ServiceName, Log
+    | sort by TimeGenerated
 ```
 
 ## Next Steps
