@@ -676,7 +676,7 @@ public class GuestSimulation extends Simulation {
 									http("request_149")
 											.post("/cart/item/add/guest")
 											.headers(headers_149)
-											.body(RawFileBody("com/vmware/acme/simulation/recordedsimulation/0149_request.bin")),
+											.body(RawFileBody("0149_request.bin")),
 									http("request_150")
 											.get("/oauth2/authorization/sso")
 											.headers(headers_6),

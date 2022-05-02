@@ -953,7 +953,7 @@ GATEWAY_URL=https://${GATEWAY_URL} ./gradlew gatlingRun-com.vmware.acme.simulati
 
 ### Get the log stream for an Application
 
-USe the following command to get the latest 100 lines of app console logs from the Catalog Service.
+Use the following command to get the latest 100 lines of app console logs from the Catalog Service.
 
 ```shell
 az spring-cloud app logs \
@@ -1003,6 +1003,20 @@ The chart below shows `http_server_requests`, `hikaricp_connections`
 (JDBC Connections) and `spring_data_repository_invocations`.
 
 ![An image showing metrics over time](media/metrics.png)
+
+
+Spring Boot registers a lot number of core metrics: JVM, CPU, Tomcat, Logback...
+The Spring Boot auto-configuration enables the instrumentation of requests handled by Spring MVC.
+The REST controllers `ProductController`, and `PaymentController` have been instrumented by the `@Timed` Micrometer annotation at class level.
+
+* `acme-catalog` application has the following custom metrics enabled:
+  * @Timed: `store.products`
+* `acem-payment` application has the following custom metrics enabled:
+  * @Timed: `store.payment`
+
+You can see these custom metrics in the `Metrics` blade:
+
+![An image showing custom metrics instrumented by Micrometer](./media/custom-metrics.png)
 
 Navigate to the `Live Metrics` blade - you can see live metrics on screen with low latencies < 1 second:
 
