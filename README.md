@@ -889,11 +889,11 @@ az spring-cloud app update --name ${ORDER_SERVICE_APP} \
 
 az spring-cloud app update --name ${CATALOG_SERVICE_APP} \
     --config-file-pattern catalog/default,catalog/key-vault \
-    --env "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_ENDPOINT=${KEYVAULT_URI}" "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_NAME='animal-rescue-vault'" "SPRING_PROFILES_ACTIVE=default,key-vault"
+    --env "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_ENDPOINT=${KEYVAULT_URI}" "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_NAME='acme-fitness-store-vault'" "SPRING_PROFILES_ACTIVE=default,key-vault"
     
 az spring-cloud app update --name ${IDENTITY_SERVICE_APP} \
     --config-file-pattern identity/default,identity/key-vault \
-    --env "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_ENDPOINT=${KEYVAULT_URI}" "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_NAME='animal-rescue-vault'" "SPRING_PROFILES_ACTIVE=default,key-vault"
+    --env "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_ENDPOINT=${KEYVAULT_URI}" "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_NAME='acme-fitness-store-vault'" "SPRING_PROFILES_ACTIVE=default,key-vault"
     
 az spring-cloud app update --name ${CART_SERVICE_APP} \
     --env "CART_PORT=8080" "KEYVAULT_URI=${KEYVAULT_URI}" "AUTH_URL=https://${GATEWAY_URL}"
@@ -905,6 +905,10 @@ az spring-cloud app update --name ${FRONTEND_APP} \
 ## Unit 4 - Monitor End-to-End
 
 ### Add Instrumentation Key to Key Vault
+The Application Insights Instrumentation Key must be provided for the non-java applications. 
+
+> Note: In future iterations, the buildpacks for non-java applications will support
+> Application Insights binding and this step will be unnecessary. 
 
 Retrieve the Instrumentation Key for Application Insights and add to Key Vault
 
@@ -929,7 +933,9 @@ az spring-cloud build-service builder buildpack-binding set \
 
 ### Reload Applications
 
-Reload applications to activate Application Insights.
+Restart applications to reload configuration. For the Java applications, this will allow the new
+sampling rate to take effect. For the non-java applications, this will allow them to access
+the Instrumentation Key from Key Vault. 
 
 ```shell
 az spring-cloud app restart -n ${FRONTEND_APP}
@@ -982,12 +988,12 @@ Navigate to the `Application Map` blade:
 
 Navigate to the `Peforamnce` blade:
 
-![An image showing the Performance Blade of Azure Application Insights](media/performance.png)
+![An image showing the Performance Blade of Azure Application Insights](media/performance.jpg)
 
 Navigate to the `Performance/Dependenices` blade - you can see the performance number for dependencies,
 particularly SQL calls:
 
-![An image showing the Dependencies section of the Performance Blade of Azure Application Insights](media/performance_dependencies.png)
+![An image showing the Dependencies section of the Performance Blade of Azure Application Insights](media/performance_dependencies.jpg)
 
 Click on a SQL call to see the end-to-end transaction in context:
 
@@ -999,10 +1005,9 @@ Navigate to the `Failures/Exceptions` blade - you can see a collection of except
 
 Navigate to the `Metrics` blade - you can see metrics contributed by Spring Boot apps,
 Spring Cloud modules, and dependencies.
-The chart below shows `http_server_requests`, `hikaricp_connections`
-(JDBC Connections) and `spring_data_repository_invocations`.
+The chart below shows `http_server_requests` and `Heap Memory Used`.
 
-![An image showing metrics over time](media/metrics.png)
+![An image showing metrics over time](media/metrics.jpg)
 
 
 Spring Boot registers a lot number of core metrics: JVM, CPU, Tomcat, Logback...
@@ -1020,7 +1025,7 @@ You can see these custom metrics in the `Metrics` blade:
 
 Navigate to the `Live Metrics` blade - you can see live metrics on screen with low latencies < 1 second:
 
-![An image showing the live metrics of all applications](media/live-metrics.png)
+![An image showing the live metrics of all applications](media/live-metrics.jpg)
 
 ### Start monitoring ACME Fitness Store's logs and metrics in Azure Log Analytics
 
@@ -1036,15 +1041,21 @@ Type and run the following Kusto query to see application logs:
     | where TimeGenerated > ago(24h) 
     | limit 500
     | sort by TimeGenerated
+    | project TimeGenerated, AppName, Log
 ```
+
+![Example output from all application logs query](media/all-app-logs-in-log-analytics.jpg)
 
 Type and run the following Kusto query to see `catalog-service` application logs:
 ```sql
     AppPlatformLogsforSpring 
-    | where AppName has "catalog"
+    | where AppName has "catalog-service"
     | limit 500
     | sort by TimeGenerated
+    | project TimeGenerated, AppName, Log
 ```
+
+![Example output from catalog service logs](media/catalog-app-logs-in-log-analytics.jpg)
 
 Type and run the following Kusto query  to see errors and exceptions thrown by each app:
 ```sql
@@ -1077,9 +1088,10 @@ Service Registry managed by Azure Spring Cloud:
 ```sql
     AppPlatformSystemLogs
     | where LogType contains "ServiceRegistry"
-    | project TimeGenerated, Level, LogType, ServiceName, Log
-    | sort by TimeGenerated
+    | project TimeGenerated, Log
 ```
+
+![An example output from service registry logs](media/service-registry-logs-in-log-analytics.jpg)
 
 ## Next Steps
 
