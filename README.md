@@ -19,27 +19,29 @@ This quickstart shows you how to deploy existing applications written in Java, P
 finished, you can continue to manage the application via the Azure CLI or switch to using the Azure Portal.
 
 * [Deploy Applications to Azure Spring Cloud](#deploy-microservice-applications-to-azure-spring-cloud)
-   * [What will you experience](#what-will-you-experience)
-   * [What you will need](#what-you-will-need)
-   * [Install the Azure CLI extension](#install-the-azure-cli-extension)
-   * [Clone the repo](#clone-the-repo)
-   * [Unit 1 - Deploy and Build Applications](#unit-1---deploy-and-build-applications)
-   * [Unit 2 - Configure Single Sign On](#unit-2---configure-single-sign-on)
-   * [Unit 3 - Securely Load Application Secrets](#unit-3---securely-load-application-secrets)
-   * [Unit 4 - Monitor End-to-End](#unit-4---monitor-end-to-end)
-   * [Unit 5 - Automate from idea to production](#unit-5)
+  * [What will you experience](#what-will-you-experience)
+  * [What you will need](#what-you-will-need)
+  * [Install the Azure CLI extension](#install-the-azure-cli-extension)
+  * [Clone the repo](#clone-the-repo)
+  * [Unit 1 - Deploy and Build Applications](#unit-1---deploy-and-build-applications)
+  * [Unit 2 - Configure Single Sign On](#unit-2---configure-single-sign-on)
+  * [Unit 3 - Securely Load Application Secrets](#unit-3---securely-load-application-secrets)
+  * [Unit 4 - Monitor End-to-End](#unit-4---monitor-end-to-end)
+  * [Unit 5 - Automate from idea to production](#unit-5---automate-from-idea-to-production)
 
 ## What will you experience
+
 You will:
-- Provision an Azure Spring Cloud service instance.
-- Configure Application Configuration Service repositories
-- Deploy polyglot applications to Azure and build using Tanzu Build Service
-- Configure routing to the applications using Spring Cloud Gateway
-- Open the application
-- Explore the application API with Api Portal
-- Configure Single Sign On (SSO) for the application
-- Monitor applications
-- Automate provisioning and deployments using GitHub Actions
+
+* Provision an Azure Spring Cloud service instance.
+* Configure Application Configuration Service repositories
+* Deploy polyglot applications to Azure and build using Tanzu Build Service
+* Configure routing to the applications using Spring Cloud Gateway
+* Open the application
+* Explore the application API with Api Portal
+* Configure Single Sign On (SSO) for the application
+* Monitor applications
+* Automate provisioning and deployments using GitHub Actions
 
 The following diagram shows the architecture of the ACME Fitness Store that will be used for this guide:
 
@@ -63,6 +65,7 @@ In addition, you will need the following:
 |
 
 Note -  The [`jq` utility](https://stedolan.github.io/jq/download/). On Windows, download [this Windows port of JQ](https://github.com/stedolan/jq/releases) and add the following to the `~/.bashrc` file:
+
 ```shell
 alias jq=<JQ Download location>/jq-win64.exe
 ```
@@ -71,7 +74,6 @@ Note - The Bash shell. While Azure CLI should behave identically on all environm
 semantics vary. Therefore, only bash can be used with the commands in this repo.
 To complete these repo steps on Windows, use Git Bash that accompanies the Windows distribution of
 Git. Use only Git Bash to complete this training on Windows. Do not use WSL.
-
 
 ### OR Use Azure Cloud Shell
 
@@ -92,7 +94,6 @@ To run the code in this article in Azure Cloud Shell:
 
 4. Select Enter to run the code.
 
-
 ## Install the Azure CLI extension
 
 Install the Azure Spring Cloud extension for the Azure CLI using the following command
@@ -100,6 +101,7 @@ Install the Azure Spring Cloud extension for the Azure CLI using the following c
 ```shell
 az extension add --name spring-cloud
 ```
+
 Note - `spring-cloud` CLI extension `3.0.0` or later is a pre-requisite to enable the
 latest Enterprise tier functionality to configure VMware Tanzu Components. Use the following
 command to remove previous versions and install the latest Enterprise tier extension:
@@ -143,11 +145,13 @@ export REGION=region-name                           # choose a region with Enter
 ```
 
 Then, set the environment:
+
 ```shell
 source ./azure/setup-env-variables.sh
 ```
 
 ### Login to Azure
+
 Login to the Azure CLI and choose your active subscription. Be sure to choose the active subscription that is whitelisted for Azure Spring Cloud
 
 ```shell
@@ -157,6 +161,7 @@ az account set --subscription ${SUBSCRIPTION}
 ```
 
 ### Create Azure Spring Cloud service instance
+
 Prepare a name for your Azure Spring Cloud service.  The name must be between 4 and 32 characters long and can contain only lowercase letters, numbers, and hyphens.  The first character of the service name must be a letter and the last character must be either a letter or a number.
 
 Create a resource group to contain your Azure Spring Cloud service.
@@ -567,9 +572,9 @@ Assign a Service Principal to the Application Registration
 az ad sp create --id ${APPLICATION_ID}
 ```
 
-More detailed instructions on Application Registrations can be found [here](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app).
+More detailed instructions on Application Registrations can be found [here](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app)
 
-### Prepare your environment for deployments
+### Prepare your environment for SSO Deployments
 
 Set the environment using the provided script and verify the environment variables are set:
 
@@ -616,10 +621,10 @@ export JWK_SET_URI=change-me      # Your SSO Provider Json Web Token URI
 ```
 
 The `issuer-uri` configuration should follow Spring Boot convention, as described in the official Spring Boot documentation:
-The provider needs to be configured with an issuer-uri which is the URI that the it asserts as its Issuer Identifier. For example, if the issuer-uri provided is "https://example.com", then an OpenID Provider Configuration Request will be made to "https://example.com/.well-known/openid-configuration". The result is expected to be an OpenID Provider Configuration Response. 
+The provider needs to be configured with an issuer-uri which is the URI that the it asserts as its Issuer Identifier. For example, if the issuer-uri provided is "https://example.com", then an OpenID Provider Configuration Request will be made to "https://example.com/.well-known/openid-configuration". The result is expected to be an OpenID Provider Configuration Response.
 Note that only authorization servers supporting OpenID Connect Discovery protocol can be used
 
-The `JWK_SET_URI` typically takes the form `${SSUER_URI}/$VERSION/keys` 
+The `JWK_SET_URI` typically takes the form `${ISSUER_URI}/$VERSION/keys`
 
 Set the environment:
 
@@ -706,7 +711,7 @@ az spring-cloud app  update --name ${ORDER_SERVICE_APP} \
     --env "AcmeServiceSettings__AuthUrl=https://${GATEWAY_URL}" "ConnectionStrings__OrderContext=$POSTGRES_CONNECTION_STR"
 ```
 
-### Access the Application through Spring Cloud Gateway
+### Login to the Application through Spring Cloud Gateway
 
 Retrieve the URL for Spring Cloud Gateway and open it in a browser:
 
@@ -743,11 +748,11 @@ open "https://${PORTAL_URL}"
 To access the protected APIs, click Authorize and follow the steps that match your
 SSO provider. Learn more about API Authorization with API Portal [here](https://docs.vmware.com/en/API-portal-for-VMware-Tanzu/1.0/api-portal/GUID-api-viewer.html#api-authorization)
 
-## Unit 3 - Securely Load Application Secrets 
+## Unit 3 - Securely Load Application Secrets
 
 Use Azure Key Vault to store and load secrets to connect to Azure services.
 
-### Prepare your environment for Key Vault 
+### Prepare your environment for Key Vault
 
 Create a bash script with environment variables by making a copy of the supplied template:
 
@@ -795,7 +800,7 @@ az keyvault secret set --vault-name ${KEY_VAULT} \
     
 az keyvault secret set --vault-name ${KEY_VAULT} \
     --name "POSTGRES-LOGIN-PASSWORD" --value ${POSTGRES_SERVER_PASSWORD}
-```        
+```
 
 Retrieve and store redis connection secrets in Key Vault.
 
@@ -905,10 +910,11 @@ az spring-cloud app update --name ${FRONTEND_APP} \
 ## Unit 4 - Monitor End-to-End
 
 ### Add Instrumentation Key to Key Vault
-The Application Insights Instrumentation Key must be provided for the non-java applications. 
+
+The Application Insights Instrumentation Key must be provided for the non-java applications.
 
 > Note: In future iterations, the buildpacks for non-java applications will support
-> Application Insights binding and this step will be unnecessary. 
+> Application Insights binding and this step will be unnecessary.
 
 Retrieve the Instrumentation Key for Application Insights and add to Key Vault
 
@@ -1036,6 +1042,7 @@ In the Log Analytics page, selects `Logs` blade and run any of the sample querie
 for Azure Spring Cloud.
 
 Type and run the following Kusto query to see application logs:
+
 ```sql
     AppPlatformLogsforSpring 
     | where TimeGenerated > ago(24h) 
@@ -1047,6 +1054,7 @@ Type and run the following Kusto query to see application logs:
 ![Example output from all application logs query](media/all-app-logs-in-log-analytics.jpg)
 
 Type and run the following Kusto query to see `catalog-service` application logs:
+
 ```sql
     AppPlatformLogsforSpring 
     | where AppName has "catalog-service"
@@ -1068,6 +1076,7 @@ Type and run the following Kusto query  to see errors and exceptions thrown by e
 ```
 
 Type and run the following Kusto query to see all in the inbound calls into Azure Spring Cloud:
+
 ```sql
     AppPlatformIngressLogs
     | project TimeGenerated, RemoteAddr, Host, Request, Status, BodyBytesSent, RequestTime, ReqId, RequestHeaders
@@ -1076,6 +1085,7 @@ Type and run the following Kusto query to see all in the inbound calls into Azur
 
 Type and run the following Kusto query to see all the logs from the managed Spring Cloud
 Config Gateway managed by Azure Spring Cloud:
+
 ```sql
     AppPlatformSystemLogs
     | where LogType contains "SpringCloudGateway"
@@ -1085,6 +1095,7 @@ Config Gateway managed by Azure Spring Cloud:
 
 Type and run the following Kusto query to see all the logs from the managed Spring Cloud
 Service Registry managed by Azure Spring Cloud:
+
 ```sql
     AppPlatformSystemLogs
     | where LogType contains "ServiceRegistry"
@@ -1093,18 +1104,130 @@ Service Registry managed by Azure Spring Cloud:
 
 ![An example output from service registry logs](media/service-registry-logs-in-log-analytics.jpg)
 
+## Unit 5 - Automate from idea to production
+
+### Prerequisites
+
+To get started with deploying this sample app from GitHub Actions, please:
+
+1. Complete the sections above.
+2. Fork this repository and turn on GitHub Actions in your fork
+
+### Create a Storage Account
+
+Now you will create a Storage Account for maintaining terraform state as part of the 
+GitHub Actions.
+
+Prepare your environment for creating a Storage Account:
+
+```shell
+export STORAGE_RESOURCE_GROUP=customize-this      # different resource group from previous steps
+export STORAGE_ACCOUNT_NAME=customize-this        # choose a name for your storage account
+```
+
+Create a resource group to hold the Storage Account:
+
+```shell
+az group create \
+  --name ${STORAGE_RESOURCE_GROUP} \
+  --location ${REGION}
+```
+
+Create a Storage Account:
+
+```shell
+az storage account create \
+  --name ${STORAGE_ACCOUNT_NAME} \
+  --resource-group ${STORAGE_RESOURCE_GROUP} \
+  --location ${REGION} \
+  --sku Standard_RAGRS \
+  --kind StorageV2
+```
+
+Create a Storage Container within the Storage Account:
+
+```shell
+az storage container create \
+    --name terraform-state-container \
+    --account-name ${STORAGE_ACCOUNT_NAME} \
+    --auth-mode login
+```
+
+### Create a Service Principal
+
+Create a service principal with enough scope/role to manage your Azure Spring Cloud instance:
+
+```shell
+    az ad sp create-for-rbac --role contributor --scopes /subscriptions/${SUBSCRIPTION} --sdk-auth
+```
+
+With results:
+
+```json
+    {
+        "clientId": "<GUID>",
+        "clientSecret": "<GUID>",
+        "subscriptionId": "<GUID>",
+        "tenantId": "<GUID>",
+        "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
+        "resourceManagerEndpointUrl": "https://management.azure.com/",
+        "sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
+        "galleryEndpointUrl": "https://gallery.azure.com/",
+        "managementEndpointUrl": "https://management.core.windows.net/"
+    }
+```
+
+This output will needed for following steps.
+
+### Add Secrets to GitHub Actions
+
+Add the following secrets to GitHub Actions:
+
+* `AZURE_CREDENTIALS` - using the json result from creating the Service Principal in the previous step.
+* `TF_PROJECT_NAME` - with the value of your choosing. This will be the name of your Terraform Project
+* `AZURE_LOCATION` - this is the Azure Region your resources will be created in.
+* `OIDC_JWK_SET_URI` - use the `JWK_SET_URI` defined in [Unit 2](#unit-2---configure-single-sign-on)
+* `OIDC_CLIENT_ID` - use the `CLIENT_ID` defined in [Unit 2](#unit-2---configure-single-sign-on)
+* `OIDC_CLIENT_SECRET` - use the `CLIENT_SECRET` defined in [Unit 2](#unit-2---configure-single-sign-on)
+* `OIDC_ISSUER_URI` - use the `ISSUER_URI` defined in [Unit 2](#unit-2---configure-single-sign-on)
+
+Add the secret `TF_BACKEND_CONFIG` to GitHub Actions with the value (replacing `${STORAGE_ACCOUNT_NAME}` and `${STORAGE_RESOURCE_GROUP}`):
+
+```text
+resource_group_name  = "${STORAGE_RESOURCE_GROUP}"
+storage_account_name = "${STORAGE_ACCOUNT_NAME}"
+container_name       = "terrafrom-state-container"
+key                  = "dev.terraform.tfstate"
+```
+
+> Detailed instructions for adding secrets to GitHub Actions can be found [here](https://docs.microsoft.com/azure/spring-cloud/how-to-github-actions?pivots=programming-language-java#set-up-github-repository-and-authenticate-1).
+
+### Run GitHub Actions
+
+Now you can run GitHub Actions in your repository. The `provision` workflow will provision all resources created in the first four units. An example run is seen below:
+
+![Output from the provision workflow](media/provision.png)
+
+Each application has a `Deploy` workflow that will redeploy the application when changes are made to that application. An example output from the catalog service is seen below:
+
+![Output from the Deploy Catalog workflow](media/deploy-catalog.png)
+
+The `cleanup` workflow can be manually run to delete all resources created by the `provision` workflow. The output can be seen below:
+
+![Output from the cleanup workflow](media/cleanup.png)
+
 ## Next Steps
 
 In this quickstart, you've deployed polyglot applications to Azure Spring Cloud using Azure CLI.
 You also configured VMware Tanzu components in the enterprise tier. To learn more about
 Azure Spring Cloud or VMware Tanzu components, go to:
 
-- [Azure Spring Cloud](https://azure.microsoft.com/en-us/services/spring-cloud/)
-- [Azure Spring Cloud docs](https://docs.microsoft.com/en-us/azure/spring-cloud/quickstart-provision-service-instance-enterprise?tabs=azure-portal)
-- [Deploy Spring microservices from scratch](https://github.com/microsoft/azure-spring-cloud-training)
-- [Deploy existing Spring microservices](https://github.com/Azure-Samples/azure-spring-cloud)
-- [Azure for Java Cloud Developers](https://docs.microsoft.com/en-us/azure/java/)
-- [Spring Cloud Azure](https://cloud.spring.io/spring-cloud-azure/)
-- [Spring Cloud](https://spring.io/projects/spring-cloud)
-- [Spring Cloud Gateway](https://docs.vmware.com/en/VMware-Spring-Cloud-Gateway-for-Kubernetes/index.html)
-- [API Portal](https://docs.vmware.com/en/API-portal-for-VMware-Tanzu/index.html)
+* [Azure Spring Cloud](https://azure.microsoft.com/en-us/services/spring-cloud/)
+* [Azure Spring Cloud docs](https://docs.microsoft.com/en-us/azure/spring-cloud/quickstart-provision-service-instance-enterprise?tabs=azure-portal)
+* [Deploy Spring microservices from scratch](https://github.com/microsoft/azure-spring-cloud-training)
+* [Deploy existing Spring microservices](https://github.com/Azure-Samples/azure-spring-cloud)
+* [Azure for Java Cloud Developers](https://docs.microsoft.com/en-us/azure/java/)
+* [Spring Cloud Azure](https://cloud.spring.io/spring-cloud-azure/)
+* [Spring Cloud](https://spring.io/projects/spring-cloud)
+* [Spring Cloud Gateway](https://docs.vmware.com/en/VMware-Spring-Cloud-Gateway-for-Kubernetes/index.html)
+* [API Portal](https://docs.vmware.com/en/API-portal-for-VMware-Tanzu/index.html)
