@@ -1,0 +1,53 @@
+[
+  {
+    "predicates": [
+      "Path=/products",
+      "Method=GET"
+    ],
+    "filters": [
+      "StripPrefix=0",
+      "RateLimit=2,10s"
+    ],
+    "tags": [
+      "catalog"
+    ]
+  },
+  {
+    "predicates": [
+      "Path=/products/{id}",
+      "Method=GET"
+    ],
+    "filters": [
+      "StripPrefix=0",
+      "RateLimit=2,10s"
+    ],
+    "tags": [
+      "catalog"
+    ]
+  },
+  {
+    "predicates": [
+      "Path=/catalogliveness",
+      "Method=GET"
+    ],
+    "filters": [
+      "StripPrefix=0",
+      "SetPath=/actuator/health/liveness"
+    ],
+    "tags": [
+      "catalog"
+    ]
+  },
+  {
+    "predicates": [
+      "Path=/static/images/{id}",
+      "Method=GET"
+    ],
+    "filters": [
+      "StripPrefix=0"
+    ],
+    "tags": [
+      "catalog"
+    ]
+  }
+]

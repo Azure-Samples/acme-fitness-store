@@ -27,7 +27,8 @@ finished, you can continue to manage the application via the Azure CLI or switch
   * [Unit 2 - Configure Single Sign On](#unit-2---configure-single-sign-on)
   * [Unit 3 - Securely Load Application Secrets](#unit-3---securely-load-application-secrets)
   * [Unit 4 - Monitor End-to-End](#unit-4---monitor-end-to-end)
-  * [Unit 5 - Automate from idea to production](#unit-5---automate-from-idea-to-production)
+  * [Unit 5 - Set Request Rate Limits](#unit-5---set-request-rate-limits)
+  * [Unit 6 - Automate from idea to production](#unit-6---automate-from-idea-to-production)
 
 ## What will you experience
 
@@ -1104,7 +1105,44 @@ Service Registry managed by Azure Spring Cloud:
 
 ![An example output from service registry logs](media/service-registry-logs-in-log-analytics.jpg)
 
-## Unit 5 - Automate from idea to production
+## Unit 5 - Set Request Rate Limits
+
+Spring Cloud Gateway includes route filters from the Open Source version as well as several additional route filters. One of these additional filters is the `RateLimit` [filter](https://docs.vmware.com/en/VMware-Spring-Cloud-Gateway-for-Kubernetes/1.1/scg-k8s/GUID-route-filters.html#ratelimit-limiting-user-requests-filter).
+
+Learn more about the additional Spring Cloud Gateway route filters [here](https://docs.vmware.com/en/VMware-Spring-Cloud-Gateway-for-Kubernetes/1.1/scg-k8s/GUID-route-filters.html#filters-added-in-spring-cloud-gateway-for-kubernetes)
+
+### Update Spring Cloud Gateway Routes
+
+Update the route definitions for the catalog service:
+
+```shell
+az spring-cloud gateway route-config update \
+    --name ${CATALOG_SERVICE_APP} \
+    --app-name ${CATALOG_SERVICE_APP} \
+    --routes-file azure/routes/catalog-service_rate-limit.json
+```
+
+This updates the catalog service route definition to include the following definition:
+
+```json
+{
+    "predicates": [
+      "Path=/products",
+      "Method=GET"
+    ],
+    "filters": [
+      "StripPrefix=0",
+      "RateLimit=2,10s"
+    ],
+    "tags": [
+      "catalog"
+    ]
+  }
+```
+
+In the updated route config, `RateLimit=2,10s`, will limit requests to `/products` to 2 requests every 10 seconds. This route filter will prevent users from creating unnecessary traffic to the catalog.
+
+## Unit 6 - Automate from idea to production
 
 ### Prerequisites
 
