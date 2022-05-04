@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -exu
+set -euxo pipefail
 
 : "${RESOURCE_GROUP:?'must be set'}"
 : "${REGION:?'must be set'}"

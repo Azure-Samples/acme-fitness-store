@@ -1,6 +1,7 @@
 #!/bin/bash
 
-set -xu
+# Do not use 'set -e' because "az spring-cloud build-service builder show" returns error when builder not found.
+set -uxo pipefail
 
 : "${RESOURCE_GROUP:?'must be set'}"
 : "${SPRING_CLOUD_SERVICE:?'must be set'}"

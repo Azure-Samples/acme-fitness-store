@@ -1,6 +1,7 @@
 #!/bin/bash
 
-set -xu
+# Do not use 'set -e' because "az ad app update" does not have permission yet.
+set -xuo pipefail
 
 : "${RESOURCE_GROUP:?'must be set'}"
 : "${SPRING_CLOUD_SERVICE:?'must be set'}"
@@ -15,6 +16,18 @@ set -xu
 : "${ISSUER_URI:?'must be set'}"
 : "${KEY_VAULT:?'must be set'}"
 
+set_keyvault_policy() {
+    local app_name=$1
+    local principal_id
+
+    principal_id=$(az spring-cloud app identity show --name "$app_name"| jq -r '.principalId')
+    if [ -z "$principal_id" ]; then
+      principal_id=$(az spring-cloud app identity assign --name "$app_name" | jq -r '.identity.principalId')
+    fi
+
+    az keyvault set-policy --name "$KEY_VAULT" --object-id "$principal_id" --secret-permissions get list
+}
+
 main() {
   local gateway_url portal_url
 
@@ -25,34 +38,20 @@ main() {
   portal_url=$(az spring-cloud api-portal show | jq -r '.properties.url')
 
   az ad app update \
-      --id "$CLIENT_ID" \
-      --reply-urls "https://$gateway_url/login/oauth2/code/sso" "https://$portal_url/oauth2-redirect.html" "https://$portal_url/login/oauth2/code/sso"
+    --id "$CLIENT_ID" \
+    --reply-urls "https://$gateway_url/login/oauth2/code/sso" "https://$portal_url/oauth2-redirect.html" "https://$portal_url/login/oauth2/code/sso"
 
   az spring-cloud api-portal update \
-      --client-id "$CLIENT_ID" \
-      --client-secret "$CLIENT_SECRET"\
-      --scope "openid,profile,email" \
-      --issuer-uri "$ISSUER_URI"
+    --client-id "$CLIENT_ID" \
+    --client-secret "$CLIENT_SECRET"\
+    --scope "openid,profile,email" \
+    --issuer-uri "$ISSUER_URI"
 
-  az spring-cloud app identity assign --name "$CART_SERVICE_APP"
-  cart_service_app_identity=$(az spring-cloud app show --name "$CART_SERVICE_APP" | jq -r '.identity.principalId')
-  az keyvault set-policy --name "$KEY_VAULT" --object-id "$cart_service_app_identity" --secret-permissions get list
-
-  az spring-cloud app identity assign --name "$ORDER_SERVICE_APP"
-  order_service_app_identity=$(az spring-cloud app show --name "$ORDER_SERVICE_APP" | jq -r '.identity.principalId')
-  az keyvault set-policy --name "$KEY_VAULT" --object-id "$order_service_app_identity" --secret-permissions get list
-
-  az spring-cloud app identity assign --name "$CATALOG_SERVICE_APP"
-  catalog_service_app_identity=$(az spring-cloud app show --name "$CATALOG_SERVICE_APP" | jq -r '.identity.principalId')
-  az keyvault set-policy --name "$KEY_VAULT" --object-id "$catalog_service_app_identity" --secret-permissions get list
-
-  az spring-cloud app identity assign --name "$IDENTITY_SERVICE_APP"
-  identity_service_app_identity=$(az spring-cloud app show --name "$IDENTITY_SERVICE_APP" | jq -r '.identity.principalId')
-  az keyvault set-policy --name "$KEY_VAULT" --object-id "$identity_service_app_identity" --secret-permissions get list
-
-  az spring-cloud app identity assign --name "$FRONTEND_APP"
-  frontend_app_identity=$(az spring-cloud app show --name "$FRONTEND_APP" | jq -r '.identity.principalId')
-  az keyvault set-policy --name "$KEY_VAULT" --object-id "$frontend_app_identity" --secret-permissions get list
+  set_keyvault_policy "$IDENTITY_SERVICE_APP"
+  set_keyvault_policy "$CART_SERVICE_APP"
+  set_keyvault_policy "$ORDER_SERVICE_APP"
+  set_keyvault_policy "$CATALOG_SERVICE_APP"
+  set_keyvault_policy "$FRONTEND_APP"
 }
 
 main

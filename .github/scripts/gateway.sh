@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -xu
+set -euxo pipefail
 
 : "${RESOURCE_GROUP:?'must be set'}"
 : "${SPRING_CLOUD_SERVICE:?'must be set'}"
@@ -14,8 +14,28 @@ set -xu
 : "${SCOPE:?'must be set'}"
 : "${ISSUER_URI:?'must be set'}"
 
+create_or_update_route_config() {
+  local config_names=$1
+  local config_name=$2
+  local config_file=$3
+  local is_found
+
+  is_found=$(echo "$config_names" | jq --arg name "$config_name" 'any(.[]; . == $name)')
+  if [[ "$is_found" = false ]]; then
+    az spring-cloud gateway route-config create \
+      --name "$config_name" \
+      --app-name "$config_name" \
+      --routes-file "$config_file"
+  else
+    az spring-cloud gateway route-config update \
+      --name "$config_name" \
+      --app-name "$config_name" \
+      --routes-file "$config_file"
+  fi
+}
+
 main() {
-  local gateway_url cart order catalog shopping identity
+  local gateway_url config_names
 
   az configure --defaults group="$RESOURCE_GROUP" spring-cloud="$SPRING_CLOUD_SERVICE"
 
@@ -32,70 +52,13 @@ main() {
     --scope "$SCOPE" \
     --issuer-uri "$ISSUER_URI"
 
-  cart=$(az spring-cloud gateway route-config show --name "$CART_SERVICE_APP")
-  if [[ -z "$cart" ]]; then
-    az spring-cloud gateway route-config create \
-      --name "$CART_SERVICE_APP" \
-      --app-name "$CART_SERVICE_APP" \
-      --routes-file cart-service.json
-  else
-    az spring-cloud gateway route-config update \
-      --name "$CART_SERVICE_APP" \
-      --app-name "$CART_SERVICE_APP" \
-      --routes-file cart-service.json
-  fi
+  config_names=$(az spring-cloud gateway route-config list --query '[].name')
 
-  order=$(az spring-cloud gateway route-config show --name "$ORDER_SERVICE_APP")
-  if [[ -z "$order" ]]; then
-    az spring-cloud gateway route-config create \
-      --name "$ORDER_SERVICE_APP" \
-      --app-name "$ORDER_SERVICE_APP" \
-      --routes-file order-service.json
-  else
-    az spring-cloud gateway route-config update \
-      --name "$ORDER_SERVICE_APP" \
-      --app-name "$ORDER_SERVICE_APP" \
-      --routes-file order-service.json
-  fi
-
-  catalog=$(az spring-cloud gateway route-config show --name "$CATALOG_SERVICE_APP")
-  if [[ -z "$catalog" ]]; then
-    az spring-cloud gateway route-config create \
-      --name "$CATALOG_SERVICE_APP" \
-      --app-name "$CATALOG_SERVICE_APP" \
-      --routes-file catalog-service.json
-  else
-    az spring-cloud gateway route-config update \
-      --name "$CATALOG_SERVICE_APP" \
-      --app-name "$CATALOG_SERVICE_APP" \
-      --routes-file catalog-service.json
-  fi
-
-  shopping=$(az spring-cloud gateway route-config show --name "$FRONTEND_APP")
-  if [[ -z "$shopping" ]]; then
-    az spring-cloud gateway route-config create \
-      --name "$FRONTEND_APP" \
-      --app-name "$FRONTEND_APP" \
-      --routes-file frontend.json
-  else
-    az spring-cloud gateway route-config update \
-      --name "$FRONTEND_APP" \
-      --app-name "$FRONTEND_APP" \
-      --routes-file frontend.json
-  fi
-
-  identity=$(az spring-cloud gateway route-config show --name "$IDENTITY_SERVICE_APP")
-  if [[ -z "$identity" ]]; then
-    az spring-cloud gateway route-config create \
-      --name "$IDENTITY_SERVICE_APP" \
-      --app-name "$IDENTITY_SERVICE_APP" \
-      --routes-file identity-service.json
-  else
-    az spring-cloud gateway route-config update \
-      --name "$IDENTITY_SERVICE_APP" \
-      --app-name "$IDENTITY_SERVICE_APP" \
-      --routes-file identity-service.json
-  fi
+  create_or_update_route_config "$config_names" "$IDENTITY_SERVICE_APP" identity-service.json
+  create_or_update_route_config "$config_names" "$CART_SERVICE_APP" cart-service.json
+  create_or_update_route_config "$config_names" "$ORDER_SERVICE_APP" order-service.json
+  create_or_update_route_config "$config_names" "$CATALOG_SERVICE_APP" catalog-service.json
+  create_or_update_route_config "$config_names" "$FRONTEND_APP" frontend.json
 }
 
 main

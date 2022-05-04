@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -xu
+set -euxo pipefail
 
 : "${RESOURCE_GROUP:?'must be set'}"
 : "${SPRING_CLOUD_SERVICE:?'must be set'}"
@@ -11,53 +11,32 @@ set -xu
 : "${CATALOG_SERVICE_APP:?'must be set'}"
 : "${FRONTEND_APP:?'must be set'}"
 
+create_app_if_not_exist() {
+  local app_names=$1
+  local app=$2
+  local is_found
+
+  is_found=$(echo "$app_names" | jq --arg name "$app" 'any(.[]; . == $name)')
+  if [[ "$is_found" = false ]]; then
+    az spring-cloud app create --name "$app" --instance-count 1 --memory 1Gi
+  else
+    echo "Application '$app' has been already created."
+  fi
+}
+
 main() {
-  local identity cart order payment catalog shopping
+  local app_names
 
   az configure --defaults group="$RESOURCE_GROUP" spring-cloud="$SPRING_CLOUD_SERVICE"
 
-  identity=$(az spring-cloud app show --name "$IDENTITY_SERVICE_APP")
-  if [[ -z "$identity" ]]; then
-    az spring-cloud app create --name "$IDENTITY_SERVICE_APP" --instance-count 1 --memory 1Gi
-  else
-    echo "Identity Service is already created."
-  fi
+  app_names=$(az spring-cloud app list --query '[].name')
 
-  cart=$(az spring-cloud app show --name "$CART_SERVICE_APP")
-  if [[ -z "$cart" ]]; then
-    az spring-cloud app create --name "$CART_SERVICE_APP" --instance-count 1 --memory 1Gi
-  else
-    echo "Cart Service is already created."
-  fi
-
-  order=$(az spring-cloud app show --name "$ORDER_SERVICE_APP")
-  if [[ -z "$order" ]]; then
-    az spring-cloud app create --name "$ORDER_SERVICE_APP" --instance-count 1 --memory 1Gi
-  else
-    echo "Order Service is already created."
-  fi
-
-  payment=$(az spring-cloud app show --name "$PAYMENT_SERVICE_APP")
-  if [[ -z "$payment" ]]; then
-    az spring-cloud app create --name "$PAYMENT_SERVICE_APP" --instance-count 1 --memory 1Gi
-  else
-    echo "Payment Service is already created."
-  fi
-
-  catalog=$(az spring-cloud app show --name "$CATALOG_SERVICE_APP")
-  if [[ -z "$catalog" ]]; then
-    az spring-cloud app create --name "$CATALOG_SERVICE_APP" --instance-count 1 --memory 1Gi
-  else
-    echo "Catalog Service is already created."
-  fi
-
-  shopping=$(az spring-cloud app show --name "$FRONTEND_APP")
-  if [[ -z "$shopping" ]]; then
-    az spring-cloud app create --name "$FRONTEND_APP" --instance-count 1 --memory 1Gi
-  else
-    echo "Shopping Application is already created."
-  fi
-
+  create_app_if_not_exist "$app_names" "$IDENTITY_SERVICE_APP"
+  create_app_if_not_exist "$app_names" "$CART_SERVICE_APP"
+  create_app_if_not_exist "$app_names" "$ORDER_SERVICE_APP"
+  create_app_if_not_exist "$app_names" "$PAYMENT_SERVICE_APP"
+  create_app_if_not_exist "$app_names" "$CATALOG_SERVICE_APP"
+  create_app_if_not_exist "$app_names" "$FRONTEND_APP"
 }
 
 main

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -xu
+set -uxo pipefail
 
 : "${RESOURCE_GROUP:?'must be set'}"
 : "${SPRING_CLOUD_SERVICE:?'must be set'}"

@@ -7,12 +7,7 @@ terraform {
     }
   }
 
-  backend "azurerm" {
-    resource_group_name  = "acs-develop"
-    storage_account_name = "pipelineterraformstate"
-    container_name       = "terrafrom-state-container"
-    key                  = "dev.terraform.tfstate"
-  }
+  backend "azurerm" {}
 }
 
 provider "azurerm" {
