@@ -1148,13 +1148,12 @@ In the updated route config, `RateLimit=2,10s`, will limit requests to `/product
 
 To get started with deploying this sample app from GitHub Actions, please:
 
-1. Complete the sections above.
+1. Complete an Azure AD App registration outlined [here](#register-application-with-azure-ad) or have SSO Credentials prepared as described [here](#using-an-existing-sso-identity-provider)
 2. Fork this repository and turn on GitHub Actions in your fork
 
 ### Create a Storage Account
 
-Now you will create a Storage Account for maintaining terraform state as part of the 
-GitHub Actions.
+Now you will create a Storage Account for maintaining terraform state as part of GitHub Actions.
 
 Prepare your environment for creating a Storage Account:
 
@@ -1234,7 +1233,7 @@ Add the secret `TF_BACKEND_CONFIG` to GitHub Actions with the value (replacing `
 ```text
 resource_group_name  = "${STORAGE_RESOURCE_GROUP}"
 storage_account_name = "${STORAGE_ACCOUNT_NAME}"
-container_name       = "terrafrom-state-container"
+container_name       = "terraform-state-container"
 key                  = "dev.terraform.tfstate"
 ```
 
