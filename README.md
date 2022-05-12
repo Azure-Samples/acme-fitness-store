@@ -647,6 +647,8 @@ SSO provider. Learn more about API Authorization with API Portal [here](https://
 
 ## Unit 3 - Integrate with Azure Database for PostgreSQL and Azure Cache for Redis
 
+By default, several services use in-memory data storage. This unit will create persistent stores outside the applications and connect applications to those stores.
+
 ### Prepare your environment
 
 Create a bash script with environment variables by making a copy of the supplied template:
