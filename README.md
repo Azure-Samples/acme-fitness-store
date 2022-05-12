@@ -25,10 +25,11 @@ finished, you can continue to manage the application via the Azure CLI or switch
   * [Clone the repo](#clone-the-repo)
   * [Unit 1 - Deploy and Build Applications](#unit-1---deploy-and-build-applications)
   * [Unit 2 - Configure Single Sign On](#unit-2---configure-single-sign-on)
-  * [Unit 3 - Securely Load Application Secrets](#unit-3---securely-load-application-secrets)
-  * [Unit 4 - Monitor End-to-End](#unit-4---monitor-end-to-end)
-  * [Unit 5 - Set Request Rate Limits](#unit-5---set-request-rate-limits)
-  * [Unit 6 - Automate from idea to production](#unit-6---automate-from-idea-to-production)
+  * [Unit 3 - Integrate with Azure Database for PostgreSQL and Azure Cache for Redis](#unit-3---integrate-with-azure-database-for-postgresql-and-azure-cache-for-redis)
+  * [Unit 4 - Securely Load Application Secrets](#unit-4---securely-load-application-secrets)
+  * [Unit 5 - Monitor End-to-End](#unit-5---monitor-end-to-end)
+  * [Unit 6 - Set Request Rate Limits](#unit-6---set-request-rate-limits)
+  * [Unit 7 - Automate from idea to production](#unit-7---automate-from-idea-to-production)
 
 ## What will you experience
 
@@ -155,8 +156,6 @@ export SUBSCRIPTION=subscription-id                 # replace it with your subsc
 export RESOURCE_GROUP=resource-group-name           # existing resource group or one that will be created in next steps
 export SPRING_CLOUD_SERVICE=azure-spring-cloud-name # name of the service that will be created in the next steps
 export LOG_ANALYTICS_WORKSPACE=log-analytics-name   # existing workspace or one that will be created in next steps
-export POSTGRES_SERVER_USER=change-name             # Postgres server username to be created in next steps
-export POSTGRES_SERVER_PASSWORD=change-name         # Postgres server password to be created in next steps
 export REGION=region-name                           # choose a region with Enterprise tier support
 ```
 
@@ -221,62 +220,6 @@ az configure --defaults \
     location=${REGION} \
     spring-cloud=${SPRING_CLOUD_SERVICE}
 ```
-
-### Create Azure Cache for Redis
-
-Create an instance of Azure Cache for Redis using the Azure CLI.
-
-```shell
-az redis create \
-  --name ${AZURE_CACHE_NAME} \
-  --location ${REGION} \
-  --resource-group ${RESOURCE_GROUP} \
-  --sku Basic \
-  --vm-size c0
-```
-
-### Create an Azure Database for Postgres
-
-Using the Azure CLI, create an Azure Database for Postgres Flexible Server:
-
-```shell
-az postgres flexible-server create --name ${POSTGRES_SERVER} \
-    --resource-group ${RESOURCE_GROUP} \
-    --location ${REGION} \
-    --admin-user ${POSTGRES_SERVER_USER} \
-    --admin-password ${POSTGRES_SERVER_PASSWORD} \
-    --yes
-
-# Allow connections from other Azure Services
-az postgres flexible-server firewall-rule create --rule-name allAzureIPs \
-     --name ${POSTGRES_SERVER} \
-     --resource-group ${RESOURCE_GROUP} \
-     --start-ip-address 0.0.0.0 --end-ip-address 0.0.0.0
-     
-# Enable the uuid-ossp extension
-az postgres flexible-server parameter set \
-    --resource-group ${RESOURCE_GROUP} \
-    --server-name ${POSTGRES_SERVER} \
-    --name azure.extensions --value uuid-ossp
-```
-
-Create a database for the order service:
-
-```shell
-az postgres flexible-server db create \
-  --database-name ${ORDER_SERVICE_DB} \
-  --server-name ${POSTGRES_SERVER}
-```
-
-Create a database for the catalog service:
-
-```shell
-az postgres flexible-server db create \
-  --database-name ${CATALOG_SERVICE_DB} \
-  --server-name ${POSTGRES_SERVER}
-```
-
-> Note: wait for all services to be ready before continuing
 
 ### Configure Log Analytics for Azure Spring Cloud
 
@@ -400,55 +343,6 @@ az spring-cloud service-registry bind --app ${PAYMENT_SERVICE_APP}
 az spring-cloud service-registry bind --app ${CATALOG_SERVICE_APP}
 ```
 
-### Create Service Connectors
-
-The Order Service and Catalog Service use Azure Database for Postgres, create Service Connectors 
-for those applications:
-
-```shell
-# Bind order service to Postgres
-az spring-cloud connection create postgres-flexible \
-    --resource-group ${RESOURCE_GROUP} \
-    --service ${SPRING_CLOUD_SERVICE} \
-    --connection ${ORDER_SERVICE_DB_CONNECTION} \
-    --app ${ORDER_SERVICE_APP} \
-    --deployment default \
-    --tg ${RESOURCE_GROUP} \
-    --server ${POSTGRES_SERVER} \
-    --database ${ORDER_SERVICE_DB} \
-    --secret name=${POSTGRES_SERVER_USER} secret=${POSTGRES_SERVER_PASSWORD} \
-    --client-type dotnet
-    
-
-# Bind catalog service to Postgres
-az spring-cloud connection create postgres-flexible \
-    --resource-group ${RESOURCE_GROUP} \
-    --service ${SPRING_CLOUD_SERVICE} \
-    --connection ${CATALOG_SERVICE_DB_CONNECTION} \
-    --app ${CATALOG_SERVICE_APP} \
-    --deployment default \
-    --tg ${RESOURCE_GROUP} \
-    --server ${POSTGRES_SERVER} \
-    --database ${CATALOG_SERVICE_DB} \
-    --secret name=${POSTGRES_SERVER_USER} secret=${POSTGRES_SERVER_PASSWORD} \
-    --client-type springboot
-```
-
-The Cart Service requires a connection to Azure Cache for Redis, create the Service Connector:
-
-```shell
-az spring-cloud connection create redis \
-    --resource-group ${RESOURCE_GROUP} \
-    --service ${SPRING_CLOUD_SERVICE} \
-    --connection $CART_SERVICE_CACHE_CONNECTION \
-    --app ${CART_SERVICE_APP} \
-    --deployment default \
-    --tg ${RESOURCE_GROUP} \
-    --server ${AZURE_CACHE_NAME} \
-    --database 0 \
-    --client-type java 
-```
-
 ### Configure Spring Cloud Gateway
 
 Assign an endpoint and update the Spring Cloud Gateway configuration with API
@@ -505,28 +399,15 @@ az spring-cloud app deploy --name ${CATALOG_SERVICE_APP} \
     --config-file-pattern catalog/default \
     --source-path apps/acme-catalog
 
-# Deploy Order Service after retrieving the database connection info
-export POSTGRES_CONNECTION_STR=$(az spring-cloud connection show -g ${RESOURCE_GROUP} \
-    --service ${SPRING_CLOUD_SERVICE} \
-    --deployment default \
-    --connection ${ORDER_SERVICE_DB_CONNECTION} \
-    --app ${ORDER_SERVICE_APP} | jq '.configurations[0].value' -r)
-
+# Deploy Order Service
 az spring-cloud app deploy --name ${ORDER_SERVICE_APP} \
     --builder ${CUSTOM_BUILDER} \
-    --env "DatabaseProvider=Postgres" "ConnectionStrings__OrderContext=${POSTGRES_CONNECTION_STR}" "DatabaseProvider=Postgres"\
     --source-path apps/acme-order
 
-# Deploy the Cart Service after retrieving the cache connection info
-export REDIS_CONN_STR=$(az spring-cloud connection show -g ${RESOURCE_GROUP} \
-    --service ${SPRING_CLOUD_SERVICE} \
-    --deployment default \
-    --app ${CART_SERVICE_APP} \
-    --connection $CART_SERVICE_CACHE_CONNECTION | jq -r '.configurations[0].value')
-
+# Deploy Cart Service 
 az spring-cloud app deploy --name ${CART_SERVICE_APP} \
     --builder ${CUSTOM_BUILDER} \
-    --env "CART_PORT=8080" "REDIS_CONNECTIONSTRING=${REDIS_CONN_STR}" \
+    --env "CART_PORT=8080" \
     --source-path apps/acme-cart
 
 # Deploy Frontend App
@@ -720,11 +601,11 @@ Update the existing applications to use authorization information from Spring Cl
 ```shell
 # Update the Cart Service
 az spring-cloud app update --name ${CART_SERVICE_APP} \
-    --env "AUTH_URL=https://${GATEWAY_URL}" "CART_PORT=8080" "REDIS_CONNECTIONSTRING=${REDIS_CONN_STR}"
+    --env "AUTH_URL=https://${GATEWAY_URL}" "CART_PORT=8080" 
     
 # Update the Order Service
 az spring-cloud app  update --name ${ORDER_SERVICE_APP} \
-    --env "AcmeServiceSettings__AuthUrl=https://${GATEWAY_URL}" "ConnectionStrings__OrderContext=$POSTGRES_CONNECTION_STR" "DatabaseProvider=Postgres"
+    --env "AcmeServiceSettings__AuthUrl=https://${GATEWAY_URL}" 
 ```
 
 ### Login to the Application through Spring Cloud Gateway
@@ -764,7 +645,172 @@ open "https://${PORTAL_URL}"
 To access the protected APIs, click Authorize and follow the steps that match your
 SSO provider. Learn more about API Authorization with API Portal [here](https://docs.vmware.com/en/API-portal-for-VMware-Tanzu/1.0/api-portal/GUID-api-viewer.html#api-authorization)
 
-## Unit 3 - Securely Load Application Secrets
+## Unit 3 - Integrate with Azure Database for PostgreSQL and Azure Cache for Redis
+
+### Prepare your environment
+
+Create a bash script with environment variables by making a copy of the supplied template:
+
+```shell
+cp ./azure/setup-db-env-variables-template.sh ./azure/setup-db-env-variables.sh
+```
+
+Open `./azure/setup-db-env-variables.sh` and enter the following information:
+
+```shell
+export POSTGRES_SERVER_USER=change-name             # Postgres server username to be created in next steps
+export POSTGRES_SERVER_PASSWORD=change-name         # Postgres server password to be created in next steps
+```
+
+Then, set the environment:
+
+```shell
+source ./azure/setup-db-env-variables.sh
+```
+
+### Create Azure Cache for Redis
+
+Create an instance of Azure Cache for Redis using the Azure CLI.
+
+```shell
+az redis create \
+  --name ${AZURE_CACHE_NAME} \
+  --location ${REGION} \
+  --resource-group ${RESOURCE_GROUP} \
+  --sku Basic \
+  --vm-size c0
+```
+
+### Create an Azure Database for Postgres
+
+Using the Azure CLI, create an Azure Database for Postgres Flexible Server:
+
+```shell
+az postgres flexible-server create --name ${POSTGRES_SERVER} \
+    --resource-group ${RESOURCE_GROUP} \
+    --location ${REGION} \
+    --admin-user ${POSTGRES_SERVER_USER} \
+    --admin-password ${POSTGRES_SERVER_PASSWORD} \
+    --yes
+
+# Allow connections from other Azure Services
+az postgres flexible-server firewall-rule create --rule-name allAzureIPs \
+     --name ${POSTGRES_SERVER} \
+     --resource-group ${RESOURCE_GROUP} \
+     --start-ip-address 0.0.0.0 --end-ip-address 0.0.0.0
+     
+# Enable the uuid-ossp extension
+az postgres flexible-server parameter set \
+    --resource-group ${RESOURCE_GROUP} \
+    --server-name ${POSTGRES_SERVER} \
+    --name azure.extensions --value uuid-ossp
+```
+
+Create a database for the order service:
+
+```shell
+az postgres flexible-server db create \
+  --database-name ${ORDER_SERVICE_DB} \
+  --server-name ${POSTGRES_SERVER}
+```
+
+Create a database for the catalog service:
+
+```shell
+az postgres flexible-server db create \
+  --database-name ${CATALOG_SERVICE_DB} \
+  --server-name ${POSTGRES_SERVER}
+```
+
+> Note: wait for all services to be ready before continuing
+
+### Create Service Connectors
+
+The Order Service and Catalog Service use Azure Database for Postgres, create Service Connectors
+for those applications:
+
+```shell
+# Bind order service to Postgres
+az spring-cloud connection create postgres-flexible \
+    --resource-group ${RESOURCE_GROUP} \
+    --service ${SPRING_CLOUD_SERVICE} \
+    --connection ${ORDER_SERVICE_DB_CONNECTION} \
+    --app ${ORDER_SERVICE_APP} \
+    --deployment default \
+    --tg ${RESOURCE_GROUP} \
+    --server ${POSTGRES_SERVER} \
+    --database ${ORDER_SERVICE_DB} \
+    --secret name=${POSTGRES_SERVER_USER} secret=${POSTGRES_SERVER_PASSWORD} \
+    --client-type dotnet
+    
+
+# Bind catalog service to Postgres
+az spring-cloud connection create postgres-flexible \
+    --resource-group ${RESOURCE_GROUP} \
+    --service ${SPRING_CLOUD_SERVICE} \
+    --connection ${CATALOG_SERVICE_DB_CONNECTION} \
+    --app ${CATALOG_SERVICE_APP} \
+    --deployment default \
+    --tg ${RESOURCE_GROUP} \
+    --server ${POSTGRES_SERVER} \
+    --database ${CATALOG_SERVICE_DB} \
+    --secret name=${POSTGRES_SERVER_USER} secret=${POSTGRES_SERVER_PASSWORD} \
+    --client-type springboot
+```
+
+The Cart Service requires a connection to Azure Cache for Redis, create the Service Connector:
+
+```shell
+az spring-cloud connection create redis \
+    --resource-group ${RESOURCE_GROUP} \
+    --service ${SPRING_CLOUD_SERVICE} \
+    --connection $CART_SERVICE_CACHE_CONNECTION \
+    --app ${CART_SERVICE_APP} \
+    --deployment default \
+    --tg ${RESOURCE_GROUP} \
+    --server ${AZURE_CACHE_NAME} \
+    --database 0 \
+    --client-type java 
+```
+
+### Update Applications
+
+Next, update the affected applications to use the newly created databases and redis cache.
+
+Restart the Catalog Service for the Service Connector to take effect:
+```shell
+az spring app restart --name ${CATALOG_SERVICE_APP}
+```
+
+Retrieve the PostgreSQL connection string and update the Catalog Service:
+```shell
+POSTGRES_CONNECTION_STR=$(az spring-cloud connection show \
+    --resource-group ${RESOURCE_GROUP} \
+    --service ${SPRING_CLOUD_SERVICE} \
+    --deployment default \
+    --connection ${ORDER_SERVICE_DB_CONNECTION} \
+    --app ${ORDER_SERVICE_APP} | jq '.configurations[0].value' -r)
+
+az spring-cloud app update \
+    --name order-service \
+    --env "DatabaseProvider=Postgres" "ConnectionStrings__OrderContext=${POSTGRES_CONNECTION_STR}" "AcmeServiceSettings__AuthUrl=https://${GATEWAY_URL}"
+```
+
+Retrieve the Redis connection string and update the Cart Service:
+```shell
+REDIS_CONN_STR=$(az spring-cloud connection show \
+    --resource-group ${RESOURCE_GROUP} \
+    --service ${SPRING_CLOUD_SERVICE} \
+    --deployment default \
+    --app ${CART_SERVICE_APP} \
+    --connection ${CART_SERVICE_CACHE_CONNECTION} | jq -r '.configurations[0].value')
+
+az spring-cloud app update \
+    --name cart-service \
+    --env "CART_PORT=8080" "REDIS_CONNECTIONSTRING=${REDIS_CONN_STR}" "AUTH_URL=https://${GATEWAY_URL}"
+```
+
+## Unit 4 - Securely Load Application Secrets
 
 Use Azure Key Vault to store and load secrets to connect to Azure services.
 
@@ -914,7 +960,7 @@ az spring-cloud app update --name ${CART_SERVICE_APP} \
     --env "CART_PORT=8080" "KEYVAULT_URI=${KEYVAULT_URI}" "AUTH_URL=https://${GATEWAY_URL}"
 ```
 
-## Unit 4 - Monitor End-to-End
+## Unit 5 - Monitor End-to-End
 
 ### Add Instrumentation Key to Key Vault
 
@@ -1117,7 +1163,7 @@ Service Registry managed by Azure Spring Cloud:
 
 ![An example output from service registry logs](media/service-registry-logs-in-log-analytics.jpg)
 
-## Unit 5 - Set Request Rate Limits
+## Unit 6 - Set Request Rate Limits
 
 Spring Cloud Gateway includes route filters from the Open Source version as well as several additional route filters. One of these additional filters is the `RateLimit` [filter](https://docs.vmware.com/en/VMware-Spring-Cloud-Gateway-for-Kubernetes/1.1/scg-k8s/GUID-route-filters.html#ratelimit-limiting-user-requests-filter).
 
@@ -1154,7 +1200,7 @@ This updates the catalog service route definition to include the following defin
 
 In the updated route config, `RateLimit=2,10s`, will limit requests to `/products` to 2 requests every 10 seconds. This route filter will prevent users from creating unnecessary traffic to the catalog.
 
-## Unit 6 - Automate from idea to production
+## Unit 7 - Automate from idea to production
 
 ### Prerequisites
 
