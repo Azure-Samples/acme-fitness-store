@@ -1151,7 +1151,7 @@ Click on a SQL call to see the end-to-end transaction in context:
 
 ![An image showing the end-to-end transaction of a SQL call](media/fitness-store-end-to-end-transaction-details.jpg)
 
-Navigate to the `Failures/Exceptions` blade - you can see a collection of exceptions:
+Navigate to the `Failures` blade - you can see a collection of exceptions:
 
 ![An image showing application failures graphed](media/fitness-store-exceptions.jpg)
 
@@ -1380,7 +1380,7 @@ With results:
     }
 ```
 
-This output will needed for following steps.
+This output will be needed for following steps.
 
 ### Add Secrets to GitHub Actions
 
