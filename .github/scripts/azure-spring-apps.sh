@@ -9,12 +9,12 @@ set -euxo pipefail
 main() {
   local length
 
-  length=$(az spring-cloud list \
+  length=$(az spring list \
     --resource-group "$RESOURCE_GROUP" \
     --query "[?name=='$SPRING_CLOUD_SERVICE'] | length(@)")
 
   if [[ "$length" == "0" ]]; then
-    az spring-cloud create \
+    az spring create \
       --name "$SPRING_CLOUD_SERVICE" \
       --resource-group "$RESOURCE_GROUP" \
       --location "$REGION" \
@@ -24,12 +24,12 @@ main() {
       --enable-gateway \
       --enable-api-portal
 
-      az spring-cloud gateway update \
+      az spring gateway update \
         --resource-group "$RESOURCE_GROUP" \
         --service "$SPRING_CLOUD_SERVICE" \
         --assign-endpoint true
 
-      az spring-cloud api-portal update \
+      az spring api-portal update \
         --resource-group "$RESOURCE_GROUP" \
         --service "$SPRING_CLOUD_SERVICE" \
         --assign-endpoint true

@@ -45,7 +45,7 @@ jobs:
            --resource-group ${RESOURCE_GROUP} \
            --name ${KEY_VAULT} | jq -r '.properties.vaultUri')
 
-          az spring-cloud app deploy \
+          az spring app deploy \
             --name ${IDENTITY_SERVICE_APP} \
             --resource-group "$RESOURCE_GROUP" \
             --service "$SPRING_CLOUD_SERVICE" \

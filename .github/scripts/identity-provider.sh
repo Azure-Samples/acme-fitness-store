@@ -20,9 +20,9 @@ set_keyvault_policy() {
     local app_name=$1
     local principal_id
 
-    principal_id=$(az spring-cloud app identity show --name "$app_name"| jq -r '.principalId')
+    principal_id=$(az spring app identity show --name "$app_name"| jq -r '.principalId')
     if [ -z "$principal_id" ]; then
-      principal_id=$(az spring-cloud app identity assign --name "$app_name" | jq -r '.identity.principalId')
+      principal_id=$(az spring app identity assign --name "$app_name" | jq -r '.identity.principalId')
     fi
 
     az keyvault set-policy --name "$KEY_VAULT" --object-id "$principal_id" --secret-permissions get list
@@ -33,15 +33,15 @@ main() {
 
   az configure --defaults group="$RESOURCE_GROUP" spring-cloud="$SPRING_CLOUD_SERVICE"
 
-  gateway_url=$(az spring-cloud gateway show | jq -r '.properties.url')
+  gateway_url=$(az spring gateway show | jq -r '.properties.url')
 
-  portal_url=$(az spring-cloud api-portal show | jq -r '.properties.url')
+  portal_url=$(az spring api-portal show | jq -r '.properties.url')
 
   az ad app update \
     --id "$CLIENT_ID" \
     --reply-urls "https://$gateway_url/login/oauth2/code/sso" "https://$portal_url/oauth2-redirect.html" "https://$portal_url/login/oauth2/code/sso"
 
-  az spring-cloud api-portal update \
+  az spring api-portal update \
     --client-id "$CLIENT_ID" \
     --client-secret "$CLIENT_SECRET"\
     --scope "openid,profile,email" \

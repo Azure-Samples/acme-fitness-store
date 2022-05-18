@@ -18,7 +18,7 @@ create_app_if_not_exist() {
 
   is_found=$(echo "$app_names" | jq --arg name "$app" 'any(.[]; . == $name)')
   if [[ "$is_found" = false ]]; then
-    az spring-cloud app create --name "$app" --instance-count 1 --memory 1Gi
+    az spring app create --name "$app" --instance-count 1 --memory 1Gi
   else
     echo "Application '$app' has been already created."
   fi
@@ -29,7 +29,7 @@ main() {
 
   az configure --defaults group="$RESOURCE_GROUP" spring-cloud="$SPRING_CLOUD_SERVICE"
 
-  app_names=$(az spring-cloud app list --query '[].name')
+  app_names=$(az spring app list --query '[].name')
 
   create_app_if_not_exist "$app_names" "$IDENTITY_SERVICE_APP"
   create_app_if_not_exist "$app_names" "$CART_SERVICE_APP"

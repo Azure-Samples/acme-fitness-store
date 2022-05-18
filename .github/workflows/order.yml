@@ -42,11 +42,11 @@ jobs:
            --resource-group ${RESOURCE_GROUP} \
            --name ${KEY_VAULT} | jq -r '.properties.vaultUri')
 
-          gateway_url=$(az spring-cloud gateway show \
+          gateway_url=$(az spring gateway show \
             --resource-group ${RESOURCE_GROUP} \
             --service ${SPRING_CLOUD_SERVICE} | jq -r '.properties.url')
 
-          az spring-cloud app deploy \
+          az spring app deploy \
             --name ${ORDER_SERVICE_APP} \
             --resource-group "$RESOURCE_GROUP" \
             --service "$SPRING_CLOUD_SERVICE" \

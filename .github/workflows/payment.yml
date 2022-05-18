@@ -40,7 +40,7 @@ jobs:
         run: az extension add --name spring-cloud
       - name: Deploy Payment
         run: |
-          az spring-cloud app deploy \
+          az spring app deploy \
             --name ${PAYMENT_SERVICE_APP} \
             --resource-group "$RESOURCE_GROUP" \
             --service "$SPRING_CLOUD_SERVICE" \

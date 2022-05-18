@@ -35,7 +35,7 @@ jobs:
         run: az extension add --name spring-cloud
       - name: Deploy Shopping
         run: |
-          az spring-cloud app deploy \
+          az spring app deploy \
             --name ${FRONTEND_APP} \
             --resource-group ${RESOURCE_GROUP} \
             --service ${SPRING_CLOUD_SERVICE} \

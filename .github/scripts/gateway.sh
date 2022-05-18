@@ -22,12 +22,12 @@ create_or_update_route_config() {
 
   is_found=$(echo "$config_names" | jq --arg name "$config_name" 'any(.[]; . == $name)')
   if [[ "$is_found" = false ]]; then
-    az spring-cloud gateway route-config create \
+    az spring gateway route-config create \
       --name "$config_name" \
       --app-name "$config_name" \
       --routes-file "$config_file"
   else
-    az spring-cloud gateway route-config update \
+    az spring gateway route-config update \
       --name "$config_name" \
       --app-name "$config_name" \
       --routes-file "$config_file"
@@ -39,9 +39,9 @@ main() {
 
   az configure --defaults group="$RESOURCE_GROUP" spring-cloud="$SPRING_CLOUD_SERVICE"
 
-  gateway_url=$(az spring-cloud gateway show | jq -r '.properties.url')
+  gateway_url=$(az spring gateway show | jq -r '.properties.url')
 
-  az spring-cloud gateway update \
+  az spring gateway update \
     --api-description "Acme Fitness Store API" \
     --api-title "Acme Fitness Store" \
     --api-version "v1.0" \
@@ -52,7 +52,7 @@ main() {
     --scope "$SCOPE" \
     --issuer-uri "$ISSUER_URI"
 
-  config_names=$(az spring-cloud gateway route-config list --query '[].name')
+  config_names=$(az spring gateway route-config list --query '[].name')
 
   create_or_update_route_config "$config_names" "$IDENTITY_SERVICE_APP" identity-service.json
   create_or_update_route_config "$config_names" "$CART_SERVICE_APP" cart-service.json

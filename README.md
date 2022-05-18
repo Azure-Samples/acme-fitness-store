@@ -3,7 +3,7 @@ page_type: sample
 languages:
 - java
 products:
-- Azure Spring Cloud
+- Azure Spring Apps
 - Azure Database for PostgresSQL
 - Azure Cache for Redis
 - Azure Active Directory
@@ -13,12 +13,12 @@ urlFragment: "acme-fitness-store"
 
 # Deploy Spring Boot Apps to Azure
 
-Azure Spring Cloud enables you to easily run Spring Boot and polyglot applications on Azure.
+Azure Spring Apps enables you to easily run Spring Boot and polyglot applications on Azure.
 
 This quickstart shows you how to deploy existing applications written in Java, Python, and C# to Azure. When you're 
 finished, you can continue to manage the application via the Azure CLI or switch to using the Azure Portal.
 
-* [Deploy Applications to Azure Spring Cloud](#deploy-microservice-applications-to-azure-spring-cloud)
+* [Deploy Applications to Azure Spring Apps](#deploy-spring-boot-apps-to-azure)
   * [What will you experience](#what-will-you-experience)
   * [What you will need](#what-you-will-need)
   * [Install the Azure CLI extension](#install-the-azure-cli-extension)
@@ -35,7 +35,7 @@ finished, you can continue to manage the application via the Azure CLI or switch
 
 You will:
 
-* Provision an Azure Spring Cloud service instance.
+* Provision an Azure Spring Apps service instance.
 * Configure Application Configuration Service repositories
 * Deploy polyglot applications to Azure and build using Tanzu Build Service
 * Configure routing to the applications using Spring Cloud Gateway
@@ -113,7 +113,7 @@ To run the code in this article in Azure Cloud Shell:
 
 ## Install the Azure CLI extension
 
-Install the Azure Spring Cloud extension for the Azure CLI using the following command
+Install the Azure Spring Apps extension for the Azure CLI using the following command
 
 ```shell
 az extension add --name spring-cloud
@@ -154,7 +154,7 @@ Open `./azure/setup-env-variables.sh` and enter the following information:
 ```shell
 export SUBSCRIPTION=subscription-id                 # replace it with your subscription-id
 export RESOURCE_GROUP=resource-group-name           # existing resource group or one that will be created in next steps
-export SPRING_CLOUD_SERVICE=azure-spring-cloud-name # name of the service that will be created in the next steps
+export SPRING_APP_SERVICE=azure-spring-cloud-name # name of the service that will be created in the next steps
 export LOG_ANALYTICS_WORKSPACE=log-analytics-name   # existing workspace or one that will be created in next steps
 export REGION=region-name                           # choose a region with Enterprise tier support
 ```
@@ -167,7 +167,7 @@ source ./azure/setup-env-variables.sh
 
 ### Login to Azure
 
-Login to the Azure CLI and choose your active subscription. Be sure to choose the active subscription that is allow-listed for Azure Spring Cloud
+Login to the Azure CLI and choose your active subscription. 
 
 ```shell
 az login
@@ -175,11 +175,11 @@ az account list -o table
 az account set --subscription ${SUBSCRIPTION}
 ```
 
-### Create Azure Spring Cloud service instance
+### Create Azure Spring Apps service instance
 
-Prepare a name for your Azure Spring Cloud service.  The name must be between 4 and 32 characters long and can contain only lowercase letters, numbers, and hyphens.  The first character of the service name must be a letter and the last character must be either a letter or a number.
+Prepare a name for your Azure Spring Apps service.  The name must be between 4 and 32 characters long and can contain only lowercase letters, numbers, and hyphens.  The first character of the service name must be a letter and the last character must be either a letter or a number.
 
-Create a resource group to contain your Azure Spring Cloud service.
+Create a resource group to contain your Azure Spring Apps service.
 
 > Note: This step can be skipped if using an existing resource group
 
@@ -190,17 +190,17 @@ az group create --name ${RESOURCE_GROUP} \
 
 Accept the legal terms and privacy statements for the Enterprise tier.
 
-> Note: This step is necessary only if your subscription has never been used to create an Enterprise tier instance of Azure Spring Cloud.
+> Note: This step is necessary only if your subscription has never been used to create an Enterprise tier instance of Azure Spring Apps.
 
 ```shell
 az provider register --namespace Microsoft.SaaS
 az term accept --publisher vmware-inc --product azure-spring-cloud-vmware-tanzu-2 --plan tanzu-asc-ent-mtr
 ```
 
-Create an instance of Azure Spring Cloud Enterprise.
+Create an instance of Azure Spring Apps Enterprise.
 
 ```shell
-az spring-cloud create --name ${SPRING_CLOUD_SERVICE} \
+az spring create --name ${SPRING_APP_SERVICE} \
     --resource-group ${RESOURCE_GROUP} \
     --location ${REGION} \
     --sku Enterprise \
@@ -219,12 +219,12 @@ Set your default resource group name and cluster name using the following comman
 az configure --defaults \
     group=${RESOURCE_GROUP} \
     location=${REGION} \
-    spring-cloud=${SPRING_CLOUD_SERVICE}
+    spring-cloud=${SPRING_APP_SERVICE}
 ```
 
-### Configure Log Analytics for Azure Spring Cloud
+### Configure Log Analytics for Azure Spring Apps
 
-Create a Log Analytics Workspace to be used for your Azure Spring Cloud service.
+Create a Log Analytics Workspace to be used for your Azure Spring Apps service.
 
 > Note: This step can be skipped if using an existing workspace
 
@@ -235,23 +235,23 @@ az monitor log-analytics workspace create \
   --resource-group ${RESOURCE_GROUP}   
 ```
 
-Retrieve the resource ID for the recently create Azure Spring Cloud Service and Log Analytics Workspace:
+Retrieve the resource ID for the recently create Azure Spring Apps Service and Log Analytics Workspace:
 
 ```shell
 export LOG_ANALYTICS_RESOURCE_ID=$(az monitor log-analytics workspace show \
     --resource-group ${RESOURCE_GROUP} \
     --workspace-name ${LOG_ANALYTICS_WORKSPACE} | jq -r '.id')
 
-export SPRING_CLOUD_RESOURCE_ID=$(az spring-cloud show \
-    --name ${SPRING_CLOUD_SERVICE} \
+export SPRING_APPS_RESOURCE_ID=$(az spring show \
+    --name ${SPRING_APP_SERVICE} \
     --resource-group ${RESOURCE_GROUP} | jq -r '.id')
 ```
 
-Configure diagnostic settings for the Azure Spring Cloud Service:
+Configure diagnostic settings for the Azure Spring Apps Service:
 
 ```shell
 az monitor diagnostic-settings create --name "send-logs-and-metrics-to-log-analytics" \
-    --resource ${SPRING_CLOUD_RESOURCE_ID} \
+    --resource ${SPRING_APPS_RESOURCE_ID} \
     --workspace ${LOG_ANALYTICS_RESOURCE_ID} \
     --logs '[
          {
@@ -296,7 +296,7 @@ az monitor diagnostic-settings create --name "send-logs-and-metrics-to-log-analy
 Create a configuration repository for Application Configuration Service using the Azure CLI:
 
 ```shell
-az spring-cloud application-configuration-service git repo add --name acme-fitness-store-config \
+az spring application-configuration-service git repo add --name acme-fitness-store-config \
     --label main \
     --patterns "catalog/default,catalog/key-vault,identity/default,identity/key-vault,payment/default" \
     --uri "https://github.com/Azure-Samples/acme-fitness-store-config"
@@ -307,21 +307,21 @@ az spring-cloud application-configuration-service git repo add --name acme-fitne
 Create a custom builder in Tanzu Build Service using the Azure CLI:
 
 ```shell
-az spring-cloud build-service builder create -n ${CUSTOM_BUILDER} \
+az spring build-service builder create -n ${CUSTOM_BUILDER} \
     --builder-file azure/builder.json \
     --no-wait
 ```
 
-### Create applications in Azure Spring Cloud
+### Create applications in Azure Spring Apps
 
 Create an application for each service:
 
 ```shell
-az spring-cloud app create --name ${CART_SERVICE_APP} --instance-count 1 --memory 1Gi &
-az spring-cloud app create --name ${ORDER_SERVICE_APP} --instance-count 1 --memory 1Gi &
-az spring-cloud app create --name ${PAYMENT_SERVICE_APP} --instance-count 1 --memory 1Gi &
-az spring-cloud app create --name ${CATALOG_SERVICE_APP} --instance-count 1 --memory 1Gi &
-az spring-cloud app create --name ${FRONTEND_APP} --instance-count 1 --memory 1Gi &
+az spring app create --name ${CART_SERVICE_APP} --instance-count 1 --memory 1Gi &
+az spring app create --name ${ORDER_SERVICE_APP} --instance-count 1 --memory 1Gi &
+az spring app create --name ${PAYMENT_SERVICE_APP} --instance-count 1 --memory 1Gi &
+az spring app create --name ${CATALOG_SERVICE_APP} --instance-count 1 --memory 1Gi &
+az spring app create --name ${FRONTEND_APP} --instance-count 1 --memory 1Gi &
 wait
 ```
 
@@ -331,8 +331,8 @@ Several applications require configuration from Application Configuration Servic
 the bindings:
 
 ```shell
-az spring-cloud application-configuration-service bind --app ${PAYMENT_SERVICE_APP}
-az spring-cloud application-configuration-service bind --app ${CATALOG_SERVICE_APP}
+az spring application-configuration-service bind --app ${PAYMENT_SERVICE_APP}
+az spring application-configuration-service bind --app ${CATALOG_SERVICE_APP}
 ```
 
 ### Bind to Service Registry
@@ -341,8 +341,8 @@ Several application require service discovery using Service Registry, so create
 the bindings:
 
 ```shell
-az spring-cloud service-registry bind --app ${PAYMENT_SERVICE_APP}
-az spring-cloud service-registry bind --app ${CATALOG_SERVICE_APP}
+az spring service-registry bind --app ${PAYMENT_SERVICE_APP}
+az spring service-registry bind --app ${CATALOG_SERVICE_APP}
 ```
 
 ### Configure Spring Cloud Gateway
@@ -351,10 +351,10 @@ Assign an endpoint and update the Spring Cloud Gateway configuration with API
 information:
 
 ```shell
-az spring-cloud gateway update --assign-endpoint true
-export GATEWAY_URL=$(az spring-cloud gateway show | jq -r '.properties.url')
+az spring gateway update --assign-endpoint true
+export GATEWAY_URL=$(az spring gateway show | jq -r '.properties.url')
     
-az spring-cloud gateway update \
+az spring gateway update \
     --api-description "Acme Fitness Store API" \
     --api-title "Acme Fitness Store" \
     --api-version "v1.0" \
@@ -366,22 +366,22 @@ az spring-cloud gateway update \
 Create  routing rules for the applications:
 
 ```shell
-az spring-cloud gateway route-config create \
+az spring gateway route-config create \
     --name ${CART_SERVICE_APP} \
     --app-name ${CART_SERVICE_APP} \
     --routes-file azure/routes/cart-service.json
     
-az spring-cloud gateway route-config create \
+az spring gateway route-config create \
     --name ${ORDER_SERVICE_APP} \
     --app-name ${ORDER_SERVICE_APP} \
     --routes-file azure/routes/order-service.json
 
-az spring-cloud gateway route-config create \
+az spring gateway route-config create \
     --name ${CATALOG_SERVICE_APP} \
     --app-name ${CATALOG_SERVICE_APP} \
     --routes-file azure/routes/catalog-service.json
 
-az spring-cloud gateway route-config create \
+az spring gateway route-config create \
     --name ${FRONTEND_APP} \
     --app-name ${FRONTEND_APP} \
     --routes-file azure/routes/frontend.json
@@ -393,28 +393,28 @@ Deploy and build each application, specifying its required parameters
 
 ```shell
 # Deploy Payment Service
-az spring-cloud app deploy --name ${PAYMENT_SERVICE_APP} \
+az spring app deploy --name ${PAYMENT_SERVICE_APP} \
     --config-file-pattern payment/default \
     --source-path apps/acme-payment 
 
 # Deploy Catalog Service
-az spring-cloud app deploy --name ${CATALOG_SERVICE_APP} \
+az spring app deploy --name ${CATALOG_SERVICE_APP} \
     --config-file-pattern catalog/default \
     --source-path apps/acme-catalog 
 
 # Deploy Order Service
-az spring-cloud app deploy --name ${ORDER_SERVICE_APP} \
+az spring app deploy --name ${ORDER_SERVICE_APP} \
     --builder ${CUSTOM_BUILDER} \
     --source-path apps/acme-order 
 
 # Deploy Cart Service 
-az spring-cloud app deploy --name ${CART_SERVICE_APP} \
+az spring app deploy --name ${CART_SERVICE_APP} \
     --builder ${CUSTOM_BUILDER} \
     --env "CART_PORT=8080" \
     --source-path apps/acme-cart 
 
 # Deploy Frontend App
-az spring-cloud app deploy --name ${FRONTEND_APP} \
+az spring app deploy --name ${FRONTEND_APP} \
     --builder ${CUSTOM_BUILDER} \
     --source-path apps/acme-shopping 
 ```
@@ -789,7 +789,7 @@ for those applications:
 # Bind order service to Postgres
 az spring-cloud connection create postgres-flexible \
     --resource-group ${RESOURCE_GROUP} \
-    --service ${SPRING_CLOUD_SERVICE} \
+    --service ${SPRING_APP_SERVICE} \
     --connection ${ORDER_SERVICE_DB_CONNECTION} \
     --app ${ORDER_SERVICE_APP} \
     --deployment default \
@@ -803,7 +803,7 @@ az spring-cloud connection create postgres-flexible \
 # Bind catalog service to Postgres
 az spring-cloud connection create postgres-flexible \
     --resource-group ${RESOURCE_GROUP} \
-    --service ${SPRING_CLOUD_SERVICE} \
+    --service ${SPRING_APP_SERVICE} \
     --connection ${CATALOG_SERVICE_DB_CONNECTION} \
     --app ${CATALOG_SERVICE_APP} \
     --deployment default \
@@ -819,7 +819,7 @@ The Cart Service requires a connection to Azure Cache for Redis, create the Serv
 ```shell
 az spring-cloud connection create redis \
     --resource-group ${RESOURCE_GROUP} \
-    --service ${SPRING_CLOUD_SERVICE} \
+    --service ${SPRING_APP_SERVICE} \
     --connection $CART_SERVICE_CACHE_CONNECTION \
     --app ${CART_SERVICE_APP} \
     --deployment default \
@@ -842,7 +842,7 @@ Retrieve the PostgreSQL connection string and update the Catalog Service:
 ```shell
 POSTGRES_CONNECTION_STR=$(az spring-cloud connection show \
     --resource-group ${RESOURCE_GROUP} \
-    --service ${SPRING_CLOUD_SERVICE} \
+    --service ${SPRING_APP_SERVICE} \
     --deployment default \
     --connection ${ORDER_SERVICE_DB_CONNECTION} \
     --app ${ORDER_SERVICE_APP} | jq '.configurations[0].value' -r)
@@ -856,7 +856,7 @@ Retrieve the Redis connection string and update the Cart Service:
 ```shell
 REDIS_CONN_STR=$(az spring-cloud connection show \
     --resource-group ${RESOURCE_GROUP} \
-    --service ${SPRING_CLOUD_SERVICE} \
+    --service ${SPRING_APP_SERVICE} \
     --deployment default \
     --app ${CART_SERVICE_APP} \
     --connection ${CART_SERVICE_CACHE_CONNECTION} | jq -r '.configurations[0].value')
@@ -1000,7 +1000,7 @@ Delete Service Connectors and activate applications to load secrets from Azure K
 ```shell
 az spring-cloud connection delete \
     --resource-group ${RESOURCE_GROUP} \
-    --service ${SPRING_CLOUD_SERVICE} \
+    --service ${SPRING_APP_SERVICE} \
     --connection ${ORDER_SERVICE_DB_CONNECTION} \
     --app ${ORDER_SERVICE_APP} \
     --deployment default \
@@ -1008,7 +1008,7 @@ az spring-cloud connection delete \
 
 az spring-cloud connection delete \
     --resource-group ${RESOURCE_GROUP} \
-    --service ${SPRING_CLOUD_SERVICE} \
+    --service ${SPRING_APP_SERVICE} \
     --connection ${CATALOG_SERVICE_DB_CONNECTION} \
     --app ${CATALOG_SERVICE_APP} \
     --deployment default \
@@ -1016,7 +1016,7 @@ az spring-cloud connection delete \
 
 az spring-cloud connection delete \
     --resource-group ${RESOURCE_GROUP} \
-    --service ${SPRING_CLOUD_SERVICE} \
+    --service ${SPRING_APP_SERVICE} \
     --connection ${CART_SERVICE_CACHE_CONNECTION} \
     --app ${CART_SERVICE_APP} \
     --deployment default \
@@ -1057,7 +1057,7 @@ The Application Insights Instrumentation Key must be provided for the non-java a
 Retrieve the Instrumentation Key for Application Insights and add to Key Vault
 
 ```shell
-export INSTRUMENTATION_KEY=$(az monitor app-insights component show --app ${SPRING_CLOUD_SERVICE} | jq -r '.connectionString')
+export INSTRUMENTATION_KEY=$(az monitor app-insights component show --app ${SPRING_APP_SERVICE} | jq -r '.connectionString')
 
 az keyvault secret set --vault-name ${KEY_VAULT} \
     --name "ApplicationInsights--ConnectionString" --value ${INSTRUMENTATION_KEY}
@@ -1125,8 +1125,8 @@ Continue on to the next sections while the traffic generator runs.
 
 ### Start monitoring apps and dependencies - in Application Insights
 
-Open the Application Insights created by Azure Spring Cloud and start monitoring Spring Boot applications. 
-You can find the Application Insights in the same Resource Group where you created an Azure Spring Cloud service instance.
+Open the Application Insights created by Azure Spring Apps and start monitoring Spring Boot applications. 
+You can find the Application Insights in the same Resource Group where you created an Azure Spring Apps service instance.
 
 Navigate to the `Application Map` blade:
 
@@ -1179,10 +1179,10 @@ Navigate to the `Live Metrics` blade - you can see live metrics on screen with l
 ### Start monitoring ACME Fitness Store's logs and metrics in Azure Log Analytics
 
 Open the Log Analytics that you created - you can find the Log Analytics in the same
-Resource Group where you created an Azure Spring Cloud service instance.
+Resource Group where you created an Azure Spring Apps service instance.
 
 In the Log Analytics page, selects `Logs` blade and run any of the sample queries supplied below
-for Azure Spring Cloud.
+for Azure Spring Apps.
 
 Type and run the following Kusto query to see application logs:
 
@@ -1220,7 +1220,7 @@ Type and run the following Kusto query  to see errors and exceptions thrown by e
 
 ![An example output from the Ingress Logs](media/ingress-logs-in-log-analytics.jpg)
 
-Type and run the following Kusto query to see all in the inbound calls into Azure Spring Cloud:
+Type and run the following Kusto query to see all in the inbound calls into Azure Spring Apps:
 
 ```sql
     AppPlatformIngressLogs
@@ -1228,8 +1228,7 @@ Type and run the following Kusto query to see all in the inbound calls into Azur
     | sort by TimeGenerated
 ```
 
-Type and run the following Kusto query to see all the logs from the managed Spring Cloud
-Config Gateway managed by Azure Spring Cloud:
+Type and run the following Kusto query to see all the logs from the managed Spring Cloud Gateway managed by Azure Spring Apps:
 
 ```sql
     AppPlatformSystemLogs
@@ -1240,7 +1239,7 @@ Config Gateway managed by Azure Spring Cloud:
 ![An example out from the Spring Cloud Gateway Logs](media/spring-cloud-gateway-logs-in-log-analytics.jpg)
 
 Type and run the following Kusto query to see all the logs from the managed Spring Cloud
-Service Registry managed by Azure Spring Cloud:
+Service Registry managed by Azure Spring Apps:
 
 ```sql
     AppPlatformSystemLogs
@@ -1358,7 +1357,7 @@ az storage container create \
 
 ### Create a Service Principal
 
-Create a service principal with enough scope/role to manage your Azure Spring Cloud instance:
+Create a service principal with enough scope/role to manage your Azure Spring Apps instance:
 
 ```shell
     az ad sp create-for-rbac --role contributor --scopes /subscriptions/${SUBSCRIPTION} --sdk-auth
@@ -1423,12 +1422,12 @@ The `cleanup` workflow can be manually run to delete all resources created by th
 
 ## Next Steps
 
-In this quickstart, you've deployed polyglot applications to Azure Spring Cloud using Azure CLI.
+In this quickstart, you've deployed polyglot applications to Azure Spring Apps using Azure CLI.
 You also configured VMware Tanzu components in the enterprise tier. To learn more about
-Azure Spring Cloud or VMware Tanzu components, go to:
+Azure Spring Apps or VMware Tanzu components, go to:
 
-* [Azure Spring Cloud](https://azure.microsoft.com/en-us/services/spring-cloud/)
-* [Azure Spring Cloud docs](https://docs.microsoft.com/en-us/azure/spring-cloud/quickstart-provision-service-instance-enterprise?tabs=azure-portal)
+* [Azure Spring Apps](https://azure.microsoft.com/en-us/services/spring-cloud/)
+* [Azure Spring Apps docs](https://docs.microsoft.com/en-us/azure/spring-cloud/quickstart-provision-service-instance-enterprise?tabs=azure-portal)
 * [Deploy Spring microservices from scratch](https://github.com/microsoft/azure-spring-cloud-training)
 * [Deploy existing Spring microservices](https://github.com/Azure-Samples/azure-spring-cloud)
 * [Azure for Java Cloud Developers](https://docs.microsoft.com/en-us/azure/java/)

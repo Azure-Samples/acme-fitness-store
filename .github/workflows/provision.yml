@@ -98,7 +98,7 @@ jobs:
           RESOURCE_GROUP: ${{ env.RESOURCE_GROUP }}
           SPRING_CLOUD_SERVICE: ${{ env.SPRING_CLOUD_SERVICE }}
           CUSTOM_BUILDER: ${{ env.CUSTOM_BUILDER }}
-      - name: Create applications in Azure Spring Cloud
+      - name: Create applications in Azure Spring Apps
         run: ../.github/scripts/applications.sh
         env:
           RESOURCE_GROUP: ${{ env.RESOURCE_GROUP }}
@@ -111,14 +111,14 @@ jobs:
           FRONTEND_APP: ${{ env.FRONTEND_APP }}
       - name: Bind to Application Configuration Service
         run: |
-          az spring-cloud application-configuration-service bind --app ${IDENTITY_SERVICE_APP}
-          az spring-cloud application-configuration-service bind --app ${PAYMENT_SERVICE_APP}
-          az spring-cloud application-configuration-service bind --app ${CATALOG_SERVICE_APP}
+          az spring application-configuration-service bind --app ${IDENTITY_SERVICE_APP}
+          az spring application-configuration-service bind --app ${PAYMENT_SERVICE_APP}
+          az spring application-configuration-service bind --app ${CATALOG_SERVICE_APP}
       - name: Bind to Service Registry
         run: |
-          az spring-cloud service-registry bind --app ${IDENTITY_SERVICE_APP}
-          az spring-cloud service-registry bind --app ${PAYMENT_SERVICE_APP}
-          az spring-cloud service-registry bind --app ${CATALOG_SERVICE_APP}
+          az spring service-registry bind --app ${IDENTITY_SERVICE_APP}
+          az spring service-registry bind --app ${PAYMENT_SERVICE_APP}
+          az spring service-registry bind --app ${CATALOG_SERVICE_APP}
       - name: Configure Spring Cloud Gateway
         working-directory: azure/routes
         run: ../../.github/scripts/gateway.sh

@@ -13,7 +13,7 @@ main() {
     --resource-group "$RESOURCE_GROUP" \
     --workspace-name "$WORKSPACE_NAME" | jq -r '.id')
 
-  spring_cloud_resource_id=$(az spring-cloud show \
+  spring_cloud_resource_id=$(az spring show \
     --name "$SPRING_CLOUD_SERVICE" \
     --resource-group "$RESOURCE_GROUP" | jq -r '.id')
 
