@@ -124,6 +124,8 @@ az extension remove --name spring-cloud
 az extension add --name spring
 ```
 
+If `spring-cloud`'s version still < `3.0.0` after above commands, you can try to [re-install Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli). 
+
 ## Clone the repo
 
 ### Create a new folder and clone the sample app repository to your Azure Cloud account
