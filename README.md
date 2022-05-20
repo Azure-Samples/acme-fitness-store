@@ -291,6 +291,14 @@ az monitor diagnostic-settings create --name "send-logs-and-metrics-to-log-analy
        ]'
 ```
 
+> Note: If you are using GitBash and have problem like this:
+> 
+> >  usage error: --resource ID | --resource NAME --resource-group NAME --resource-type TYPE [--resource-parent PARENT] [--resource-namespace NAMESPACE]
+>
+> It may be caused by "string parameter with '/' at start is being expanded to a file path". This can be solved by setting the environment variable MSYS_NO_PATHCONV. Like so:
+> 
+> >  export MSYS_NO_PATHCONV=1
+
 ### Configure Application Configuration Service
 
 Create a configuration repository for Application Configuration Service using the Azure CLI:
