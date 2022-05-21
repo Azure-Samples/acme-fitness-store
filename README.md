@@ -1281,18 +1281,18 @@ When defining a Route, you can add the RateLimit filter by including it in the l
 
 The following example would limit all users to two requests every 5 seconds to the `/products` route:
 
-    ```json
-    {
-        "predicates": [
-          "Path=/products",
-          "Method=GET"
-        ],
-        "filters": [
-          "StripPrefix=0",
-          "RateLimit=2,5s"
-        ]
-    }
-    ```
+```json
+{
+    "predicates": [
+      "Path=/products",
+      "Method=GET"
+    ],
+    "filters": [
+      "StripPrefix=0",
+      "RateLimit=2,5s"
+    ]
+}
+```
 
 When the limit is exceeded, response will fail with `429 Too Many Requests` status.
 
