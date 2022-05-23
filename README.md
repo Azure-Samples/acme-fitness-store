@@ -158,6 +158,7 @@ export SPRING_CLOUD_SERVICE=azure-spring-cloud-name # name of the service that w
 export LOG_ANALYTICS_WORKSPACE=log-analytics-name   # existing workspace or one that will be created in next steps
 export REGION=region-name                           # choose a region with Enterprise tier support
 ```
+The REGION value should be one of available regions for Azure Spring Cloud service (e.g. eastus), please visit [here](https://azure.microsoft.com/en-us/global-infrastructure/services/?products=spring-cloud&regions=all) for all available regions for Azure Spring Cloud.
 
 Then, set the environment:
 
