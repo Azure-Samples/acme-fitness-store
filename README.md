@@ -682,9 +682,13 @@ cp ./azure/setup-db-env-variables-template.sh ./azure/setup-db-env-variables.sh
 Open `./azure/setup-db-env-variables.sh` and enter the following information:
 
 ```shell
+export AZURE_CACHE_NAME=change-me                   # Unique name for Azure Cache for Redis Instance
+export POSTGRES_SERVER=change-me                    # Unique name for Azure Database for PostgreSQL Flexible Server
 export POSTGRES_SERVER_USER=change-name             # Postgres server username to be created in next steps
 export POSTGRES_SERVER_PASSWORD=change-name         # Postgres server password to be created in next steps
 ```
+
+> Note: AZURE_CACHE_NAME and POSTGRES_SERVER must be unique names to avoid DNS conflicts
 
 Then, set the environment:
 
