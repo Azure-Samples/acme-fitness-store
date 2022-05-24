@@ -81,11 +81,7 @@ In addition, you will need the following:
 | [`jq` utility](https://stedolan.github.io/jq/download/)
 |
 
-Note -  The [`jq` utility](https://stedolan.github.io/jq/download/). On Windows, download [this Windows port of JQ](https://github.com/stedolan/jq/releases) and add the following to the `~/.bashrc` file:
-
-```shell
-alias jq=<JQ Download location>/jq-win64.exe
-```
+Note -  On Windows, the [`jq` utility](https://stedolan.github.io/jq/download/) should be renamed from `jq-win64.exe` to `jq.exe` and added to the `PATH`
 
 Note - The Bash shell. While Azure CLI should behave identically on all environments, shell
 semantics vary. Therefore, only bash can be used with the commands in this repo.
