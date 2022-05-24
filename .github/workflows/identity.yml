@@ -8,7 +8,7 @@ on:
     paths:
       - 'apps/acme-identity/**'
 env:
-  SPRING_CLOUD_SERVICE: ${{ secrets.TF_PROJECT_NAME }}-asc
+  SPRING_APPS_SERVICE: ${{ secrets.TF_PROJECT_NAME }}-asa
   RESOURCE_GROUP: ${{ secrets.TF_PROJECT_NAME }}-resources
   KEY_VAULT: ${{ secrets.TF_PROJECT_NAME }}-keyvault
   IDENTITY_SERVICE_APP: identity-service
@@ -38,7 +38,7 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       - name: Set up Azure Spring Extension
-        run: az extension add --name spring-cloud
+        run: az extension add --name spring
       - name: Deploy Identity
         run: |
           keyvault_uri=$(az keyvault show \
@@ -48,7 +48,7 @@ jobs:
           az spring app deploy \
             --name ${IDENTITY_SERVICE_APP} \
             --resource-group "$RESOURCE_GROUP" \
-            --service "$SPRING_CLOUD_SERVICE" \
+            --service "$SPRING_APPS_SERVICE" \
             --env "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_ENDPOINT=${keyvault_uri}" "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_NAME='acme-fitness-store-vault'" "SPRING_PROFILES_ACTIVE=default,key-vault" \
             --config-file-pattern identity/default,identity/key-vault \
             --source-path ./

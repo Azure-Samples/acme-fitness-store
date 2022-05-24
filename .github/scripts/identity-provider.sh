@@ -4,7 +4,7 @@
 set -xuo pipefail
 
 : "${RESOURCE_GROUP:?'must be set'}"
-: "${SPRING_CLOUD_SERVICE:?'must be set'}"
+: "${SPRING_APPS_SERVICE:?'must be set'}"
 : "${IDENTITY_SERVICE_APP:?'must be set'}"
 : "${CART_SERVICE_APP:?'must be set'}"
 : "${ORDER_SERVICE_APP:?'must be set'}"
@@ -31,7 +31,7 @@ set_keyvault_policy() {
 main() {
   local gateway_url portal_url
 
-  az configure --defaults group="$RESOURCE_GROUP" spring-cloud="$SPRING_CLOUD_SERVICE"
+  az configure --defaults group="$RESOURCE_GROUP" spring="$SPRING_APPS_SERVICE"
 
   gateway_url=$(az spring gateway show | jq -r '.properties.url')
 

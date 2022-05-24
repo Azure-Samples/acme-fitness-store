@@ -10,7 +10,7 @@ on:
       - 'azure/builder.json'
       - 'azure/routes/**'
 env:
-  SPRING_CLOUD_SERVICE: ${{ secrets.TF_PROJECT_NAME }}-asc
+  SPRING_APPS_SERVICE: ${{ secrets.TF_PROJECT_NAME }}-asa
   RESOURCE_GROUP: ${{ secrets.TF_PROJECT_NAME }}-resources
   WORKSPACE_NAME: ${{ secrets.TF_PROJECT_NAME }}-workspace
   CUSTOM_BUILDER: no-bindings-builder
@@ -73,36 +73,36 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       - name: Set up Azure Spring Extension
-        run: az extension add --name spring-cloud
+        run: az extension add --name spring
       - name: Create Azure Spring Apps
         run: ../.github/scripts/azure-spring-apps.sh
         env:
           RESOURCE_GROUP: ${{ env.RESOURCE_GROUP }}
           REGION: ${{ secrets.AZURE_LOCATION }}
-          SPRING_CLOUD_SERVICE: ${{ env.SPRING_CLOUD_SERVICE }}
+          SPRING_APPS_SERVICE: ${{ env.SPRING_APPS_SERVICE }}
       - name: Configure diagnostic settings
         run: ../.github/scripts/diagnostic.sh
         env:
           RESOURCE_GROUP: ${{ env.RESOURCE_GROUP }}
-          SPRING_CLOUD_SERVICE: ${{ env.SPRING_CLOUD_SERVICE }}
+          SPRING_APPS_SERVICE: ${{ env.SPRING_APPS_SERVICE }}
           WORKSPACE_NAME: ${{ env.WORKSPACE_NAME }}
       - name: Configure Application Configuration Service
         run: ../.github/scripts/application-configuration-service.sh
         env:
           RESOURCE_GROUP: ${{ env.RESOURCE_GROUP }}
-          SPRING_CLOUD_SERVICE: ${{ env.SPRING_CLOUD_SERVICE }}
+          SPRING_APPS_SERVICE: ${{ env.SPRING_APPS_SERVICE }}
       - name: Configure Tanzu Build Service
         working-directory: azure
         run: ../.github/scripts/build-service.sh
         env:
           RESOURCE_GROUP: ${{ env.RESOURCE_GROUP }}
-          SPRING_CLOUD_SERVICE: ${{ env.SPRING_CLOUD_SERVICE }}
+          SPRING_APPS_SERVICE: ${{ env.SPRING_APPS_SERVICE }}
           CUSTOM_BUILDER: ${{ env.CUSTOM_BUILDER }}
       - name: Create applications in Azure Spring Apps
         run: ../.github/scripts/applications.sh
         env:
           RESOURCE_GROUP: ${{ env.RESOURCE_GROUP }}
-          SPRING_CLOUD_SERVICE: ${{ env.SPRING_CLOUD_SERVICE }}
+          SPRING_APPS_SERVICE: ${{ env.SPRING_APPS_SERVICE }}
           IDENTITY_SERVICE_APP: ${{ env.IDENTITY_SERVICE_APP }}
           CART_SERVICE_APP: ${{ env.CART_SERVICE_APP }}
           ORDER_SERVICE_APP: ${{ env.ORDER_SERVICE_APP }}
@@ -124,7 +124,7 @@ jobs:
         run: ../../.github/scripts/gateway.sh
         env:
           RESOURCE_GROUP: ${{ env.RESOURCE_GROUP }}
-          SPRING_CLOUD_SERVICE: ${{ env.SPRING_CLOUD_SERVICE }}
+          SPRING_APPS_SERVICE: ${{ env.SPRING_APPS_SERVICE }}
           IDENTITY_SERVICE_APP: ${{ env.IDENTITY_SERVICE_APP }}
           CART_SERVICE_APP: ${{ env.CART_SERVICE_APP }}
           ORDER_SERVICE_APP: ${{ env.ORDER_SERVICE_APP }}
@@ -138,7 +138,7 @@ jobs:
         run: ../.github/scripts/identity-provider.sh
         env:
           RESOURCE_GROUP: ${{ env.RESOURCE_GROUP }}
-          SPRING_CLOUD_SERVICE: ${{ env.SPRING_CLOUD_SERVICE }}
+          SPRING_APPS_SERVICE: ${{ env.SPRING_APPS_SERVICE }}
           IDENTITY_SERVICE_APP: ${{ env.IDENTITY_SERVICE_APP }}
           CART_SERVICE_APP: ${{ env.CART_SERVICE_APP }}
           ORDER_SERVICE_APP: ${{ env.ORDER_SERVICE_APP }}

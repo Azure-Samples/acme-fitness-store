@@ -8,7 +8,7 @@ on:
     paths:
       - 'apps/acme-shopping/**'
 env:
-  SPRING_CLOUD_SERVICE: ${{ secrets.TF_PROJECT_NAME }}-asc
+  SPRING_APPS_SERVICE: ${{ secrets.TF_PROJECT_NAME }}-asa
   RESOURCE_GROUP: ${{ secrets.TF_PROJECT_NAME }}-resources
   FRONTEND_APP: frontend
 
@@ -32,11 +32,11 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       - name: Set up Azure Spring Extension
-        run: az extension add --name spring-cloud
+        run: az extension add --name spring
       - name: Deploy Shopping
         run: |
           az spring app deploy \
             --name ${FRONTEND_APP} \
             --resource-group ${RESOURCE_GROUP} \
-            --service ${SPRING_CLOUD_SERVICE} \
+            --service ${SPRING_APPS_SERVICE} \
             --source-path ./

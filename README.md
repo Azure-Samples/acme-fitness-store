@@ -116,7 +116,7 @@ To run the code in this article in Azure Cloud Shell:
 Install the Azure Spring Apps extension for the Azure CLI using the following command
 
 ```shell
-az extension add --name spring-cloud
+az extension add --name spring
 ```
 
 Note - `spring-cloud` CLI extension `3.0.0` or later is a pre-requisite to enable the
@@ -125,7 +125,7 @@ command to remove previous versions and install the latest Enterprise tier exten
 
 ```shell
 az extension remove --name spring-cloud
-az extension add --name spring-cloud
+az extension add --name spring
 ```
 
 ## Clone the repo

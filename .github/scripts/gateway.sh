@@ -3,7 +3,7 @@
 set -euxo pipefail
 
 : "${RESOURCE_GROUP:?'must be set'}"
-: "${SPRING_CLOUD_SERVICE:?'must be set'}"
+: "${SPRING_APPS_SERVICE:?'must be set'}"
 : "${IDENTITY_SERVICE_APP:?'must be set'}"
 : "${CART_SERVICE_APP:?'must be set'}"
 : "${ORDER_SERVICE_APP:?'must be set'}"
@@ -37,7 +37,7 @@ create_or_update_route_config() {
 main() {
   local gateway_url config_names
 
-  az configure --defaults group="$RESOURCE_GROUP" spring-cloud="$SPRING_CLOUD_SERVICE"
+  az configure --defaults group="$RESOURCE_GROUP" spring="$SPRING_APPS_SERVICE"
 
   gateway_url=$(az spring gateway show | jq -r '.properties.url')
 
