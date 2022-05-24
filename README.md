@@ -429,6 +429,12 @@ Retrieve the URL for Spring Cloud Gateway and open it in a browser:
 open "https://${GATEWAY_URL}"
 ```
 
+If using Azure Cloud Shell or Windows, open the output from the following command in a browser:
+
+```shell
+echo "https://${GATEWAY_URL}"
+```
+
 You should see the ACME Fitness Store Application:
 
 ![An image of the ACME Fitness Store Application homepage](media/homepage.png)
@@ -445,6 +451,12 @@ az spring-cloud api-portal update --assign-endpoint true
 export PORTAL_URL=$(az spring-cloud api-portal show | jq -r '.properties.url')
 
 open "https://${PORTAL_URL}"
+```
+
+If using Azure Cloud Shell or Windows, open the output from the following command in a browser:
+
+```shell
+echo "https://${PORTAL_URL}"
 ```
 
 ## Unit 2 - Configure Single Sign-On
@@ -634,6 +646,12 @@ Retrieve the URL for Spring Cloud Gateway and open it in a browser:
 open "https://${GATEWAY_URL}"
 ```
 
+If using Azure Cloud Shell or Windows, open the output from the following command in a browser:
+
+```shell
+echo "https://${GATEWAY_URL}"
+```
+
 You should see the ACME Fitness Store Application, and be able to log in using your
 SSO Credentials. Once logged in, the remaining functionality of the application will
 be available. This includes adding items to the cart and placing an order.
@@ -658,6 +676,12 @@ Open API Portal in a browser, this will redirect you to log in now:
 
 ```shell
 open "https://${PORTAL_URL}"
+```
+
+If using Azure Cloud Shell or Windows, open the output from the following command in a browser:
+
+```shell
+echo "https://${PORTAL_URL}"
 ```
 
 To access the protected APIs, click Authorize and follow the steps that match your
