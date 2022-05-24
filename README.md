@@ -598,6 +598,8 @@ az spring-cloud app deploy --name ${IDENTITY_SERVICE_APP} \
     --source-path apps/acme-identity
 ```
 
+The service instance will take around 10-15 minutes to deploy.
+
 ### Update Existing Applications
 
 Update the existing applications to use authorization information from Spring Cloud Gateway:
@@ -686,6 +688,8 @@ az redis create \
   --sku Basic \
   --vm-size c0
 ```
+
+The service instance will take around 10-15 minutes to deploy.
 
 ### Create an Azure Database for Postgres
 
@@ -826,7 +830,7 @@ az spring-cloud app restart --name ${CART_SERVICE_APP}
 
 Notice that after restarting the cart service, the items in your cart will now persist.
 
-Verify order data is now persisted in a PostgreSQL Database by placing an order. View your placed orders an the following URL:
+Verify order data is now persisted in a PostgreSQL Database by placing an order. View your placed orders with the following URL:
 
 ```text
 https://${GATEWAY_URL}/order/${USER_ID}
