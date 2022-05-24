@@ -1208,7 +1208,7 @@ Type and run the following Kusto query to see `catalog-service` application logs
 
 ![Example output from catalog service logs](media/catalog-app-logs-in-log-analytics.jpg)
 
-Type and run the following Kusto query  to see errors and exceptions thrown by each app:
+Type and run the following Kusto query to see errors and exceptions thrown by each app:
 ```sql
     AppPlatformLogsforSpring 
     | where Log contains "error" or Log contains "exception"
@@ -1228,7 +1228,7 @@ Type and run the following Kusto query to see all in the inbound calls into Azur
     | sort by TimeGenerated
 ```
 
-Type and run the following Kusto query to see all the logs from the managed Spring Cloud Gateway managed by Azure Spring Apps:
+Type and run the following Kusto query to see all the logs from Spring Cloud Gateway managed by Azure Spring Apps:
 
 ```sql
     AppPlatformSystemLogs
@@ -1238,8 +1238,7 @@ Type and run the following Kusto query to see all the logs from the managed Spri
 
 ![An example out from the Spring Cloud Gateway Logs](media/spring-cloud-gateway-logs-in-log-analytics.jpg)
 
-Type and run the following Kusto query to see all the logs from the managed Spring Cloud
-Service Registry managed by Azure Spring Apps:
+Type and run the following Kusto query to see all the logs from Spring Cloud Service Registry managed by Azure Spring Apps:
 
 ```sql
     AppPlatformSystemLogs
