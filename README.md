@@ -291,13 +291,11 @@ az monitor diagnostic-settings create --name "send-logs-and-metrics-to-log-analy
        ]'
 ```
 
-> Note: If you are using GitBash and have problem like this:
+> Note: For Git Bash users, this command may fail when resource IDs are misinterpreted as file paths because they begin with `/`. 
 > 
-> >  usage error: --resource ID | --resource NAME --resource-group NAME --resource-type TYPE [--resource-parent PARENT] [--resource-namespace NAMESPACE]
->
-> It may be caused by "string parameter with '/' at start is being expanded to a file path". This can be solved by setting the environment variable MSYS_NO_PATHCONV. Like so:
+> If the above command fails, try setting MSYS_NO_PATHCONV using:
 > 
-> >  export MSYS_NO_PATHCONV=1
+> `export MSYS_NO_PATHCONV=1`
 
 ### Configure Application Configuration Service
 
