@@ -125,7 +125,7 @@ Congratulations, you have deployed your first Spring Boot microservice to Azure 
 Here is the final script to build and deploy everything that was done in this guide:
 
 ```
-curl https://start.spring.io/starter.tgz -d dependencies=web -d baseDir=hello-world -d bootVersion=2.7.0 -d javaVersion=17 | tar -xzvf -
+curl https://start.spring.io/starter.tgz -d dependencies=web -d baseDir=hello-world -d bootVersion=2.7.5 -d javaVersion=17 -d type=maven-project | tar -xzvf -
 cd hello-world
 cat > HelloController.java << EOF
 package com.example.demo;
@@ -143,7 +143,7 @@ public class HelloController {
 }
 EOF
 mv HelloController.java src/main/java/com/example/demo/HelloController.java
-az spring app create -n hello-world --runtime-version Java_17
+az spring app create -n hello-world
 ./mvnw clean package
 az spring app deploy -n hello-world --artifact-path target/demo-0.0.1-SNAPSHOT.jar
 cd ..
