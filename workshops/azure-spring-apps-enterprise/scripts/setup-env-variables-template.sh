@@ -2,6 +2,7 @@ export SUBSCRIPTION=CHANGE-ME                 # replace it with your subscriptio
 export RESOURCE_GROUP=acme-fitness-rg           # existing resource group or one that will be created in next steps
 export SPRING_APPS_SERVICE=acme-fitness   # name of the service that will be created in the next steps
 export LOG_ANALYTICS_WORKSPACE=acme-fitness-la-CHANGE-ME   # existing workspace or one that will be created in next steps
+export APPLICATION_INSIGHTS=acme-fitness-insights-CHANGE-ME   # existing application insights or one that will be created in next steps
 export REGION=westeurope                          # choose a region with Enterprise tier support
 
 export CART_SERVICE_APP="cart-service"

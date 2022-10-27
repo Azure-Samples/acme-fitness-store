@@ -1,0 +1,4 @@
+/scripts/setup-env-variables.sh
+/hello-world/
+/scripts/setup-keyvault-env-variables.sh
+/scripts/setup-db-env-variables.sh
