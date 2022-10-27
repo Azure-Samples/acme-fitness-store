@@ -129,7 +129,7 @@ POSTGRES_CONNECTION_STR=$(az spring connection show \
 
 az spring app update \
     --name order-service \
-    --env "DatabaseProvider=Postgres" "ConnectionStrings__OrderContext=${POSTGRES_CONNECTION_STR}" \ 
+    --env "DatabaseProvider=Postgres" "ConnectionStrings__OrderContext=${POSTGRES_CONNECTION_STR}" \
     "AcmeServiceSettings__AuthUrl=https://${GATEWAY_URL}"
 ```
 
