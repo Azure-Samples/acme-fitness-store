@@ -4,7 +4,7 @@ languages:
 - java
 products:
 - Azure Spring Apps
-- Azure Database for PostgresSQL
+- Azure Database for PostgreSQL
 - Azure Cache for Redis
 - Azure Active Directory
 description: "Deploy Microservice Apps to Azure"
@@ -52,7 +52,7 @@ The following diagram shows the architecture of the ACME Fitness Store that will
 This application is composed of several services:
 
 * 3 Java Spring Boot applications:
-  * A catalog service for fetching available products. This application will use Azure AD authentication to connect to PostgresSQL
+  * A catalog service for fetching available products. This application will use Azure AD authentication to connect to PostgreSQL
   * A payment service for processing and approving payments for users' orders
   * An identity service for referencing the authenticated user
 
