@@ -76,7 +76,7 @@ or sign up for a
 
 In addition, you will need the following:
 
-| [Azure CLI version 2.42.0 or higher](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest)
+| [Azure CLI version 2.47.0 or higher](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest)
 | [Git](https://git-scm.com/)
 | [`jq` utility](https://stedolan.github.io/jq/download/)
 |
@@ -115,16 +115,21 @@ Install the Azure Spring Apps extension for the Azure CLI using the following co
 az extension add --name spring
 ```
 
-Note - `spring-cloud` CLI extension `3.0.0` or later is a pre-requisite to enable the
-latest Enterprise tier functionality to configure VMware Tanzu Components. Use the following
-command to remove previous versions and install the latest Enterprise tier extension:
+If the extension is already installed, update it with the following command
+
+```shell
+az extension update --name spring
+```
+
+Note - In some cases, the update command may fail and it will be necessary to reinstall the Azure
+Spring Apps extension. Use the following command to remove previous versions and install the latest 
+Azure Spring Apps extension:
 
 ```shell
 az extension remove --name spring-cloud
+az extension remove --name spring
 az extension add --name spring
 ```
-
-If `spring-cloud`'s version still < `3.0.0` after above commands, you can try to [re-install Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli). 
 
 ## Clone the repo
 
@@ -212,6 +217,8 @@ az spring create --name ${SPRING_APPS_SERVICE} \
     --enable-app-acc \
     --build-pool-size S2 
 ```
+
+> Note: If the `create` command fails, try updating the Azure Spring Apps extension described [here](#install-the-azure-cli-extension)
 
 > Note: The service instance will take around 10-15 minutes to deploy.
 
