@@ -133,6 +133,6 @@ Congratulations, you have deployed your first Spring Boot app to Azure Spring Ap
 
 ---
 
-⬅️ Previous guide: [02 - Workshop Environment Setup](../01-workshop-environment-setup/README.md)
+⬅️ Previous guide: [01 - Workshop Environment Setup](../01-workshop-environment-setup/README.md)
 
 ➡️ Next guide: [03 - HOL 2 - Deploy Acme Fitness frontend App](../03-hol-2-deploy-frontend-app/README.md)
