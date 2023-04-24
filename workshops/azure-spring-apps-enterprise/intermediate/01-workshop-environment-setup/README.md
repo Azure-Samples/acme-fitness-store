@@ -40,7 +40,7 @@ source ./scripts/setup-env-variables.sh
 
 ### Login to Azure
 
-Login to the Azure CLI and choose your active subscription. In the terminal of VS Code in Codespace, run the below commands
+Login to the Azure CLI and choose your active subscription. In the terminal of VS Code in Codespace, run the below commands. `--use-device-code` parameter for login is mandatory in Codespaces environment.
 
 ```shell
 az login --use-device-code
