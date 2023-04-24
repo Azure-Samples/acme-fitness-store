@@ -21,7 +21,7 @@ This and following steps should be completed from within the terminal of your VS
 Open `./scripts/setup-env-variables.sh` and update the following variables:
 
 ```shell
-export SUBSCRIPTION=CHANGEME                 # replace it with your subscription-id
+export SUBSCRIPTION=CHANGEME                 # replace it with your subscription-id (quote is not required)
 export RESOURCE_GROUP=CHANGEME           # existing resource group or one that will be created in next steps
 export SPRING_APPS_SERVICE=CHANGEME   # A unique name of the service that will be created in the next steps
 ```
