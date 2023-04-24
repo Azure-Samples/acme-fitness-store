@@ -89,6 +89,7 @@ Go to [the Azure portal](https://portal.azure.com/):
 - Look for your Azure Spring Apps instance in your resource group or searching instance by inputing name into search field of Azure Portal
 ![Updated instance count](./images/search-resource.png)
 - Click "Apps" in the "Settings" section of the navigation pane and select "hello-world"
+![Select App](./images/select-app.png)
 - Find the "Test endpoint" in the "Essentials" section.
 ![Test endpoint](images/test-endpoint.png)
 - This will give you something like:
