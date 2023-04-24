@@ -86,7 +86,8 @@ This creates a jar file on your local disk and uploads it to the app instance yo
 
 Go to [the Azure portal](https://portal.azure.com/):
 
-- Look for your Azure Spring Apps instance in your resource group
+- Look for your Azure Spring Apps instance in your resource group or inputing instance name into search field of Azure Portal
+![Updated instance count](./images/search-resource.png)
 - Click "Apps" in the "Settings" section of the navigation pane and select "hello-world"
 - Find the "Test endpoint" in the "Essentials" section.
 ![Test endpoint](images/test-endpoint.png)
