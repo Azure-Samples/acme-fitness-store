@@ -439,7 +439,7 @@ information:
 
 ```shell
 az spring gateway update --assign-endpoint true
-export GATEWAY_URL=$(az spring gateway show | jq -r '.properties.url')
+export GATEWAY_URL=$(az spring gateway show --query properties.url -o tsv)
     
 az spring gateway update \
     --api-description "Acme Fitness Store API" \
