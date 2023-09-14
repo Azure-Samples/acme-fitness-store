@@ -66,7 +66,7 @@ cd apps/acme-assist
 1. Prepare the new sample data and images:
    ```bash
    ./apps/acme-assist/prepare_data.sh
-   ```.
+   ```
 1. Redeploy `catalog-service` with the new resources:
     ```bash
     source ./azure-spring-apps-enterprise/scripts/setup-env-variables.sh
