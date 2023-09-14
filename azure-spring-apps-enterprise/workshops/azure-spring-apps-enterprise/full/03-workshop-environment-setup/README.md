@@ -16,8 +16,7 @@ As we had already noted in the prior sections and also as we go to next sections
 
 Please right click on the below button and choose the Open in new tab option. The reason is there are quite a number of fields that need to be populated in that form and we are providing guidance on the values to populate with.
 
-[![Deploy to Azure](images/deploybutton.svg)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3a%2f%2fraw.githubusercontent.com%2fAzure-Samples%2facme-fitness-store%2fAzure%2fworkshops%2fazure-spring-apps-enterprise%2ffull%2f03-workshop-environment-setup%2facmedeploy.json)
-
+[![Deploy to Azure](images/deploybutton.svg)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3a%2f%2fraw.githubusercontent.com%2fAzure-Samples%2facme-fitness-store%2fAzure%2fazure-spring-apps-enterprise%2fworkshops%2fazure-spring-apps-enterprise%2ffull%2f03-workshop-environment-setup%2facmedeploy.json)
 
 To know about the description of the fields, click on the little info icon next to every field. For the fields where default value is populated, the recommendation is to use the default for the first time use. The only field that needs to be popluated in here is the ``ObjectId``. To get the value for this field, perform the below steps
 
