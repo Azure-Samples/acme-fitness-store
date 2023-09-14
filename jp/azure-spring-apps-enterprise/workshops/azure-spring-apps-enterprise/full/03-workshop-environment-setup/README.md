@@ -46,33 +46,33 @@
 3. 上記の手順が成功した場合、Codespaces の中で VSCode のターミナルを開くことができるようになります。詳細は [Codespaces](https://github.com/codespaces) をご参照ください。
 
 	この Codespaces の環境には、次のソフトウェアがインストールされています。
-	
-	   1. [JDK 17](https://docs.microsoft.com/java/openjdk/download?WT.mc_id=azurespringcloud-github-judubois#openjdk-17)
 
-	    ```bash
-	    java -version
-	    ```
+	1. [JDK 17](https://docs.microsoft.com/java/openjdk/download?WT.mc_id=azurespringcloud-github-yoterada#openjdk-17)
 
-	   2. `JAVA_HOME` の環境変数は、JDK インストール・パスが設定されています。また、`PATH` 変数に `${JAVA_HOME}/bin` ディレクトリが含まれていることを確認してください。パスの設定が正しく設定されているか確認するために、シェルのターミナルで `which java` コマンドを実行し、結果のパスが `${JAVA_HOME}/bin` のファイルを指していることを確認してください。
+		```shell
+		java -version
+		```
 
-	    ```bash
-	    echo $JAVA_HOME 
-	    echo $PATH
-	    which java
-	    ```
+	2. `JAVA_HOME` の環境変数は、JDK インストール・パスが設定されています。また、`PATH` 変数に `${JAVA_HOME}/bin` ディレクトリが含まれていることを確認してください。パスの設定が正しく設定されているか確認するために、シェルのターミナルで `which java` コマンドを実行し、結果のパスが `${JAVA_HOME}/bin` のファイルを指していることを確認してください。
+
+		```shell
+		echo $JAVA_HOME 
+		echo $PATH
+		which java
+		```
 	   
-	   3. [Azure CLI version 2.31.0 もしくはそれ以降](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest)：現在インストールされている Azure CLI のバージョンを確認するためには、下記のコマンドを実行します。
+	3. [Azure CLI version 2.31.0 もしくはそれ以降](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest)：現在インストールされている Azure CLI のバージョンを確認するためには、下記のコマンドを実行します。
 
-	    ```bash
-	    which az
-	    az --version
-	    ```
+		```shell
+		which az
+		az --version
+		```
 
-	  4. GitHub codespaces を起動した際、古いソースコードやドキュメントを参照している可能性があるため、ソースコードやドキュメントを最新の情報に更新してください。
+	4. GitHub codespaces を起動した際、古いソースコードやドキュメントを参照している可能性があるため、ソースコードやドキュメントを最新の情報に更新してください。
 
-	    ```bash
-	    git pull
-	    ```
+		```shell
+		git pull
+		```
 
 ### デプロイ用の環境設定の準備
 
