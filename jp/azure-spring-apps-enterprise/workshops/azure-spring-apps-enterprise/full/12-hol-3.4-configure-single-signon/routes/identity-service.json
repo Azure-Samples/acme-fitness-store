@@ -1,0 +1,56 @@
+[
+  {
+    "order": 0,
+    "ssoEnabled": true,
+    "predicates": [
+      "Path=/acme-login",
+      "Method=GET"
+    ],
+    "filters": [
+      "RedirectTo=302, /"
+    ],
+    "tags": [
+      "sso"
+    ]
+  },
+  {
+    "ssoEnabled": true,
+    "tokenRelay": true,
+    "predicates": [
+      "Path=/userinfo",
+      "Method=GET"
+    ],
+    "filters": [
+      "RedirectTo=302, /whoami",
+      "SetResponseHeader=Cache-Control, no-store"
+    ],
+    "tags": [
+      "users"
+    ]
+  },
+  {
+    "uri": "no://op",
+    "predicates": [
+      "Path=/verify-token",
+      "Method=POST"
+    ],
+    "ssoEnabled": true,
+    "tags": [
+      "users"
+    ]
+  },
+  {
+    "ssoEnabled": true,
+    "tokenRelay": true,
+    "predicates": [
+      "Path=/whoami",
+      "Method=GET"
+    ],
+    "filters": [
+      "StripPrefix=0"
+    ],
+    "tags": [
+      "users"
+    ]
+  }
+]

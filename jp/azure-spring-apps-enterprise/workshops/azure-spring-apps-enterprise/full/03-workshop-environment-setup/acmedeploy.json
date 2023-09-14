@@ -1,0 +1,346 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "projectName": {
+            "type": "string",
+            "defaultValue": "acme-fitness",
+            "metadata": {
+                "description": "Specifies a project name that is used for generating resource group name and resource names."
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "canadacentral",
+            "metadata": {
+                "description": "Specifies the Azure location where the key vault should be created."
+            }
+        },
+        "enabledForDeployment": {
+            "type": "bool",
+            "defaultValue": false,
+            "allowedValues": [
+                true,
+                false
+            ],
+            "metadata": {
+                "description": "Specifies whether Azure Virtual Machines are permitted to retrieve certificates stored as secrets from the key vault."
+            }
+        },
+        "enabledForDiskEncryption": {
+            "type": "bool",
+            "defaultValue": false,
+            "allowedValues": [
+                true,
+                false
+            ],
+            "metadata": {
+                "description": "Specifies whether Azure Disk Encryption is permitted to retrieve secrets from the vault and unwrap keys."
+            }
+        },
+        "enabledForTemplateDeployment": {
+            "type": "bool",
+            "defaultValue": false,
+            "allowedValues": [
+                true,
+                false
+            ],
+            "metadata": {
+                "description": "Specifies whether Azure Resource Manager is permitted to retrieve secrets from the key vault."
+            }
+        },
+        "tenantId": {
+            "type": "string",
+            "defaultValue": "[subscription().tenantId]",
+            "metadata": {
+                "description": "Specifies the Azure Active Directory tenant ID that should be used for authenticating requests to the key vault. Get it by using Get-AzSubscription cmdlet."
+            }
+        },
+        "objectId": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault. The object ID must be unique for the list of access policies. Get it by using Get-AzADUser or Get-AzADServicePrincipal cmdlets."
+            }
+        },
+        "keysPermissions": {
+            "type": "array",
+            "defaultValue": [
+                "list",
+                "get"
+            ],
+            "metadata": {
+                "description": "Specifies the permissions to keys in the vault. Valid values are: all, encrypt, decrypt, wrapKey, unwrapKey, sign, verify, get, list, create, update, import, delete, backup, restore, recover, and purge."
+            }
+        },
+        "secretsPermissions": {
+            "type": "array",
+            "defaultValue": [
+                "list",
+                "set",
+                "get"
+            ],
+            "metadata": {
+                "description": "Specifies the permissions to secrets in the vault. Valid values are: all, get, list, set, delete, backup, restore, recover, and purge."
+            }
+        },
+        "skuName": {
+            "type": "string",
+            "defaultValue": "Standard",
+            "allowedValues": [
+                "Standard",
+                "Premium"
+            ],
+            "metadata": {
+                "description": "Specifies whether the key vault is a standard vault or a premium vault."
+            }
+        },
+        "certificatesPermissions": {
+            "type": "array",
+            "defaultValue": [
+                "get",
+                "list",
+                "update",
+                "create"
+            ],
+            "metadata": {
+                "description": "Specifies the permissions to certificates in the vault. Valid values are: all, get, list, update, create, import, delete, recover, backup, restore, manage contacts, manage certificate authorities, get certificate authorities, list certificate authorities, set certificate authorities, delete certificate authorities."
+            }
+        },
+        //Parameters for DB
+        "administratorLogin": {
+            "type": "string",
+            "defaultValue": "acme",
+            "metadata": {
+                "description": "Admin login for Postgres DB"
+            }
+        },
+        "administratorLoginPassword": {
+            "type": "secureString",
+            "defaultValue": "super$ecr3t",
+            "metadata": {
+                "description": "Admin login password for Postgres DB"
+            }
+        },
+        "serverEdition": {
+            "type": "string",
+            "defaultValue": "GeneralPurpose"
+        },
+        "skuSizeGB": {
+            "type": "int",
+            "defaultValue": 128
+        },
+        "dbInstanceType": {
+            "type": "string",
+            "defaultValue": "Standard_D4ds_v4"
+        },
+        "haMode": {
+            "type": "string",
+            "defaultValue": "ZoneRedundant"
+        },
+        "availabilityZone": {
+            "type": "string",
+            "defaultValue": "1"
+        },
+        "version": {
+            "type": "string",
+            "defaultValue": "12"
+        },
+        "virtualNetworkExternalId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "subnetName": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "privateDnsZoneArmResourceId": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        // Parameters for Azure Cache for Redis
+        "redisCacheSKU": {
+            "type": "string",
+            "defaultValue": "Standard",
+            "allowedValues": [
+                "Basic",
+                "Standard",
+                "Premium"
+            ],
+            "metadata": {
+                "description": "Specify the pricing tier of the new Azure Redis Cache."
+            }
+        },
+        "redisCacheFamily": {
+            "type": "string",
+            "defaultValue": "C",
+            "allowedValues": [
+                "C",
+                "P"
+            ],
+            "metadata": {
+                "description": "Specify the family for the sku. C = Basic/Standard, P = Premium."
+            }
+        },
+        "redisCacheCapacity": {
+            "type": "int",
+            "defaultValue": 1,
+            "allowedValues": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+            ],
+            "metadata": {
+                "description": "Specify the size of the new Azure Redis Cache instance. Valid values: for C (Basic/Standard) family (0, 1, 2, 3, 4, 5, 6), for P (Premium) family (1, 2, 3, 4)"
+            }
+        },
+        "enableNonSslPort": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Specify a boolean value that indicates whether to allow access via non-SSL ports."
+            }
+        },
+        "diagnosticsEnabled": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Specify a boolean value that indicates whether diagnostics should be saved to the specified storage account."
+            }
+        }
+    },
+    "variables": {
+        "resourceGroupName": "[concat(parameters('projectName'), '-rg')]",
+        "dbName": "[concat(parameters('projectName'), '-db-', substring(uniqueString(subscription().id, parameters('projectName')),0,4))]",
+        "cacheName": "[concat(parameters('projectName'), '-cache-', substring(uniqueString(subscription().id, parameters('projectName')),0,4))]",
+        "keyVaultName": "[concat(parameters('projectName'), '-kv-', substring(uniqueString(subscription().id, parameters('projectName')),0,4))]",
+        "logAnalyticsWorkspaceName": "[concat(parameters('projectName'),'-la-',substring(uniqueString(subscription().id, parameters('projectName')),0,4))]",
+        "appInsightsName": "[concat(parameters('projectName'),'-insights-',substring(uniqueString(subscription().id, parameters('projectName')),0,4))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Resources/resourceGroups",
+            "apiVersion": "2021-04-01",
+            "name": "[variables('resourceGroupName')]",
+            "location": "[parameters('location')]",
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "name": "DependenciesDeployment",
+            "resourceGroup": "[variables('resourceGroupName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups/', variables('resourceGroupName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "variables": {},
+                    "resources": [
+                        {
+                            "type": "Microsoft.KeyVault/vaults",
+                            "name": "[variables('keyVaultName')]",
+                            "apiVersion": "2021-06-01-preview",
+                            "location": "[parameters('location')]",
+                            "properties": {
+                                "enabledForDeployment": "[parameters('enabledForDeployment')]",
+                                "enabledForDiskEncryption": "[parameters('enabledForDiskEncryption')]",
+                                "enabledForTemplateDeployment": "[parameters('enabledForTemplateDeployment')]",
+                                "tenantId": "[parameters('tenantId')]",
+                                "accessPolicies": [
+                                    {
+                                        "objectId": "[parameters('objectId')]",
+                                        "tenantId": "[parameters('tenantId')]",
+                                        "permissions": {
+                                            "keys": "[parameters('keysPermissions')]",
+                                            "secrets": "[parameters('secretsPermissions')]",
+                                            "certificates": "[parameters('certificatesPermissions')]"
+                                        }
+                                    },
+                                    {
+                                        "objectId": "[parameters('objectId')]",
+                                        "tenantId": "[parameters('tenantId')]",
+                                        "permissions": {
+                                            "keys": "[parameters('keysPermissions')]",
+                                            "secrets": "[parameters('secretsPermissions')]",
+                                            "certificates": "[parameters('certificatesPermissions')]"
+                                        }
+                                    }
+                                ],
+                                "sku": {
+                                    "name": "[parameters('skuName')]",
+                                    "family": "A"
+                                },
+                                "networkAcls": {
+                                    "defaultAction": "Allow",
+                                    "bypass": "AzureServices"
+                                }
+                            }
+                        },
+                        {
+                            "type": "Microsoft.Cache/redis",
+                            "apiVersion": "2020-06-01",
+                            "name": "[variables('cacheName')]",
+                            "location": "[parameters('location')]",
+                            "properties": {
+                                "enableNonSslPort": "[parameters('enableNonSslPort')]",
+                                "minimumTlsVersion": "1.2",
+                                "sku": {
+                                    "capacity": "[parameters('redisCacheCapacity')]",
+                                    "family": "[parameters('redisCacheFamily')]",
+                                    "name": "[parameters('redisCacheSKU')]"
+                                }
+                            }
+                        },
+                        {
+                            "type": "Microsoft.DBforPostgreSQL/flexibleServers",
+                            "apiVersion": "2021-06-01",
+                            "name": "[variables('dbName')]",
+                            "location": "[parameters('location')]",
+                            "sku": {
+                                "name": "[parameters('dbInstanceType')]",
+                                "tier": "[parameters('serverEdition')]"
+                            },
+                            "properties": {
+                                "version": "[parameters('version')]",
+                                "administratorLogin": "[parameters('administratorLogin')]",
+                                "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
+                                "network": {
+                                    "delegatedSubnetResourceId": "[if(empty(parameters('virtualNetworkExternalId')), json('null'), json(format('{0}/subnets/{1}', parameters('virtualNetworkExternalId'), parameters('subnetName'))))]",
+                                    "privateDnsZoneArmResourceId": "[if(empty(parameters('virtualNetworkExternalId')), json('null'), parameters('privateDnsZoneArmResourceId'))]"
+                                },
+                                "storage": {
+                                    "storageSizeGB": "[parameters('skuSizeGB')]"
+                                },
+                                "backup": {
+                                    "backupRetentionDays": 7,
+                                    "geoRedundantBackup": "Disabled"
+                                },
+                                "availabilityZone": "[parameters('availabilityZone')]"
+                            }
+                        },
+                        {
+                            "type": "Microsoft.OperationalInsights/workspaces",
+                            "apiVersion": "2015-11-01-preview",
+                            "name": "[variables('logAnalyticsWorkspaceName')]",
+                            "location": "[parameters('location')]",
+                            "properties": {
+                                "sku": {
+                                    "name": "PerGB2018"
+                                },
+                                "retentionInDays": 30
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

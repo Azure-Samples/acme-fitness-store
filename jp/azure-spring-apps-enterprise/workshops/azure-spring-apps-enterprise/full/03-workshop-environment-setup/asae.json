@@ -1,0 +1,144 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "projectName": {
+            "type": "string",
+            "defaultValue": "acme-fitness",
+            "metadata": {
+                "description": "Specifies a project name that is used for generating resource group name and resource names."
+            }
+        },
+        "tags": {
+            "type": "object",
+            "metadata": {
+                "description": "The tags that will be associated to the Resources"
+            },
+            "defaultValue": {
+                "environment": "lab"
+            }
+        }
+    },
+    "variables": {
+        "location": "[resourceGroup().location]",
+        "springAppInstanceName": "[concat(parameters('projectName'),'-asae-',substring(uniqueString(subscription().id, parameters('projectName')),0,4))]",
+        "appInsightsName": "[concat(parameters('projectName'),'-insights-',substring(uniqueString(subscription().id, parameters('projectName')),0,4))]"                 
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Insights/components",
+            "name": "[variables('appInsightsName')]",
+            "apiVersion": "2020-02-02",
+            "location": "[variables('location')]",
+            "tags": "[parameters('tags')]",
+            "properties": {
+                "Application_Type": "web",
+                "ApplicationId": "[variables('appInsightsName')]",
+                "Flow_Type": "Bluefield",
+                "Request_Source": "rest"
+            }
+        },
+        {
+            "apiVersion": "2022-03-01-preview",
+            "name": "[variables('springAppInstanceName')]",
+            "location": "[variables('location')]",
+            "tags": "[parameters('tags')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+                
+            ],
+            "type": "Microsoft.AppPlatform/Spring",
+            "sku": {
+                "name": "E0",
+                "tier": "Enterprise"
+            },
+            "resources": [
+                {
+                    "type": "serviceRegistries",
+                    "name": "default",
+                    "apiVersion": "2022-03-01-preview",
+                    "location": "[variables('location')]",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.AppPlatform/Spring', variables('springAppInstanceName'))]"
+                    ]
+                },
+                {
+                    "type": "configurationServices",
+                    "name": "default",
+                    "apiVersion": "2022-03-01-preview",
+                    "location": "[variables('location')]",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.AppPlatform/Spring', variables('springAppInstanceName'))]"
+                    ]
+                },
+                {
+                    "type": "gateways",
+                    "name": "default",
+                    "apiVersion": "2022-03-01-preview",
+                    "location": "[variables('location')]",
+                    "sku": {
+                        "name": "E0",
+                        "tier": "Enterprise",
+                        "capacity": 2
+                    },
+                    "dependsOn": [
+                        "[resourceId('Microsoft.AppPlatform/Spring', variables('springAppInstanceName'))]"
+                    ]
+                },
+                {
+                    "type": "apiPortals",
+                    "name": "default",
+                    "apiVersion": "2022-03-01-preview",
+                    "location": "[variables('location')]",
+                    "sku": {
+                        "name": "E0",
+                        "tier": "Enterprise",
+                        "capacity": 1
+                    },
+                    "properties": {
+                        "gatewayIds": [
+                            "[concat(resourceId('Microsoft.AppPlatform/Spring', variables('springAppInstanceName')), '/gateways/default')]"
+                        ]
+                    },
+                    "dependsOn": [
+                        "[resourceId('Microsoft.AppPlatform/Spring', variables('springAppInstanceName'))]"
+                    ]
+                },
+                {
+                    "type": "Microsoft.AppPlatform/Spring/buildServices/agentPools",
+                    "name": "[concat(variables('springAppInstanceName'), '/default/default')]",
+                    "apiVersion": "2022-03-01-preview",
+                    "location": "[variables('location')]",
+                    "properties": {
+                        "poolSize": {
+                            "name": "S1"
+                        }
+                    },
+                    "dependsOn": [
+                        "[resourceId('Microsoft.AppPlatform/Spring', variables('springAppInstanceName'))]"
+                    ]
+                }
+            ]
+        },
+        {
+            "apiVersion": "2022-03-01-preview",
+            "name": "[concat(variables('springAppInstanceName'), '/default/default/default')]",
+            "type": "Microsoft.AppPlatform/Spring/buildservices/builders/buildpackBindings",            
+            "properties": {
+                "bindingType": "ApplicationInsights",
+                "launchProperties": {
+                    "properties": {
+                        "sampling_percentage": 10,
+                        "connection_string": "[reference(concat('microsoft.insights/components/', variables('appInsightsName')), '2015-05-01').ConnectionString]"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.AppPlatform/Spring', variables('springAppInstanceName'))]"
+            ]
+        }
+               
+    ],
+    "outputs": {
+    }
+}

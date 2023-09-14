@@ -1,0 +1,25 @@
+{
+    "stack": {
+      "id": "io.buildpacks.stacks.bionic",
+      "version": "full"
+    },
+    "buildpackGroups": [
+      {
+        "name": "default",
+        "buildpacks": [
+          {
+            "id": "tanzu-buildpacks/nodejs"
+          },
+          {
+            "id": "tanzu-buildpacks/dotnet-core"
+          },
+          {
+            "id": "tanzu-buildpacks/go"
+          },
+          {
+            "id": "tanzu-buildpacks/python"
+          }
+        ]
+      }
+    ]
+  }
