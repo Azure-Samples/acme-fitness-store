@@ -1,5 +1,6 @@
 # Spring Boot Apps を Azure Spring Apps Enterprise にデプロイする
 
+Azure Spring Apps Enterprise を使用すると、Azure 上で Spring Boot アプリケーションと多言語アプリケーションを簡単に実行できます。
 
 
 このクイック スタートでは、Java、Python、C# で記述された既存のアプリケーションを Azure にデプロイする方法について説明します。完了すると、Azure CLI もしくは Azure ポータルを使用して引き続きアプリケーションを管理できます。
