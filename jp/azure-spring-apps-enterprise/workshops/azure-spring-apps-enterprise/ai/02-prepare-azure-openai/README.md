@@ -1,11 +1,11 @@
-# Prepare Azure OpenAI
+# Azure OpenAI の準備
 
-Please consult with your workshop instructor if this has already been pre-configured for you.
-It's very important that your Azure subscription has been granted access to Azure OpenAI resources.
+ワークショップのインストラクターに事前に Azure OpenAI に関する設定がされているか確認してください。
+利用する Azure サブスクリプションで Azure OpenAI のリソースにアクセスが許可されている必要があります。
 
-1. Choose a `OPENAI_RESOURCE_NAME` which should be globally unique.
+1. `OPENAI_RESOURCE_NAME` に対してグローバルに一意の名前を設定します。
 
-1. Run the following command to create an Azure OpenAI resource in the the resource group.
+1. 下記のコマンドを実行し、リソースグループに Azure OpenAI リソースを作成します。
 
    ```bash
    source ./azure-spring-apps-enterprise/scripts/setup-ai-env-variables.sh
@@ -19,11 +19,11 @@ It's very important that your Azure subscription has been granted access to Azur
       --custom-domain ${OPENAI_RESOURCE_NAME}   
    ```
    
-   You can check the resource has been created in Azure Portal under `Azure AI Services`, e.g.
+   Azure Portal で `Azure AI Services`　の下にリソースが作成されている事を確認してください。
 
    ![A screenshot of the Azure AI services.](../../../../media/openai-azure-ai-services.png)
 
-1. Create the model deployments for `text-embedding-ada-002` and `gpt-35-turbo-16k` in your Azure OpenAI service.
+1. Azure OpenAI サービスに `text-embedding-ada-002` と `gpt-35-turbo-16k` のモデルをデプロイします。
    
    ```bash
    az cognitiveservices account deployment create \
@@ -45,13 +45,13 @@ It's very important that your Azure subscription has been granted access to Azur
       --scale-type "Standard"
    ```
 
-   > Note: The latest API version of `gpt-35-turbo-16k` deployment model might not be compatible with Azure CLI.
+   > ご注意: 最新バージョンの `gpt-35-turbo-16k` のモデルは、Azure CLI で実行できない可能性があります。
 
-   This step could also be done in `Azure AI Studio`. You can go to `Azure AI Studio` by going to `Deployments` in your Open AI service and clicking on `Manage Deployments` button.
+   上記の作業は `Azure AI Studio` で行うこともできます。Open AI サービスの `Deployments` に移動し、`Manage Deployments`ボタンをクリックすることで `Azure AI Studio` に移動できます。
 
    ![A screenshot of the Azure Portal OpenAI Services deployments.](../../../../media/openai-azure-ai-services-deployments.png)
 
-   Alternatively, you can click go to the link, e.g. https://oai.azure.com/
+   もしくは、直接リンクにアクセスすることもできます。例えば、https://oai.azure.com/
 
    ![A screenshot of the Azure AI Studio with no deployments.](../../../../media/openai-azure-ai-studio-deployments-01.png)
 
@@ -59,14 +59,15 @@ It's very important that your Azure subscription has been granted access to Azur
 
    ![A screenshot of the Azure AI Studio creating second deployment.](../../../../media/openai-azure-ai-studio-deployments-03.png)
 
-1. Update the values in `azure-spring-apps-enterprise/scripts/setup-ai-env-variables.sh`, e.g.
-    * for Endpoint and API KEY - check under Azure Portal OpenAI instances in `Keys and Endpoint` section
-    ![A screenshot of the Azure Portal OpenAI instance.](../../../../media/openai-azure-ai-services-api-key.png)    
-    * for `AZURE_OPENAI_CHATDEPLOYMENTID` use previously defined model, e.g. `gpt-35-turbo-16k`
-    * for `AZURE_OPENAI_EMBEDDINGDEPLOYMENTID` use previously defined model, e.g. `text-embedding-ada-002`
-    * for `AI_APP` use default name, e.g. `assist-service`
-    
-    You can also get the endpoint and API keys by querying the `cognitiveservices` from Azure CLI, e.g.
+1. `azure-spring-apps-enterprise/scripts/setup-ai-env-variables.sh` の値を修正してください。
+
+    * Azure Portal の OpenAIインスタンスの `Keys and Endpoint`セクションから、エンドポイントと API キーを確認します
+    ![Azure Portal OpenAIインスタンスのスクリーンショット。](../../../../media/openai-azure-ai-services-api-key.png)    
+    * `AZURE_OPENAI_CHATDEPLOYMENTID` は、自身で定義したモデル名を指定します。例えば、`gpt-35-turbo-16k`
+    * `AZURE_OPENAI_EMBEDDINGDEPLOYMENTID` は、自身で定義したモデル名を指定します。例えば、`text-embedding-ada-002`
+    * `AI_APP` は、デフォルトの名前を指定します。例えば、`assist-service`
+        
+    また、Azure CLI で `cognitiveservices` のコマンドに対してクエリを行うことで、エンドポイントと API キーを取得することもできます。
 
    ```bash
    az cognitiveservices account show \
@@ -80,4 +81,4 @@ It's very important that your Azure subscription has been granted access to Azur
      --query 'key1' --output tsv 
    ```
 
-> Next: [03 - Process data into vector store](../03-process-data-into-vector-store/README.md)
+> 次の作業: [03 - ベクトル・ストアでデータ処理](../03-process-data-into-vector-store/README.md)

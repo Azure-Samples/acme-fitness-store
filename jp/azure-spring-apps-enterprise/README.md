@@ -1909,7 +1909,7 @@ cd apps/acme-assist
 
 1. Assist アプリケーションで生成された出力を確認します
 
-   ![A screenshot of the ACME Fitness Store with FitAssist](./media/fitassist.png)
+   ![A screenshot of the ACME Fitness Store with FitAssist](../azure-spring-apps-enterprise/fitassist.png)
 
 
 ## 次の作業
