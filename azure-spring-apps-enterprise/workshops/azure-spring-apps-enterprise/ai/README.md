@@ -12,6 +12,6 @@ to work with Azure OpenAI resources.
 
 [02 - Prepare Azure Open AI](./02-prepare-azure-openai/README.md)
 
-[03 - Process data into vector store](./03-process-data-into-vector-store/README.md)
+[03 - Spring AI Azure Workshop](./03-spring-ai-azure-workshop/README.md)
 
 [04 - Build and deploy assist app to Azure Spring Apps Enterprise](./04-build-and-deploy-assist-app-to-azure-spring-apps-enterprise/README.md)

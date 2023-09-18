@@ -80,4 +80,4 @@ It's very important that your Azure subscription has been granted access to Azur
      --query 'key1' --output tsv 
    ```
 
-> Next: [03 - Process data into vector store](../03-process-data-into-vector-store/README.md)
+> Next: [03 - Play with Spring AI Workshop](../03-spring-ai-azure-workshop/README.md)
