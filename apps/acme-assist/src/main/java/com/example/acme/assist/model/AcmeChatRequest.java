@@ -1,8 +1,8 @@
 package com.example.acme.assist.model;
 
-import java.util.List;
-
 import com.azure.ai.openai.models.ChatRole;
+
+import java.util.List;
 
 public class AcmeChatRequest {
 
