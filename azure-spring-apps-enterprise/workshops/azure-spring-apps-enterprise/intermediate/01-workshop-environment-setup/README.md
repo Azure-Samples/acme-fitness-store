@@ -39,7 +39,7 @@ Make sure you have Bash Shell selected form the shell type dropdown
 4. Install jq utility: [Download jq (jqlang.github.io)](https://jqlang.github.io/jq/download/)
  Please note that you will have to rename jq-win64.exe to jq.exe and add it to PATH.
 5. Install Java 17: [Download Microsoft build of OpenJDK](https://learn.microsoft.com/en-us/java/openjdk/download#openjdk-17)
-6. The environment variable **JAVA_HOME** should be set to the path of the JDK installation. The directory specified by this path should have bin, jre and lib among its subdirectories. Further, ensure your **PATH** variable contains the directory `${JAVA_HOME}/bin`. To test, type which `javac` into bash shell ensure the resulting path points to a file inside `${JAVA_HOME}/bin`.
+6. The environment variable **JAVA_HOME** should be set to the path of the JDK installation. The directory specified by this path should have bin, jre and lib among its subdirectories. Further, ensure your **PATH** variable contains the directory `${JAVA_HOME}/bin`. To test, type which `javac` into bash shell ensure the resulting path points to a file inside `${JAVA_HOME}/bin`.
 7. Install maven: [Maven – Installing Apache Maven](https://maven.apache.org/install.html)
 8. Create a folder by any name for this lab, eg: `ase-lab`
 9. Open Visual Studio Code > File > Open Folder > select the folder you created in step 6
@@ -150,16 +150,16 @@ Create an instance of Azure Spring Apps Enterpise
 
 ```shell
 az spring create --name ${SPRING_APPS_SERVICE} \ 
-    --resource-group ${RESOURCE_GROUP} \ 
-    --location ${REGION} \ 
-    --sku Enterprise \ 
-    --enable-application-configuration-service \ 
-    --enable-service-registry \ 
-    --enable-gateway \ 
-    --enable-api-portal \ 
-    --enable-alv \ 
-    --enable-app-acc \ 
-    --build-pool-size S2 
+    --resource-group ${RESOURCE_GROUP} \ 
+    --location ${REGION} \ 
+    --sku Enterprise \ 
+    --enable-application-configuration-service \ 
+    --enable-service-registry \ 
+    --enable-gateway \ 
+    --enable-api-portal \ 
+    --enable-alv \ 
+    --enable-app-acc \ 
+    --build-pool-size S2 
 ```
 
 
@@ -175,9 +175,9 @@ Create log analytics workspace
 
 ```shell
 az monitor log-analytics workspace create \ 
-  --workspace-name ${LOG_ANALYTICS_WORKSPACE} \ 
-  --location ${REGION} \ 
-  --resource-group ${RESOURCE_GROUP} 
+  --workspace-name ${LOG_ANALYTICS_WORKSPACE} \ 
+  --location ${REGION} \ 
+  --resource-group ${RESOURCE_GROUP} 
 ```
 
 Create from portal
@@ -197,8 +197,8 @@ Create from portal
 Retrieve resource id for the workspace
 ```shell
 export LOG_ANALYTICS_RESOURCE_ID=$(az monitor log-analytics workspace show \ 
-    --resource-group ${RESOURCE_GROUP} \ 
-    --workspace-name ${LOG_ANALYTICS_WORKSPACE} | jq -r '.id') 
+    --resource-group ${RESOURCE_GROUP} \ 
+    --workspace-name ${LOG_ANALYTICS_WORKSPACE} | jq -r '.id') 
 ```
 
 Verify log analytics resource id is set
@@ -206,8 +206,8 @@ Verify log analytics resource id is set
 echo $LOG_ANALYTICS_RESOURCE_ID 
 
 export SPRING_APPS_RESOURCE_ID=$(az spring show \
-    --name ${SPRING_APPS_SERVICE} \ 
-    --resource-group ${RESOURCE_GROUP} | jq -r '.id') 
+    --name ${SPRING_APPS_SERVICE} \ 
+    --resource-group ${RESOURCE_GROUP} | jq -r '.id') 
 ```
 
 Verify spring apps resource id is set 
@@ -225,51 +225,45 @@ export MSYS_NO_PATHCONV=1
 
 Configure diagnostics settings
 ```shell
-az monitor diagnostic-settings create --name "send-logs-and-metrics-to-log-analytics" \ 
-    --resource ${SPRING_APPS_RESOURCE_ID} \ 
-    --workspace ${LOG_ANALYTICS_RESOURCE_ID} \ 
-    --logs '[ 
-         { 
-           "category": "ApplicationConsole", 
-           "enabled": true, 
-           "retentionPolicy": { 
-             "enabled": false, 
-             "days": 0 
-           } 
-         }, 
-         { 
-            "category": "SystemLogs", 
-            "enabled": true, 
-            "retentionPolicy": { 
-             "enabled": false, 
-             "days": 0 
-
-            } 
-
-          }, 
-
-         { 
-            "category": "IngressLogs", 
-            "enabled": true, 
-            "retentionPolicy": { 
-              "enabled": false, 
-              "days": 0 
-             } 
-           } 
-       ]' \ 
-       --metrics '[ 
-         { 
-           "category": "AllMetrics", 
-           "enabled": true, 
-           "retentionPolicy": { 
-             "enabled": false, 
-             "days": 0 
-           } 
-
-         } 
-
-       ]' 
-
+az monitor diagnostic-settings create --name "send-logs-and-metrics-to-log-analytics" \
+    --resource ${SPRING_APPS_RESOURCE_ID} \
+    --workspace ${LOG_ANALYTICS_RESOURCE_ID} \
+    --logs '[
+         {
+           "category": "ApplicationConsole",
+           "enabled": true,
+           "retentionPolicy": {
+             "enabled": false,
+             "days": 0
+           }
+         },
+         {
+            "category": "SystemLogs",
+            "enabled": true,
+            "retentionPolicy": {
+             "enabled": false,
+             "days": 0
+            }
+          },
+         {
+            "category": "IngressLogs",
+            "enabled": true,
+            "retentionPolicy": {
+              "enabled": false,
+              "days": 0
+             }
+           }
+       ]' \
+       --metrics '[
+         {
+           "category": "AllMetrics",
+           "enabled": true,
+           "retentionPolicy": {
+             "enabled": false,
+             "days": 0
+           }
+         }
+       ]'
  export MSYS_NO_PATHCONV=0
 ```
 
