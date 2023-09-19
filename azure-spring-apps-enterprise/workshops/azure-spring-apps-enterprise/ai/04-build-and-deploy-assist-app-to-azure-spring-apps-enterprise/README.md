@@ -37,11 +37,7 @@
         --resource-group ${RESOURCE_GROUP} \
         --source-path apps/acme-assist \
         --build-env BP_JVM_VERSION=17 \
-        --env \
-          AZURE_OPENAI_ENDPOINT=${AZURE_OPENAI_ENDPOINT} \
-          AZURE_OPENAI_APIKEY=${AZURE_OPENAI_APIKEY} \
-          AZURE_OPENAI_CHATDEPLOYMENTID=${AZURE_OPENAI_CHATDEPLOYMENTID} \
-          AZURE_OPENAI_EMBEDDINGDEPLOYMENTID=${AZURE_OPENAI_EMBEDDINGDEPLOYMENTID}
+        --env SPRING_AI_AZURE_OPENAI_ENDPOINT=${AZURE_OPENAI_ENDPOINT} SPRING_AI_AZURE_OPENAI_APIKEY=${AZURE_OPENAI_APIKEY}
     ```
 
 1. Test the `acme-fitness` application in the browser again. Go to `ASK TO FITASSIST` and converse with the assistant, e.g.
