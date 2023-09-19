@@ -59,7 +59,7 @@ Workshop instructors will use this information to provision your access to the w
 1. You might already have environment variables file from earlier labs - check with your instructor.
    Please copy the environment variables template file, e.g.
    ```bash
-   cp azure-spring-apps-enterprise/scripts/setup-env-variables-template.sh azure-spring-apps-enterprise/scripts/setup--env-variables.sh
+   cp azure-spring-apps-enterprise/scripts/setup-env-variables-template.sh azure-spring-apps-enterprise/scripts/setup-env-variables.sh
    ```
 
 1. Updates the values in `azure-spring-apps-enterprise/scripts/setup-env-variables.sh` as directed by your instructor.
