@@ -14,7 +14,7 @@ It's very important that your Azure subscription has been granted access to Azur
    az cognitiveservices account create \
       -n ${OPENAI_RESOURCE_NAME} \
       -g ${RESOURCE_GROUP} \
-      -l eastus \
+      -l eastus2 \
       --kind OpenAI \
       --sku s0 \
       --custom-domain ${OPENAI_RESOURCE_NAME}   
