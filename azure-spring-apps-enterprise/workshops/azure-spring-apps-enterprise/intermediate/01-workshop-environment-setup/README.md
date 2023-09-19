@@ -51,10 +51,10 @@ Make sure you have Bash Shell selected form the shell type dropdown
 
 These steps should be completed from within the terminal of your VS Code in Github Codespaces or bash shell if you are using Cloud Shell or Git Bash
 
-Execute the following command to clone the repo for the lab 
+Execute the following command to clone the repo for the lab (cloud shell/git bash users)
 
 ```shell
-Git clone https://github.com/Azure-Samples/acme-fitness-store.git 
+git clone https://github.com/Azure-Samples/acme-fitness-store.git
 ```
 
 ### Install the Azure CLI Spring Extension
