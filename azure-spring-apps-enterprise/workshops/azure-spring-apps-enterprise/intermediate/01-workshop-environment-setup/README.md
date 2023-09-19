@@ -73,7 +73,8 @@ az extension update --name spring
 
 Update Environment Variables
 ```shell
-cd acme-fitness-store
+cd acme-fitness-store/azure-spring-apps-enterprise
+cp ./scripts/setup-env-variables-template.sh ./scripts/setup-env-variables.sh
 code ./scripts/setup-env-variables.sh # Use the editor of your choice
 ```
 
@@ -132,7 +133,9 @@ Verify defaults
 ```shell
 az configure --list-defaults 
 ```
-### Create Environment
+### Create Environment (optional)
+
+Please consult with the instructor if these resources have already been created
 
 Create Resource Group
 
@@ -171,7 +174,7 @@ az spring show -n $SPRING_APPS_SERVICE -g $RESOURCE_GROUP --query id
 
 Create log analytics workspace 
 
-(Note if the following fails,please create from portal)
+(Note if the following fails, please create from portal)
 
 ```shell
 az monitor log-analytics workspace create \ 
