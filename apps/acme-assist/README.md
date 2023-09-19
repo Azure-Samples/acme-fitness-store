@@ -83,8 +83,12 @@ cd apps/acme-assist
         --name ${AI_APP} \
         --app-name ${AI_APP} \
         --routes-file azure-spring-apps-enterprise/resources/json/routes/assist-service.json
+    
     az spring app deploy --name ${AI_APP} \
         --source-path apps/acme-assist \
         --build-env BP_JVM_VERSION=17 \
-        --env AZURE_OPENAI_ENDPOINT=${AZURE_OPENAI_ENDPOINT} AZURE_OPENAI_APIKEY=${AZURE_OPENAI_APIKEY} AZURE_OPENAI_CHATDEPLOYMENTID=${AZURE_OPENAI_CHATDEPLOYMENTID} AZURE_OPENAI_EMBEDDINGDEPLOYMENTID=${AZURE_OPENAI_EMBEDDINGDEPLOYMENTID}
+        --env \
+            SPRING_AI_AZURE_OPENAI_ENDPOINT=${AZURE_OPENAI_ENDPOINT} \
+            SPRING_AI_AZURE_OPENAI_APIKEY=${AZURE_OPENAI_APIKEY} \
+            SPRING_AI_AZURE_OPENAI_MODEL=${AZURE_OPENAI_CHATDEPLOYMENTID}
     ```
