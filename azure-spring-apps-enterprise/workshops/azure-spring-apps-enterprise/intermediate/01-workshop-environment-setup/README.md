@@ -110,7 +110,7 @@ Make sure you have Bash Shell selected form the shell type dropdown
 
 ![Alt text](../../../../media/gitbash.png?raw=true "Git Bash in VS Code Terminal")
 
-### Prepare your environment (Codespaces/Cloud Shell/Git Bash) for deployments
+## Prepare your environment (Codespaces/Cloud Shell/Git Bash) for deployments
 
 These steps should be completed from within the terminal of your VS Code in Github Codespaces or bash shell if you are using Cloud Shell or Git Bash
 
