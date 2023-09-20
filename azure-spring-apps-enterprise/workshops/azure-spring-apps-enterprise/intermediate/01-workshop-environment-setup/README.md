@@ -8,11 +8,9 @@ Follow the instructions based on the option you choose.
 ## Github Codespaces
 Github Codespaces can be leveraged to provide a development environment for running the instructions. Certainly you can run these instruction from a shell. But for people trying to get familiar with ASA-E for the first time, to rule out any environment related issues we recommend using Github Codespaces.
 
-1. The first step in getting access to github codespaces option for [Azure Samples](https://github.com/Azure-Samples/) is to share your github id with the workshop co-ordinator. They will add you to the organization and assign you permissions that makes the Codespaces option visible.
+1. Fork the repository for [acme-fitness-store](https://github.com/Azure-Samples/acme-fitness-store)
 
-2. Upon getting the confirmation that you are added to the Org, navigate to https://github.com/Azure-Samples/acme-fitness-store/tree/Azure, click "Code" button. You should be able to "Codespaces" as an option listed. If you do not see that option listed, most probably you are not added to [Azure-Samples](https://github.com/Azure-Samples/) org or your github id is still not active in this org. Please discuss this issue with your workshop coordinator. If invitation was sent but it is not in your mailbox, you can visit https://github.com/Azure-Samples/acme-fitness-store/invitations to accept it directly.
-
-3. Assuming the above steps are successful, you should be able to open a terminal inside VS Code that opens up in Codespaces. Refer to this link to understand more about [Codespaces](https://github.com/CodeSpaces). This Codespace comes installed with the following software:
+2. Assuming the above steps are successful, you should be able to open a terminal inside VS Code that opens up in Codespaces. Refer to this link to understand more about [Codespaces](https://github.com/CodeSpaces). This Codespace comes installed with the following software:
    1. * [JDK 17](https://docs.microsoft.com/java/openjdk/download?WT.mc_id=azurespringcloud-github-judubois#openjdk-17)
    2. * The environment variable `JAVA_HOME` should be set to the path of the JDK installation. The directory specified by this path should have `bin`, `jre`, and `lib` among its subdirectories. Further, ensure your `PATH` variable contains the directory `${JAVA_HOME}/bin`. To test, type `which javac` into bash shell ensure the resulting path points to a file inside `${JAVA_HOME}/bin`.
    3. * [Azure CLI version 2.31.0 or higher](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest) version 2.31.0 or later. You can check the version of your current Azure CLI installation by running:
@@ -57,7 +55,7 @@ Execute the following command to clone the repo for the lab (cloud shell/git bas
 git clone https://github.com/Azure-Samples/acme-fitness-store.git
 ```
 
-### Install the Azure CLI Spring Extension
+### Install the Azure CLI Spring Extension (Git Bash and Cloud Shell)
 
 Install the Azure Spring Apps extension for the Azure CLI using the following command
 
@@ -71,7 +69,7 @@ If the extension is already installed, update it with the following command
 az extension update --name spring
 ```
 
-Update Environment Variables
+### Update Environment Variables
 ```shell
 cd acme-fitness-store/azure-spring-apps-enterprise
 cp ./scripts/setup-env-variables-template.sh ./scripts/setup-env-variables.sh
@@ -114,7 +112,7 @@ echo $FRONTEND_APP
 
 > If you exit your Codespaces and reconnect in or get logged out of Cloud Shell, you need to re-run the command `source ./scripts/setup-env-variables.sh` to setup the environment.
 
-Login to Azure and set subscription
+### Login to Azure and set subscription
 
 ```shell
 az login --use-device-code # Only for Codespaces and Git Bash
