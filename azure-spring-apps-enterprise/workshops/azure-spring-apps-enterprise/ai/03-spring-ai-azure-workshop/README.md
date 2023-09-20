@@ -1,4 +1,4 @@
-fixe# Spring AI Azure Workshop (Optional)
+# Spring AI Azure Workshop (Optional)
 
 If you are not familiar with [Spring AI](https://docs.spring.io/spring-ai/reference/) project, we invite you to do this 6-step workshop that will cover the fundamentals of consuming AI services using Spring AI.
 
