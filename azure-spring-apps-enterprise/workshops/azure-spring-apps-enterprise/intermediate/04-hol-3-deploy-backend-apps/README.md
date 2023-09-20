@@ -69,17 +69,17 @@ Routing rules bind endpoints in the request to the backend applications. For exa
 az spring gateway route-config create \
     --name ${CART_SERVICE_APP} \
     --app-name ${CART_SERVICE_APP} \
-    --routes-file ./azure-spring-apps-enterprise/resources/json/routes/cart-service.json
+    --routes-file ./resources/json/routes/cart-service.json
     
 az spring gateway route-config create \
     --name ${ORDER_SERVICE_APP} \
     --app-name ${ORDER_SERVICE_APP} \
-    --routes-file ./azure-spring-apps-enterprise/resources/json/routes/order-service.json
+    --routes-file ./resources/json/routes/order-service.json
 
 az spring gateway route-config create \
     --name ${CATALOG_SERVICE_APP} \
     --app-name ${CATALOG_SERVICE_APP} \
-    --routes-file ./azure-spring-apps-enterprise/resources/json/routes/catalog-service.json
+    --routes-file ./resources/json/routes/catalog-service.json
 
 ```
 

@@ -59,7 +59,7 @@ Routing rules bind endpoints in the request to the backend applications. In the 
 az spring gateway route-config create \
     --name ${FRONTEND_APP} \
     --app-name ${FRONTEND_APP} \
-    --routes-file ./azure-spring-apps-enterprise/resources/json/routes/frontend.json
+    --routes-file ./resources/json/routes/frontend.json
 
 ```
 
