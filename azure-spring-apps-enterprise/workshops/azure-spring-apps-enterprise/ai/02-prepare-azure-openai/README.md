@@ -64,8 +64,8 @@ It's very important that your Azure subscription has been granted access to Azur
 1. Update the values in `azure-spring-apps-enterprise/scripts/setup-ai-env-variables.sh`, e.g.
     * for Endpoint and API KEY - check under Azure Portal OpenAI instances in `Keys and Endpoint` section
     ![A screenshot of the Azure Portal OpenAI instance.](../../../../media/openai-azure-ai-services-api-key.png)    
-    * for `AZURE_OPENAI_CHATDEPLOYMENTID` use previously defined model, e.g. `gpt-35-turbo-16k`
-    * for `AZURE_OPENAI_EMBEDDINGDEPLOYMENTID` use previously defined model, e.g. `text-embedding-ada-002`
+    * for `SPRING_AI_AZURE_OPENAI_MODEL` use previously defined model, e.g. `gpt-35-turbo-16k`
+    * for `SPRING_AI_AZURE_OPENAI_EMBEDDINGMODEL` use previously defined model, e.g. `text-embedding-ada-002`
     * for `AI_APP` use default name, e.g. `assist-service`
     
     You can also get the endpoint and API keys by querying the `cognitiveservices` from Azure CLI, e.g.
