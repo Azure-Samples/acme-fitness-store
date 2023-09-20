@@ -26,7 +26,7 @@ wait
 Once the above step is complete, we need to deploy the app.
 ```shell
 az spring app deploy --name ${FRONTEND_APP} \
-    --source-path ./apps/acme-shopping 
+    --source-path ../apps/acme-shopping 
 ```
 
 ## 2. Configure Spring Cloud Gateway
