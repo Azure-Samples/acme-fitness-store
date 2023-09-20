@@ -9,7 +9,6 @@ It's very important that your Azure subscription has been granted access to Azur
 
    ```bash
    az upgrade -y
-   source ./azure-spring-apps-enterprise/scripts/setup-ai-env-variables.sh
    export OPENAI_RESOURCE_NAME=<choose-a-resource-name>
    az cognitiveservices account create \
       -n ${OPENAI_RESOURCE_NAME} \
@@ -83,4 +82,9 @@ It's very important that your Azure subscription has been granted access to Azur
      --query 'key1' --output tsv 
    ```
 
+1. source `azure-spring-apps-enterprise/scripts/setup-ai-env-variables.sh`
+   ```bash
+   source `azure-spring-apps-enterprise/scripts/setup-ai-env-variables.sh`
+   ```
+   
 > Next: [03 - Play with Spring AI Workshop](../03-spring-ai-azure-workshop/README.md)
