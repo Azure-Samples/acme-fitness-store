@@ -83,6 +83,7 @@
 レポジトリ内で提供するテンプレートをコピーして、環境変数の設定を含む bash スクリプトを作成します。
 
 ```shell
+cd azure-spring-apps-enterprise/
 cp ./scripts/setup-env-variables-template.sh ./scripts/setup-env-variables.sh
 ```
 
@@ -100,12 +101,6 @@ export REGION='region-name'                           # Enterprise をインス�
 
 この env ファイルは、ARM テンプレート中で定義したデフォルト値が記載されています。仮に何らかの理由で ARM テンプレートを修正しデフォルト値を変更した場合は、その値に修正してください。
 
-環境を設定します。
-
-```shell
-source ./scripts/setup-env-variables.sh
-``` 
-
 ### Azure にログイン
 
 Azure CLI でログインし、有効なサブスクリプションを選択します。Codespaces 上の VS Code のターミナルで、次のコマンドを実行してください。
@@ -115,6 +110,12 @@ az login --use-device-code
 az account list -o table
 az account set --subscription ${SUBSCRIPTION}
 ```
+
+環境を設定します。
+
+```shell
+source ./scripts/setup-env-variables.sh
+``` 
 
 次に、Azure Spring Apps Enterprise を利用するための法律条項とプライバシーに関する声明に同意してください。
 
