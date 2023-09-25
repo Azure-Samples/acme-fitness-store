@@ -21,6 +21,7 @@
 提供するテンプレートをコピーし、Key Vault 環境設定に関する変数を持つ bash スクリプトを作成します：
 
 ```shell
+cd azure-spring-apps-enterprise/
 cp ./scripts/setup-keyvault-env-variables-template.sh ./scripts/setup-keyvault-env-variables.sh
 ```
 
@@ -37,11 +38,20 @@ export KEY_VAULT=acme-fitness-kv-CHANGE-ME     # Azure Key Vault の一意の名
 source ./scripts/setup-keyvault-env-variables.sh
 ```
 
+環境変数を設定後、Azure KeyVault を作成します
+
+```shell
+az keyvault create --name ${KEY_VAULT} -g ${RESOURCE_GROUP}
+
+export KEYVAULT_URI=$(az keyvault show --name ${KEY_VAULT} | jq -r '.properties.vaultUri')
+```
+
+> ご注意：環境に応じては GitHub codespaces 上で KeyVault を作成できない場合があります。その場合信頼されるデバイスから Azure CLI にログインし、KeyVault を作成してください。
+
 Application Insights の Instrumentation Key を取得し、Key Vault に追加します
 
 ```shell
-export INSTRUMENTATION_KEY=$(az monitor app-insights component show \
-    --app ${SPRING_APPS_SERVICE} | jq -r '.connectionString')
+export INSTRUMENTATION_KEY=$(az monitor app-insights component show --app ${SPRING_APPS_SERVICE} -g ${RESOURCE_GROUP} | jq -r '.connectionString')
 
 az keyvault secret set --vault-name ${KEY_VAULT} \
     --name "ApplicationInsights--ConnectionString" --value ${INSTRUMENTATION_KEY}
@@ -54,7 +64,7 @@ az keyvault secret set --vault-name ${KEY_VAULT} \
 Application Insights のバインディングのサンプリングレートを増やします。
 
 ```shell
-az spring build-service builder buildpack-binding set \
+az spring build-service builder buildpack-binding set -g ${RESOURCE_GROUP} -s ${SPRING_APPS_SERVICE} \
     --builder-name default \
     --name default \
     --type ApplicationInsights \
@@ -66,8 +76,7 @@ az spring build-service builder buildpack-binding set \
 まず最初に、サービスに対するアプリケーションを作成します：
 
 ```shell
-az spring app create --name ${FRONTEND_APP} --instance-count 1 --memory 1Gi &
-wait
+az spring app create --name ${FRONTEND_APP} --instance-count 1 --memory 1Gi 
 ```
 
 上記が完了した後、アプリをデプロイします。
