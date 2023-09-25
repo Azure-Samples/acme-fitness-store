@@ -1,44 +1,46 @@
 package com.example.acme.assist;
 
+import com.azure.ai.openai.models.ChatRole;
 import com.example.acme.assist.model.AcmeChatRequest;
 import com.example.acme.assist.model.Product;
-import com.example.acme.assist.openai.AcmeAzureOpenAIClient;
-import com.example.acme.assist.openai.VectorStore;
-import com.example.acme.assist.prompt.HomepagePromptTemplate;
-import com.example.acme.assist.prompt.ProductDetailMessageCreator;
-import com.azure.ai.openai.models.ChatChoice;
-import com.azure.ai.openai.models.ChatRole;
+import io.micrometer.common.util.StringUtils;
 import org.apache.logging.log4j.util.Strings;
-import org.springframework.ai.core.llm.LLMResult;
-import org.springframework.ai.core.llm.LlmClient;
-import org.springframework.ai.core.prompt.Generation;
-import org.springframework.ai.core.prompt.Prompt;
-import org.springframework.ai.core.prompt.messages.ChatMessage;
-import org.springframework.ai.core.prompt.messages.Message;
+import org.springframework.ai.client.AiClient;
+import org.springframework.ai.client.AiResponse;
+import org.springframework.ai.client.Generation;
+import org.springframework.ai.document.Document;
+import org.springframework.ai.prompt.Prompt;
+import org.springframework.ai.prompt.SystemPromptTemplate;
+import org.springframework.ai.prompt.messages.ChatMessage;
+import org.springframework.ai.prompt.messages.Message;
+import org.springframework.ai.vectorstore.impl.SimplePersistentVectorStore;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ChatService {
 
     @Autowired
-    private AcmeAzureOpenAIClient client;
-
-    @Autowired
-    private VectorStore store;
+    private SimplePersistentVectorStore store;
 
     @Autowired
     private ProductRepository productRepository;
 
     @Autowired
-    private LlmClient llmClient;
+    private AiClient aiClient;
 
-    @Autowired
-    private ProductDetailMessageCreator productDetailMessageCreator;
+    @Value("classpath:/prompts/chatWithoutProductId.st")
+    private Resource chatWithoutProductIdResource;
 
+    @Value("classpath:/prompts/chatWithProductId.st")
+    private Resource chatWithProductIdResource;
     /**
      * Chat with the OpenAI API. Use the product details as the context.
      *
@@ -49,84 +51,97 @@ public class ChatService {
 
         validateMessage(chatRequestMessages);
 
-        // step 1. Retrieve the product details.
+        // step 1. Retrieve the product if available
         Product product = productRepository.getProductById(productId);
         // If no specific product is found, search the vector store to find something that matches the request.
         if (product == null) {
-            return chat(chatRequestMessages);
+            return chatWithoutProductId(chatRequestMessages);
+        } else {
+            return chatWithProductId(product, chatRequestMessages);
         }
+    }
 
-        List<Message> messages = new ArrayList<>();
-
-        // step 2. Convert the user's query text to an embedding
+    private List<String> chatWithProductId(Product product, List<AcmeChatRequest.Message> chatRequestMessages) {
+        // We have a specific Product
         String question = chatRequestMessages.get(chatRequestMessages.size() - 1).getContent();
-        var response = client.getEmbeddings(List.of(question));
-        var embedding = response.getData().get(0).getEmbedding();
 
-        // step 3. Query Top-K nearest text chunks from the vector store
-        var candidateRecords = store.searchTopKNearest(embedding, 5, 0.4);
+        // step 1. Query for documents that are related to the question from the vector store
+        List<Document> candidateDocuments = this.store.similaritySearch(question, 5, 0.4);
 
-        // step 4. Populate the prompt template with the product details.
-        Message productDetailMessage =  productDetailMessageCreator.getMessage(product, candidateRecords);
+        // step 2. Create a SystemMessage that contains the product information in addition to related documents.
+        List<Message> messages = new ArrayList<>();
+        Message productDetailMessage =  getProductDetailMessage(product, candidateDocuments);
         messages.add(productDetailMessage);
 
-        // Convert to acme messages types to Spring AI message types
-        for (AcmeChatRequest.Message chatRequestMessage : chatRequestMessages) {
-            String roletoString = chatRequestMessage.getRole().toString().toUpperCase();
-            messages.add(new ChatMessage(roletoString, chatRequestMessage.getContent()));
-        }
-
-        // step 5. Call to OpenAI chat completion API
-        Prompt prompt = new Prompt(messages);
-        LLMResult result = this.llmClient.generate(prompt);
-        List<String> ret = new ArrayList<>();
-        List<Generation> generations = result.getGenerations().get(0);
-        for (Generation generation : generations) {
-            ret.add(filterMessage(generation.getText()));
-        }
-        return ret;
+        // step 3. Send the system message and the user's chat request messages to OpenAI
+        return addUserMessagesAndSendToAI(chatRequestMessages, messages);
     }
 
     /**
-     * Chat with the OpenAI API. Search the vector store for the top 5 nearest text chunks
-     * to the questions and use them as the context.
+     * Chat with the OpenAI API. Search the vector store for the top 5 related documents
+     * to the questions and use them as the system context.
      *
-     * @param messages the chat messages
+     * @param acmeChatRequestMessages the chat messages, including previous messages sent by the client
      * @return the chat response
      */
-    public List<String> chat(List<AcmeChatRequest.Message> messages) {
+    protected List<String> chatWithoutProductId(List<AcmeChatRequest.Message> acmeChatRequestMessages) {
 
-        validateMessage(messages);
+        String question = acmeChatRequestMessages.get(acmeChatRequestMessages.size() - 1).getContent();
 
-        String question = messages.get(messages.size() - 1).getContent();
+        // step 1. Query for documents that are related to the question from the vector store
+        List<Document> relatedDocuments = store.similaritySearch(question, 5, 0.4);
 
-        // step 1. Convert the user's query text to an embedding
-        var response = client.getEmbeddings(List.of(question));
-        var embedding = response.getData().get(0).getEmbedding();
+        // step 2. Create the system message with the related documents;
+        List<Message> messages = new ArrayList<>();
+        SystemPromptTemplate systemPromptTemplate = new SystemPromptTemplate(this.chatWithoutProductIdResource);
+        String relatedDocsAsString = relatedDocuments.stream()
+                .map(entry -> String.format("Product Name: %s\nText: %s\n", entry.getMetadata().get("name"), entry.getText()))
+                .collect(Collectors.joining("\n"));
+        Message systemMessage = systemPromptTemplate.createMessage(Map.of("context", relatedDocsAsString));
+        messages.add(systemMessage);
 
-        // step 2. Query Top-K nearest text chunks from the vector store
-        var candidateRecords = store.searchTopKNearest(embedding, 5, 0.4);
+        // step 3. Send the system message and the user's chat request messages to OpenAI
+        return addUserMessagesAndSendToAI(acmeChatRequestMessages, messages);
+    }
 
-        // step 3. Populate the prompt template with the chunks
-        var prompt = HomepagePromptTemplate.formatWithContext(candidateRecords);
-        var processedMessages = new ArrayList<com.azure.ai.openai.models.ChatMessage>();
-        processedMessages.add(new com.azure.ai.openai.models.ChatMessage(ChatRole.SYSTEM, prompt));
-        List<com.azure.ai.openai.models.ChatMessage> list = new ArrayList<>();
-        for (AcmeChatRequest.Message line : messages) {
-            list.add(new com.azure.ai.openai.models.ChatMessage(line.getRole(), line.getContent()));
+    private List<String> addUserMessagesAndSendToAI(List<AcmeChatRequest.Message> acmeChatRequestMessages, List<Message> messages) {
+        // Convert to acme messages types to Spring AI message types
+        for (AcmeChatRequest.Message acmeChatRequestMessage : acmeChatRequestMessages) {
+            String role = acmeChatRequestMessage.getRole().toString().toUpperCase();
+            messages.add(new ChatMessage(role, acmeChatRequestMessage.getContent()));
         }
-        processedMessages.addAll(list);
 
-        // step 4. Call to OpenAI chat completion API
-        var answer = client.getChatCompletions(processedMessages);
+        // Call to OpenAI chat API
+        Prompt prompt = new Prompt(messages);
+        AiResponse aiResponse = this.aiClient.generate(prompt);
 
-        List<String> ret = new ArrayList<>();
-        for (ChatChoice choice : answer.getChoices()) {
-            if (choice.getMessage() != null && choice.getMessage().getContent() != null) {
-                ret.add(filterMessage(choice.getMessage().getContent()));
-            }
-        }
-        return ret;
+        // Process the result and return to client
+        List<String> response = processResult(aiResponse);
+
+        return response;
+    }
+
+    public Message getProductDetailMessage(Product product, List<Document> documents) {
+        String additionalContext = documents.stream()
+                .map(entry -> String.format("Product Name: %s\nText: %s\n", entry.getMetadata().get("name"), entry.getText()))
+                .collect(Collectors.joining("\n"));
+        Map map = Map.of(
+                "name", product.getName(),
+                "tags", String.join(",", product.getTags()),
+                "shortDescription", product.getShortDescription(),
+                "fullDescription", product.getDescription(),
+                "additionalContext", additionalContext);
+        SystemPromptTemplate systemPromptTemplate = new SystemPromptTemplate(this.chatWithProductIdResource);
+        return systemPromptTemplate.create(map).getMessages().get(0);
+    }
+
+    private List<String> processResult(AiResponse aiResponse) {
+        List<String> response = aiResponse.getGenerations().stream()
+                .map(Generation::getText)
+                .filter(text -> !StringUtils.isEmpty(text))
+                .map(this::filterMessage)
+                .collect(Collectors.toList());
+        return response;
     }
 
     private static void validateMessage(List<AcmeChatRequest.Message> messages) {

@@ -3,7 +3,7 @@ In this section we are going to deploy the backend apps for acme-fitness applica
 This diagram below shows the final result once this section is complete:
 ![diagram](images/scg-frontend-backend.png)
 
-Below are the diffrent steps that we configure/create to successfully deploy the services/apps
+Below are the different steps that we configure/create to successfully deploy the services/apps
 - [1. Create Application Configuration Service](#1-create-application-configuration-service)
 - [2. Create backend apps](#2-create-backend-apps)
 - [3. Configure apps to Application Configuration Service](#3-configure-apps-to-application-configuration-service)
@@ -69,17 +69,17 @@ Routing rules bind endpoints in the request to the backend applications. For exa
 az spring gateway route-config create \
     --name ${CART_SERVICE_APP} \
     --app-name ${CART_SERVICE_APP} \
-    --routes-file ./routes/cart-service.json
+    --routes-file ./resources/json/routes/cart-service.json
     
 az spring gateway route-config create \
     --name ${ORDER_SERVICE_APP} \
     --app-name ${ORDER_SERVICE_APP} \
-    --routes-file ./routes/order-service.json
+    --routes-file ./resources/json/routes/order-service.json
 
 az spring gateway route-config create \
     --name ${CATALOG_SERVICE_APP} \
     --app-name ${CATALOG_SERVICE_APP} \
-    --routes-file ./routes/catalog-service.json
+    --routes-file ./resources/json/routes/catalog-service.json
 
 ```
 
@@ -92,23 +92,23 @@ Now that all the required apps are created, the next step is to go ahead and dep
 # Deploy Payment Service
 az spring app deploy --name ${PAYMENT_SERVICE_APP} \
     --config-file-pattern payment/default \
-    --source-path ./apps/acme-payment \
+    --source-path ../apps/acme-payment \
     --build-env BP_JVM_VERSION=17
 
 # Deploy Catalog Service
 az spring app deploy --name ${CATALOG_SERVICE_APP} \
     --config-file-pattern catalog/default \
-    --source-path ./apps/acme-catalog \
+    --source-path ../apps/acme-catalog \
     --build-env BP_JVM_VERSION=17
 
 # Deploy Order Service
 az spring app deploy --name ${ORDER_SERVICE_APP} \
-    --source-path ./apps/acme-order 
+    --source-path ../apps/acme-order 
 
 # Deploy Cart Service 
 az spring app deploy --name ${CART_SERVICE_APP} \
     --env "CART_PORT=8080" \
-    --source-path ./apps/acme-cart 
+    --source-path ../apps/acme-cart 
 ```
 
 So far in this section we were able to successfully create and deploy the apps into an existing azure spring apps instance. 

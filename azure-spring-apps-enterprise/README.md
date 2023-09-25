@@ -1522,7 +1522,7 @@ Make several requests to the URL for `/products` within a five second period to 
 
 ### Monitor your applications using Application Live View
 
-[Application Live View for VMware Tanzu](https://docs.vmware.com/en/VMware-Tanzu-Application-Platform/1.2/tap/GUID-app-live-view-about-app-live-view.html) is a lightweight insights and troubleshooting tool that helps app developers and app operators look inside running apps.
+[Application Live View for VMware Tanzu](https://docs.vmware.com/en/VMware-Tanzu-Application-Platform/1.4/tap/app-live-view-about-app-live-view.html) is a lightweight insights and troubleshooting tool that helps app developers and app operators look inside running apps.
 
 Application Live View only supports Spring Boot applications.
 
@@ -1843,8 +1843,8 @@ The `cleanup` workflow can be manually run to delete all resources created by th
 1. Update the values in `azure-spring-apps-enterprise/scripts/setup-ai-env-variables.sh`, e.g.
     * for Endpoint and API KEY - check under Azure Portal OpenAI instances in `Keys and Endpoint` section
     ![A screenshot of the Azure Portal OpenAI instance.](./media/openai-azure-ai-services-api-key.png)    
-    * for `AZURE_OPENAI_CHATDEPLOYMENTID` use previously defined model, e.g. `gpt-35-turbo-16k`
-    * for `AZURE_OPENAI_EMBEDDINGDEPLOYMENTID` use previously defined model, e.g. `text-embedding-ada-002`
+    * for `SPRING_AI_AZURE_OPENAI_MODEL` use previously defined model, e.g. `gpt-35-turbo-16k`
+    * for `SPRING_AI_AZURE_OPENAI_EMBEDDINGMODEL` use previously defined model, e.g. `text-embedding-ada-002`
     * for `AI_APP` use default name, e.g. `assist-service`
     
 > Note: You can get the endpoint by querying the `cognitiveservices` from Azure CLI, e.g.
@@ -1895,10 +1895,10 @@ cd apps/acme-assist
         --source-path apps/acme-assist \
         --build-env BP_JVM_VERSION=17 \
         --env \
-        AZURE_OPENAI_ENDPOINT=${AZURE_OPENAI_ENDPOINT} \
-        AZURE_OPENAI_APIKEY=${AZURE_OPENAI_APIKEY} \
-        AZURE_OPENAI_CHATDEPLOYMENTID=${AZURE_OPENAI_CHATDEPLOYMENTID} \
-        AZURE_OPENAI_EMBEDDINGDEPLOYMENTID=${AZURE_OPENAI_EMBEDDINGDEPLOYMENTID}
+            SPRING_AI_AZURE_OPENAI_ENDPOINT=${SPRING_AI_AZURE_OPENAI_ENDPOINT} \
+            SPRING_AI_AZURE_OPENAI_APIKEY=${SPRING_AI_AZURE_OPENAI_APIKEY} \
+            SPRING_AI_AZURE_OPENAI_MODEL=${SPRING_AI_AZURE_OPENAI_MODEL} \
+            SPRING_AI_AZURE_OPENAI_EMBEDDINGMODEL=${SPRING_AI_AZURE_OPENAI_EMBEDDINGMODEL}
     ```
 
 1. Test the `acme-fitness` application in the browser again. Go to `ASK TO FITASSIST` and converse with the assistant, e.g.

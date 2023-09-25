@@ -2,7 +2,6 @@
 
 ## Prerequisites
 - JDK 17
-- Python 3
 - Maven
 - Azure CLI
 - An Azure subscription with access granted to Azure OpenAI (request access to Azure OpenAI [here](https://customervoice.microsoft.com/Pages/ResponsePage.aspx?id=v4j5cvGGr0GRqy180BHbR7en2Ais5pxKtso_Pz4b1_xUOFA5Qk1UWDRBMjg0WFhPMkIzTzhKQ1dWNyQlQCN0PWcu))
@@ -59,7 +58,7 @@ Workshop instructors will use this information to provision your access to the w
 1. You might already have environment variables file from earlier labs - check with your instructor.
    Please copy the environment variables template file, e.g.
    ```bash
-   cp azure-spring-apps-enterprise/scripts/setup-env-variables-template.sh azure-spring-apps-enterprise/scripts/setup--env-variables.sh
+   cp azure-spring-apps-enterprise/scripts/setup-env-variables-template.sh azure-spring-apps-enterprise/scripts/setup-env-variables.sh
    ```
 
 1. Updates the values in `azure-spring-apps-enterprise/scripts/setup-env-variables.sh` as directed by your instructor.

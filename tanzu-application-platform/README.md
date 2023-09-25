@@ -18,7 +18,7 @@ These instructions assume that you have a TAP 1.4.x or greater `full` profile cl
 * Tanzu Source Controller
 * Tanzu AppSSO
 * Certificate Manager
-* [Spring Cloud Gateway For Kubernetes](https://docs.vmware.com/en/VMware-Spring-Cloud-Gateway-for-Kubernetes/1.2/scg-k8s/GUID-index.html)
+* [Spring Cloud Gateway For Kubernetes](https://docs.vmware.com/en/VMware-Spring-Cloud-Gateway-for-Kubernetes/index.html)
 
 ## Installation/Deployment Process
 

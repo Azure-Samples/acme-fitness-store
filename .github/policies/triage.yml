@@ -1,0 +1,80 @@
+name: Issue Triage
+description: This policy is used to triage issues and clean stale issues.
+resource: repository
+
+configuration:
+  resourceManagementConfiguration:
+    scheduledSearches:
+    - description: Close stale issues
+      frequencies:
+      - hourly:
+          hour: 6
+      filters:
+      - isIssue
+      - isOpen
+      - hasLabel:
+          label: needs-author-feedback
+      - hasLabel:
+          label: no-recent-activity
+      - noActivitySince:
+          days: 14
+      actions:
+      - closeIssue
+    - description: Add no recent activity label to issues
+      frequencies:
+      - hourly:
+          hour: 6
+      filters:
+      - isIssue
+      - isOpen
+      - hasLabel:
+          label: needs-author-feedback
+      - noActivitySince:
+          days: 7
+      - isNotLabeledWith:
+          label: no-recent-activity
+      actions:
+      - addLabel:
+          label: no-recent-activity
+      - addReply:
+          reply: Hi, we're sending this friendly reminder because we haven't heard back from you in a while. We need more information about this issue to help address it. Please be sure to give us your input within the next **7 days**. If we don't hear back from you within **14 days** of this comment the issue will be automatically closed. Thank you!
+    - description: '[Resolve Workflow] Close Addressed Issues'
+      frequencies:
+      - hourly:
+          hour: 6
+      filters:
+      - isIssue
+      - isOpen
+      - hasLabel:
+          label: issue-addressed
+      - noActivitySince:
+          days: 7
+      actions:
+      - addReply:
+          reply: Hi @${issueAuthor}, since you haven't asked that we "`/unresolve`" the issue, we'll close this out. If you believe further discussion is needed, please add a comment "`/unresolve`" to reopen the issue.
+      - closeIssue
+    eventResponderTasks:
+    - description: '[Resolve Workflow] Issue Addressed Label Applied'        
+      if:
+      - payloadType: Issues
+      - labelAdded:
+          label: issue-addressed
+      then:
+      - addReply:
+          reply: Hi @${issueAuthor}.  Thank you for opening this issue and giving us the opportunity to assist.  We believe that this has been addressed.  If you feel that further discussion is needed, please add a comment with the text "`/unresolve`" to remove the “issue-addressed” label and continue the conversation.
+      - removeLabel:
+          label: needs-author-feedback
+      - removeLabel:
+          label: no-recent-activity
+    - description: '[Resolve Workflow] Unresolve Command by Author'
+      if:
+      - payloadType: Issue_Comment
+      - hasLabel:
+          label: issue-addressed
+      - commentContains:
+          pattern: /unresolve
+          isRegex: False
+      then:
+      - reopenIssue
+      - removeLabel:
+          label: issue-addressed

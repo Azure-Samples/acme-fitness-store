@@ -3,8 +3,7 @@ package com.example.acme.assist;
 import com.example.acme.assist.model.CatalogProductListResponse;
 import com.example.acme.assist.model.CatalogProductResponse;
 import com.example.acme.assist.model.Product;
-import java.util.List;
-
+import jakarta.annotation.PostConstruct;
 import org.apache.logging.log4j.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import jakarta.annotation.PostConstruct;
+import java.util.List;
 
 @Repository
 @Configuration
