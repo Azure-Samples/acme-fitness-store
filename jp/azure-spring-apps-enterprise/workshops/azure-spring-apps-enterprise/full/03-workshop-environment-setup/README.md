@@ -30,18 +30,17 @@
 ### 補足 (省略可能)
 
 Azure Key Vault は一旦作成すると、リソースを削除した後も、デフォルトで 90 日間設定情報が保護されます。
-そこで、本ワークショップの ARM テンプレートを使用して複数回リソースを作成する場合は、リソース名が競合し作成に失敗する場合があります。そこで複数回実施する場合は、ARM テンプレートの下記の値を修正する事をおすすめします。
-ARM テンプレートの画面から `Edit template` をクリックし、`Variables` を開いてください。
-具体的には、デフォルトで `0,4` と記載されている箇所をすべて下記のように `0,8` などのように数値を変更してください。
+そこで、本ワークショップの ARM テンプレートを使用して複数回リソースを作成する場合は、リソース名が競合し作成に失敗する場合があります。
+複数回実施する場合は、Project Name の名前を変更するか、もしくは ARM テンプレートの下記の値を修正する事をおすすめします。具体的には ARM テンプレートの画面から `Edit template` をクリックし、`Variables` を開いてください。デフォルトで `0,4` と記載されている箇所をすべて下記のように `0,5` などのように数値を変更してください。全体で 24 文字が許容されているため、最大で `0,6` まで変更可能です。
 
 ```json
     "variables": {
         "resourceGroupName": "[concat(parameters('projectName'), '-rg')]",
-        "dbName": "[concat(parameters('projectName'), '-db-', substring(uniqueString(subscription().id, parameters('projectName')),0,8))]",
-        "cacheName": "[concat(parameters('projectName'), '-cache-', substring(uniqueString(subscription().id, parameters('projectName')),0,8))]",
-        "keyVaultName": "[concat(parameters('projectName'), '-kv-', substring(uniqueString(subscription().id, parameters('projectName')),0,8))]",
-        "logAnalyticsWorkspaceName": "[concat(parameters('projectName'),'-la-',substring(uniqueString(subscription().id, parameters('projectName')),0,8))]",
-        "appInsightsName": "[concat(parameters('projectName'),'-insights-',substring(uniqueString(subscription().id, parameters('projectName')),0,8))]"
+        "dbName": "[concat(parameters('projectName'), '-db-', substring(uniqueString(subscription().id, parameters('projectName')),0,5))]",
+        "cacheName": "[concat(parameters('projectName'), '-cache-', substring(uniqueString(subscription().id, parameters('projectName')),0,5))]",
+        "keyVaultName": "[concat(parameters('projectName'), '-kv-', substring(uniqueString(subscription().id, parameters('projectName')),0,5))]",
+        "logAnalyticsWorkspaceName": "[concat(parameters('projectName'),'-la-',substring(uniqueString(subscription().id, parameters('projectName')),0,5))]",
+        "appInsightsName": "[concat(parameters('projectName'),'-insights-',substring(uniqueString(subscription().id, parameters('projectName')),0,5))]"
     },
 ```
 
