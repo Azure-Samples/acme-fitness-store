@@ -82,6 +82,10 @@ az spring app create --name ${FRONTEND_APP} --instance-count 1 --memory 1Gi
 上記が完了した後、アプリをデプロイします。
 
 ```shell
+cd ..
+pwd 
+/workspaces/acme-fitness-store
+
 az spring app deploy --name ${FRONTEND_APP} \
     --source-path ./apps/acme-shopping 
 ```
@@ -112,11 +116,11 @@ az spring gateway update \
 ルーティング・ルールは、エンドポイントに対する各リクエストをバックエンドのアプリケーションにバインドします。以下の作業で、フロント・エンド・アプリに対する Spring Cloud Gateway のルールを作成しています。
 
 ```shell
+cd ./azure-spring-apps-enterprise/resources/json
 az spring gateway route-config create \
     --name ${FRONTEND_APP} \
     --app-name ${FRONTEND_APP} \
     --routes-file ./routes/frontend.json
-
 ```
 
 ## 4. Spring Cloud Gateway 経由でアプリケーションにアクセス
@@ -142,6 +146,15 @@ export PORTAL_URL=$(az spring api-portal show | jq -r '.properties.url')
 
 echo "https://${PORTAL_URL}"
 ```
+
+ブラウザからアクセスすると下記のような画面が表示されます。
+
+![API Portal](./images/api-portal-1.png)
+
+Acme Fitness Store をクリックすると、ACMEFitness Store の API 一覧が表示されます。
+
+![API Portal](./images/api-portal-2.png)
+
 
 ⬅️ 前の作業: [07 - ASA-E コンポーネントの概要](../07-asa-e-components-overview/README.md)
 
