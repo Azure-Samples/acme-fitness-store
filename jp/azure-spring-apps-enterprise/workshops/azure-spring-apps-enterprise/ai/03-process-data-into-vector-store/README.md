@@ -8,7 +8,13 @@
 仮に、ご自身でベクトル・ストアを構築したい場合は、以下のコマンドを実行してください：
 
    ```bash
-   source ./azure-spring-apps-enterprise/scripts/setup-ai-env-variables.sh
+   export SPRING_AI_AZURE_OPENAI_ENDPOINT="your_azure_openai_endpoint"
+   export SPRING_AI_AZURE_OPENAI_APIKEY="your_api_key"
+   export SPRING_AI_AZURE_OPENAI_MODEL=gpt-35-turbo-16k
+   export SPRING_AI_AZURE_OPENAI_EMBEDDINGMODEL=text-embedding-ada-002
+
+   export AI_APP="assist-service"
+ 
    cd apps/acme-assist
    ./preprocess.sh data/bikes.json,data/accessories.json src/main/resources/vector_store.json
    cd ../../
