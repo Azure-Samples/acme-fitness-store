@@ -17,6 +17,8 @@ az spring application-configuration-service git repo add --name acme-fitness-sto
     --uri "https://github.com/Azure-Samples/acme-fitness-store-config"
 ```
 
+> ご注意："https://github.com/Azure-Samples/acme-fitness-store-config" は必要に応じて、ご自身の環境に合わせて変更してください。
+
 ### 1.1. Application Configuration Service でアプリケーションの設定
 
 次に、上記で作成した　Application Configuration Service インスタンスを、外部設定として利用するよう Azure Spring Apps のアプリにバインドする作業に進みます：
