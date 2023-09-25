@@ -12,7 +12,7 @@ Spring Bootアプリケーションを作成する際、通常 Spring Initialize
 >💡 注: 以降の手順は、すべてのこの README と同じディレクトリ上からコマンドを実行してください（`cd`コマンドで指示される場合を除く）
 
 ```shell
-curl https://start.spring.io/starter.tgz -d dependencies=web -d baseDir=hello-world 
+curl https://start.spring.io/starter.tgz -d dependencies=web -d baseDir=hello-world \
       -d bootVersion=2.7.5 -d javaVersion=17 -d type=maven-project | tar -xzvf -
 ```
 
@@ -67,19 +67,16 @@ kill %1
 以下のコマンドを実行し、Azure CLI からアプリを実行するためのインスタンスを作成します。
 
 ```bash
-az spring app create -n hello-world
+az spring app create -n hello-world --service ${SPRING_APPS_SERVICE} --resource-group ${RESOURCE_GROUP} 
 ```
 
 Azure Spring Apps Enterprise 上でインスタンスを作成した後、"hello-world" プロジェクトをビルドし、デプロイすることができます
 
 ```bash
-cd hello-world
-./mvnw clean package
-az spring app deploy -n hello-world --artifact-path target/demo-0.0.1-SNAPSHOT.jar
-cd ..
+az spring app deploy --service ${SPRING_APPS_SERVICE} --resource-group ${RESOURCE_GROUP}  --name hello-world --source-path hello-world --build-env "BP_JVM_VERSION=17.*"
 ```
 
-上記のコマンドで、ローカルディスク上に jar ファイルを作成し、それを上記で作成したアプリ用のインスタンスにアップロードします。
+上記のコマンドで、実装したソースコードをビルドした後、アプリ用のインスタンスにアップロードします。
 `az`コマンドはJSONの結果を出力します。現時点では出力内容に注意を払う必要はありませんが、将来的には、診断やテスト用で利用できます。
 
 ## クラウドの環境上でテスト
@@ -117,7 +114,7 @@ az spring app logs -s ${SPRING_APPS_SERVICE} -g ${RESOURCE_GROUP} -n hello-world
 下記のコマンドを実行し、Azure Spring Apps Enterprise 上で稼働するアプリケーションのインスタンス数を増やします。
 
 ```shell
-az spring app scale -n hello-world --instance-count 3
+az spring app scale -s ${SPRING_APPS_SERVICE} -g ${RESOURCE_GROUP} -n hello-world --instance-count 3
 ```
 
 コマンドが成功すると、Azureポータルでの Running Instance の数がデフォルトの1から3に更新されます
@@ -129,7 +126,7 @@ az spring app scale -n hello-world --instance-count 3
 hello-world アプリの動作確認を行なった後、リソースを節約するためにアプリを削除してください。このアプリを削除するためには、下記のコマンドを実行します。
 
 ```bash
-az spring app delete --name hello-world
+az spring app delete -s ${SPRING_APPS_SERVICE} -g ${RESOURCE_GROUP} --name hello-world
 ```
 ## まとめ
 
