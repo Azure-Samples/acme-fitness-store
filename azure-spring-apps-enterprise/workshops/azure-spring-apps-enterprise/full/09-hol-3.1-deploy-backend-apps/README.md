@@ -3,7 +3,7 @@ In this section we are going to deploy the backend apps for acme-fitness applica
 This diagram below shows the final result once this section is complete:
 ![diagram](images/scg-frontend-backend.png)
 
-Below are the diffrent steps that we configure/create to successfully deploy the services/apps
+Below are the different steps that we configure/create to successfully deploy the services/apps
 - [1. Create backend apps](#1-create-backend-apps)
 - [2. Deploy backend apps](#2-deploy-backend-apps)
 - [3. Create  routing rules for the backend apps:](#3-create--routing-rules-for-the-backend-apps)
@@ -60,17 +60,17 @@ Routing rules bind endpoints in the request to the backend applications. For exa
 az spring gateway route-config create \
     --name ${CART_SERVICE_APP} \
     --app-name ${CART_SERVICE_APP} \
-    --routes-file ./routes/cart-service.json
+    --routes-file ./azure-spring-apps-enterprise/resources/json/routes/cart-service.json
     
 az spring gateway route-config create \
     --name ${ORDER_SERVICE_APP} \
     --app-name ${ORDER_SERVICE_APP} \
-    --routes-file ./routes/order-service.json
+    --routes-file ./azure-spring-apps-enterprise/resources/json/routes/order-service.json
 
 az spring gateway route-config create \
     --name ${CATALOG_SERVICE_APP} \
     --app-name ${CATALOG_SERVICE_APP} \
-    --routes-file ./routes/catalog-service.json
+    --routes-file ./azure-spring-apps-enterprise/resources/json/routes/catalog-service.json
 
 ```
 

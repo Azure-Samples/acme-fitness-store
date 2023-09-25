@@ -2,7 +2,7 @@
 
 [![gcr.io](https://img.shields.io/badge/gcr.io-stable-green?style=flat-square)](https://console.cloud.google.com/gcr/images/vmwarecloudadvocacy/GLOBAL/acmeshop-front-end@sha256:50407894d66065e846819f2d0060bce8fab8be433cbcf973d7dce2f27eeb2390/details?tab=info)
 
-This fork is for demonstrating [Spring Cloud Gateway for kubernetes](https://docs.pivotal.io/scg-k8s/1-0/installation.html). Compared to the original repo, this fork doesn't have the node backend or anything dynamic. It's merely a static frontend app that relies on Spring Cloud Gateway to proxy all the outbound requests. The modified images is published at: [springcloudservices/fitness-frontend](https://hub.docker.com/r/springcloudservices/fitness-frontend).
+This fork is for demonstrating [Spring Cloud Gateway for kubernetes](https://docs.vmware.com/en/VMware-Spring-Cloud-Gateway-for-Kubernetes/index.html). Compared to the original repo, this fork doesn't have the node backend or anything dynamic. It's merely a static frontend app that relies on Spring Cloud Gateway to proxy all the outbound requests. The modified images is published at: [springcloudservices/fitness-frontend](https://hub.docker.com/r/springcloudservices/fitness-frontend).
 
 > A front-end service, because how can you shop without seeing?
 

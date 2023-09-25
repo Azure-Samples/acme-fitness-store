@@ -86,7 +86,7 @@ Create routing rules for the identity service application in SCG
 az spring gateway route-config create \
     --name ${IDENTITY_SERVICE_APP} \
     --app-name ${IDENTITY_SERVICE_APP} \
-    --routes-file ./routes/identity-service.json
+    --routes-file ./azure-spring-apps-enterprise/workshops/azure-spring-apps-enterprise/full/12-hol-3.4-configure-single-signon/routes/identity-service.json
 ```
 
 ### 2.1. Deploy the Identity Service:

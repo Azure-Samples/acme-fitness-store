@@ -2,7 +2,6 @@
 
 ## Prerequisites
 - JDK 17
-- Python 3
 - Maven
 - Azure CLI (>= 2.51.0)
 - An Azure subscription with access granted to Azure OpenAI (see more [here](https://customervoice.microsoft.com/Pages/ResponsePage.aspx?id=v4j5cvGGr0GRqy180BHbR7en2Ais5pxKtso_Pz4b1_xUOFA5Qk1UWDRBMjg0WFhPMkIzTzhKQ1dWNyQlQCN0PWcu))
@@ -67,7 +66,7 @@ cd apps/acme-assist
 1. Prepare the new sample data and images:
    ```bash
    ./apps/acme-assist/prepare_data.sh
-   ```.
+   ```
 1. Redeploy `catalog-service` with the new resources:
     ```bash
     source ./azure-spring-apps-enterprise/scripts/setup-env-variables.sh
@@ -84,8 +83,13 @@ cd apps/acme-assist
         --name ${AI_APP} \
         --app-name ${AI_APP} \
         --routes-file azure-spring-apps-enterprise/resources/json/routes/assist-service.json
+    
     az spring app deploy --name ${AI_APP} \
         --source-path apps/acme-assist \
         --build-env BP_JVM_VERSION=17 \
-        --env AZURE_OPENAI_ENDPOINT=${AZURE_OPENAI_ENDPOINT} AZURE_OPENAI_APIKEY=${AZURE_OPENAI_APIKEY} AZURE_OPENAI_CHATDEPLOYMENTID=${AZURE_OPENAI_CHATDEPLOYMENTID} AZURE_OPENAI_EMBEDDINGDEPLOYMENTID=${AZURE_OPENAI_EMBEDDINGDEPLOYMENTID}
+        --env \
+            SPRING_AI_AZURE_OPENAI_ENDPOINT=${SPRING_AI_AZURE_OPENAI_ENDPOINT} \
+            SPRING_AI_AZURE_OPENAI_APIKEY=${SPRING_AI_AZURE_OPENAI_APIKEY} \
+            SPRING_AI_AZURE_OPENAI_MODEL=${SPRING_AI_AZURE_OPENAI_MODEL} \
+            SPRING_AI_AZURE_OPENAI_EMBEDDINGMODEL=${SPRING_AI_AZURE_OPENAI_EMBEDDINGMODEL}
     ```
