@@ -8,7 +8,17 @@
 提供されるテンプレートをコピーして、環境変数の設定を含む bash スクリプトを作成します。
 
 ```shell
+cd /workspaces/acme-fitness-store/azure-spring-apps-enterprise
 cp ./scripts/setup-db-env-variables-template.sh ./scripts/setup-db-env-variables.sh
+```
+
+次に、Postgres Server 用のパスワードを作成します
+
+```
+POSTGRE_PASSWORD='!'$(head -c 12 /dev/urandom | base64 | tr -dc '[:alpha:]'| 
+fold -w 8 | head -n 1)$RANDOM
+echo $POSTGRE_PASSWORD
+!ZprnIJvF27999
 ```
 
 `./scripts/setup-db-env-variables.sh` ファイルを開いて、下記の情報を入力します。
@@ -17,6 +27,9 @@ cp ./scripts/setup-db-env-variables-template.sh ./scripts/setup-db-env-variables
 export AZURE_CACHE_NAME=acme-fitness-cache-CHANGE-ME                 # Azure Cache for Redis インスタンス用の一意な名前。CHANGE_ME の箇所を作業 3 の ARM テンプレートで作成した 4 つのユニークな文字で置き換えてください。 [03 - ワークショップ用の環境セットアップ](../03-workshop-environment-setup/README.md)           
 
 export POSTGRES_SERVER=acme-fitness-db-CHANGE-ME                 # Azure Database for PostgreSQL Flexible Server 用の一意な名前。CHANGE_ME の箇所を作業 3 の ARM テンプレートで作成された 4 つのユニークな文字に置き換えてください。
+
+export POSTGRES_SERVER_USER='acme'             # Postgres server への接続ユーザ名を設定します
+export POSTGRES_SERVER_PASSWORD='!ZprnIJvF27999'         # Postgres server への接続パスワードを設定します
 ```
 
 上記の変数値は、ARM テンプレートで作成されたリソース・グループに直接アクセスして確認することもできます。これにより、そのリソース。グループ内の全リソースが表示され、データベースとキャッシュも一覧に表示されます。
@@ -25,6 +38,12 @@ export POSTGRES_SERVER=acme-fitness-db-CHANGE-ME                 # Azure Databas
 
 ```shell
 source ./scripts/setup-db-env-variables.sh
+```
+
+次に上記で設定したパスワードに更新します。
+
+```shell
+az postgres flexible-server update --name ${POSTGRES_SERVER} --admin-password ${POSTGRES_SERVER_PASSWORD}
 ```
 
 ### 1.1. Postgresql DB に対し他の Azure リソースから接続許可を付与
@@ -61,6 +80,23 @@ az postgres flexible-server db create \
 az postgres flexible-server db create \
   --database-name ${CATALOG_SERVICE_DB} \
   --server-name ${POSTGRES_SERVER}
+```
+
+次に日本語の環境設定を行います
+
+```shell
+# Azure PostgreSQL Flexible Server DB の日本語設定    
+az postgres flexible-server parameter set \
+    --server-name ${POSTGRES_SERVER} \
+    --name lc_monetary --value "ja_JP.utf-8"
+# Azure PostgreSQL Flexible Server DB の日本語設定    
+az postgres flexible-server parameter set \
+    --server-name ${POSTGRES_SERVER}  \
+    --name lc_numeric --value "ja_JP.utf-8"
+# Azure PostgreSQL Flexible Server DB のタイムゾーン設定    
+az postgres flexible-server parameter set \
+    --server-name ${POSTGRES_SERVER}\
+    --name timezone --value "Asia/Tokyo"  
 ```
 
 > ご注意：上記の全ての処理が完了した後、以降の処理を行なってください。
