@@ -17,6 +17,8 @@ Entra ID にアプリケーションを登録し、出力結果を JSON ファ�
 az ad app create --display-name ${AD_DISPLAY_NAME} > ad.json
 ```
 
+> ご注意：Azure の環境によっては、GitHub codespaces で `az ad app create`コマンドを実行すると失敗する場合があります。その場合は、信頼されたデバイス上で別途コマンドを実行してください。
+
 アプリケーション ID を取得し、クライアント・シークレットを取得し、クレデンシャルに設定します。
 
 ```shell
@@ -83,6 +85,7 @@ az spring service-registry bind --app ${IDENTITY_SERVICE_APP}
 最後に、Spring Cloud Gateway に対して Identity Service アプリケーション用のルーティング・ルールを作成します。
 
 ```shell
+cd /workspaces/acme-fitness-store/azure-spring-apps-enterprise/resources/json
 az spring gateway route-config create \
     --name ${IDENTITY_SERVICE_APP} \
     --app-name ${IDENTITY_SERVICE_APP} \
@@ -94,6 +97,7 @@ az spring gateway route-config create \
 Java で実装された Identity Service のアプリケーションをソース・コードを元にデプロイします。
 
 ```shell
+cd /workspaces/acme-fitness-store
 az spring app deploy --name ${IDENTITY_SERVICE_APP} \
     --env "JWK_URI=${JWK_SET_URI}" \
     --config-file-pattern identity/default \

@@ -13,8 +13,9 @@ ACME Fitness Shop アプリケーションに対してトラフィックを生�
 トラフィックを継続的に生成するには、トラフィックジェネレーターを使用してください。
 
 ```shell
-cd traffic-generator
-GATEWAY_URL=https://${GATEWAY_URL} ./gradlew gatlingRun-com.vmware.acme.simulation.GuestSimulation
+cd /workspaces/acme-fitness-store/azure-spring-apps-enterprise/load-test/traffic-generator
+GATEWAY_URL=https://${GATEWAY_URL} 
+./gradlew gatlingRun-com.vmware.acme.simulation.GuestSimulation
 cd -
 ```
 

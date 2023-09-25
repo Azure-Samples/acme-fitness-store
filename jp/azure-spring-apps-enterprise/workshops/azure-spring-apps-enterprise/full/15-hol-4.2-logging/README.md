@@ -28,7 +28,7 @@ Log Analyticsページで、`Logs` を選択し、以下に記載するサンプ
 
 ```sql
     AppPlatformLogsforSpring 
-    | where TimeGenerated > ago(24h) 
+    | where TimeGenerated > ago(1h)
     | limit 500
     | sort by TimeGenerated
     | project TimeGenerated, AppName, Log

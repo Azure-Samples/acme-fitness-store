@@ -8,7 +8,8 @@
 Key Vault の URI を取得します。
 
 ```shell
-export KEYVAULT_URI=$(az keyvault show --name ${KEY_VAULT} | jq -r '.properties.vaultUri')
+export KEYVAULT_URI=$(az keyvault show --name ${KEY_VAULT} -g $RESOURCE_GROUP | jq -r '.properties.vaultUri')
+echo $KEYVAULT_URI
 ```
 ## 2. Key Vault　にデータベース接続用の接続情報を保存
 
