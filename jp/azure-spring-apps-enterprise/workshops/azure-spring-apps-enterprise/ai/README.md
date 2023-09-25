@@ -1,9 +1,5 @@
 # ACME Fitness Store に AI を導入
 
-In this workshop, we will deploy an AI assist service component into an existing ACME Fitness Store
-e-commerce polyglot application. Goal of this workshop is to introduce users to Spring AI and how
-to work with Azure OpenAI resources.
-
 このワークショップは、既存の ACME Fitness Store の多言語対応の電子商取引アプリケーションに対して AI のアシスト機能を追加でデプロイします。このワークショップで、Spring AI と Azure OpenAI の利用方法について学ぶ事ができます。
 
 ### ワークショップを始めるには、下記の `00 - ワークショップの開始` から始めてください
