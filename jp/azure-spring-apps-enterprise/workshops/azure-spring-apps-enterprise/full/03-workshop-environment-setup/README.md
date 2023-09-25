@@ -27,6 +27,23 @@
 
 上記で、[Object ID] の値をコピーした後、ARM テンプレートの [Object ID] フィールドに値を貼り付けます。
 
+### 補足 (省略可能)
+
+各リソース名の競合を避けるために、ARM テンプレートの値を修正する事をおすすめします。
+ARM テンプレートの画面から `Edit template` をクリックし、`Variables` の下記の値を修正してください。
+具体的には、デフォルトで `0,4` と記載されている箇所をすべて下記のように `0,8` に修正してください。
+
+```json
+    "variables": {
+        "resourceGroupName": "[concat(parameters('projectName'), '-rg')]",
+        "dbName": "[concat(parameters('projectName'), '-db-', substring(uniqueString(subscription().id, parameters('projectName')),0,8))]",
+        "cacheName": "[concat(parameters('projectName'), '-cache-', substring(uniqueString(subscription().id, parameters('projectName')),0,8))]",
+        "keyVaultName": "[concat(parameters('projectName'), '-kv-', substring(uniqueString(subscription().id, parameters('projectName')),0,8))]",
+        "logAnalyticsWorkspaceName": "[concat(parameters('projectName'),'-la-',substring(uniqueString(subscription().id, parameters('projectName')),0,8))]",
+        "appInsightsName": "[concat(parameters('projectName'),'-insights-',substring(uniqueString(subscription().id, parameters('projectName')),0,8))]"
+    },
+```
+
 **Next** をクリックし、次の画面に進みます。次の画面で **Create** をクリックします
 
 上記のデプロイは、完了するまでにしばらく時間がかかります (25 分から 30 分)。この手順が完了するまで待つ必要はありません。次のセクションに進むことができます。ただし定期的に、Azure ポータルでこの手順の完了を確認してください。
