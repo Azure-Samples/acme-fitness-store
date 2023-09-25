@@ -18,8 +18,7 @@
 az spring app create --name ${CART_SERVICE_APP} --instance-count 1 --memory 1Gi &
 az spring app create --name ${ORDER_SERVICE_APP} --instance-count 1 --memory 1Gi &
 az spring app create --name ${PAYMENT_SERVICE_APP} --instance-count 1 --memory 1Gi &
-az spring app create --name ${CATALOG_SERVICE_APP} --instance-count 1 --memory 1Gi &
-wait
+az spring app create --name ${CATALOG_SERVICE_APP} --instance-count 1 --memory 1Gi 
 ```
 
 上記の作業が正常に成功した場合、ASA-E インスタンス内に全アプリの一覧が表示されます。
@@ -33,15 +32,18 @@ wait
 > 💡 ソースコードを元に Build Pack でソースコードをビルドしコンテナを作成しデプロイします。そのため、ソースコードへのアクセスが必要です。
 
 ```shell
+cd /workspaces/acme-fitness-store
 # Deploy Payment Service
 az spring app deploy --name ${PAYMENT_SERVICE_APP} \
     --config-file-pattern payment/default \
-    --source-path ./apps/acme-payment 
+    --source-path ./apps/acme-payment \
+    --build-env BP_JVM_VERSION=17
 
 # Deploy Catalog Service
 az spring app deploy --name ${CATALOG_SERVICE_APP} \
     --config-file-pattern catalog/default \
-    --source-path ./apps/acme-catalog 
+    --source-path ./apps/acme-catalog \
+    --build-env BP_JVM_VERSION=17
 
 # Deploy Order Service
 az spring app deploy --name ${ORDER_SERVICE_APP} \
@@ -62,6 +64,10 @@ Routing rules bind endpoints in the request to the backend applications. For exa
 ルーティング・ルールは、バックエンドのアプリケーションに対するリクエストを、バックエンド用のエンドポイントにバインドします。例えば、下記の　Cart route　用のルーティングルールでは `/cart/**` に対する任意のリクエストはバックエンドの `Cart App` にルーティングすることを示しています。
 
 ```shell
+cd ./azure-spring-apps-enterprise/resources/json/
+pwd 
+/workspaces/acme-fitness-store/azure-spring-apps-enterprise/resources/json
+
 az spring gateway route-config create \
     --name ${CART_SERVICE_APP} \
     --app-name ${CART_SERVICE_APP} \
@@ -76,7 +82,6 @@ az spring gateway route-config create \
     --name ${CATALOG_SERVICE_APP} \
     --app-name ${CATALOG_SERVICE_APP} \
     --routes-file ./routes/catalog-service.json
-
 ```
 
 上記により、すべてのバックエンド・アプリの作成とデプロイが完了し、全アプリの Spring Cloud Gateway におけるルーティング・ルールの更新が完了しました。
