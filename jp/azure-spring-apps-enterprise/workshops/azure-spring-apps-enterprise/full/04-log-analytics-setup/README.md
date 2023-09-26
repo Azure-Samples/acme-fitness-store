@@ -1,15 +1,3 @@
-### Log Analytics workspace の作成
-
-Azure Spring Apps のサービス用の Log Analytics workspace を作成します。
-
-> ご注意: 仮に既存のワークスペースを利用する場合は、本手順はスキップしても構いません。
-
-```bash
-az monitor log-analytics workspace create \
-  --workspace-name ${LOG_ANALYTICS_WORKSPACE} \
-  --location ${REGION} \
-  --resource-group ${RESOURCE_GROUP}   
-```
 
 ### Log Analytics workspace の設定
 
