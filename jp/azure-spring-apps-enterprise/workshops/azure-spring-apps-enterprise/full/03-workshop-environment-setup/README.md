@@ -124,16 +124,16 @@ export REGION='region-name'                           # Enterprise をインス�
 Azure CLI でログインし、有効なサブスクリプションを選択します。Codespaces 上の VS Code のターミナルで、次のコマンドを実行してください。
 
 ```shell
+source ./scripts/setup-env-variables.sh
+``` 
+
+次に下記のコマンドを実行してください。
+
+```shell
 az login --use-device-code
 az account list -o table
 az account set --subscription ${SUBSCRIPTION}
 ```
-
-環境を設定します。
-
-```shell
-source ./scripts/setup-env-variables.sh
-``` 
 
 次に、Azure Spring Apps Enterprise を利用するための法律条項とプライバシーに関する声明に同意してください。
 
