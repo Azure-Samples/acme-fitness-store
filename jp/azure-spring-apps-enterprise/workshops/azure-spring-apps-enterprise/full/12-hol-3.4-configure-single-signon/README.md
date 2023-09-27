@@ -101,6 +101,7 @@ cd /workspaces/acme-fitness-store
 az spring app deploy --name ${IDENTITY_SERVICE_APP} \
     --env "JWK_URI=${JWK_SET_URI}" \
     --config-file-pattern identity/default \
+    --build-env BP_JVM_VERSION=17 \
     --source-path ./apps/acme-identity
 ```
 
