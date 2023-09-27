@@ -108,7 +108,8 @@ cp ./scripts/setup-env-variables-template.sh ./scripts/setup-env-variables.sh
 `./scripts/setup-env-variables.sh` ファイルを開いて環境変数を更新してください。
 
 ```shell
-export SUBSCRIPTION='subscription-id'                 # ご自身の Subscription ID に置き換えてくださいexport RESOURCE_GROUP='resource-group-name'    # 既存のリソース・グループ名もしくは以降の手順で作成するリソース・グループ名
+export SUBSCRIPTION='subscription-id'                 # ご自身の Subscription ID に置き換えてください
+export RESOURCE_GROUP='resource-group-name'    # 既存のリソース・グループ名もしくは以降の手順で作成するリソース・グループ名
 export SPRING_APPS_SERVICE='azure-spring-apps-name'   # 次の手順で作成する Azure Spring Apps 用のサービス名
 export LOG_ANALYTICS_WORKSPACE='log-analytics-name'   # 既存のワークスペース名もしくは以降の手順で作成するワークスペース名
 export REGION='region-name'                           # Enterprise をインストールする場所
