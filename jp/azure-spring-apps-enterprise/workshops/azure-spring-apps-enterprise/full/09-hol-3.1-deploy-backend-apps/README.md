@@ -12,7 +12,7 @@
 
 ## 1. バックエンド・アプリの作成
 
-まず最初に、各サービス毎にアプリケーションを作成すします：
+まず最初に、各サービス毎にアプリケーションを作成します：
 
 ```shell
 az spring app create --name ${CART_SERVICE_APP} --instance-count 1 --memory 1Gi &
@@ -58,8 +58,6 @@ az spring app deploy --name ${CART_SERVICE_APP} \
 上記の実行で、既存の Azure Spring Apps のインスタンスに対してアプリを作成し、デプロイが完了しました。
 
 ## 3. バックエンド・アプリに対するルーティング・ルールの作成
-
-Routing rules bind endpoints in the request to the backend applications. For example in the Cart route below, the routing rule indicates any requests to /cart/** endpoint gets routed to backend Cart App.
 
 ルーティング・ルールは、バックエンドのアプリケーションに対するリクエストを、バックエンド用のエンドポイントにバインドします。例えば、下記の　Cart route　用のルーティングルールでは `/cart/**` に対する任意のリクエストはバックエンドの `Cart App` にルーティングすることを示しています。
 
