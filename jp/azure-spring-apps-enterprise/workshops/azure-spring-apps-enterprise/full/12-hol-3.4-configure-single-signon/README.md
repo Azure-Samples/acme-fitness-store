@@ -188,12 +188,6 @@ USER_ID は URL エンコードされたユーザー名の文字列です。例�
 
 ![userid](images/user-id.png) 
 
-次に、注文サービスアプリケーションを再起動します。
-
-```shell
-az spring app restart --name ${ORDER_SERVICE_APP}
-```
-
 ⬅️ 前の作業: [11 - ハンズオン・ラボ 3.3 - Database と Cache の設定](../11-hol-3.3-configure-database-cache/README.md)
 
 ➡️ 次の作業: [13 - ハンズオン・ラボ 3.5 - Azure KeyVault の設定](../13-hol-3.5-configure-azure-keyvault/README.md)
