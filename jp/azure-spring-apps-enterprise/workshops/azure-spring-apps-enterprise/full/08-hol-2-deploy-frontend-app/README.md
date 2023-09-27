@@ -38,11 +38,9 @@ export KEY_VAULT=acme-fitness-kv-CHANGE-ME     # Azure Key Vault の一意の名
 source ./scripts/setup-keyvault-env-variables.sh
 ```
 
-環境変数を設定後、Azure KeyVault を作成します
+環境変数を設定後、Azure KeyVault の URI を取得します
 
 ```shell
-az keyvault create --name ${KEY_VAULT} -g ${RESOURCE_GROUP}
-
 export KEYVAULT_URI=$(az keyvault show --name ${KEY_VAULT} | jq -r '.properties.vaultUri')
 ```
 
