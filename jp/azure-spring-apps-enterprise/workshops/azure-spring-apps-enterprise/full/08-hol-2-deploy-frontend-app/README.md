@@ -29,7 +29,7 @@ cp ./scripts/setup-keyvault-env-variables-template.sh ./scripts/setup-keyvault-e
 
 ```shell
 export KEY_VAULT=acme-fitness-kv-CHANGE-ME     # Azure Key Vault の一意の名前。
-# CHANGE_ME の箇所を、3 の ARM テンプレートで作成された 4 文字に置き換えます。
+# CHANGE_ME の箇所を、3 の ARM テンプレートで作成された文字列に置き換えます。
 ```
 
 次に、環境変数の設定を有効にします：
