@@ -24,7 +24,7 @@ az ad app create --display-name ${AD_DISPLAY_NAME} > ad.json
 ```shell
 export APPLICATION_ID=$(cat ad.json | jq -r '.appId')
 
-az ad app credential reset --id ${APPLICATION_ID} --append > sso.json
+az ad app credential reset --id ${APPLICATION_ID} --append > ./resources/json/sso.json
 ```
 
 アプリケーションの登録に必要な Web リダイレクト先の URI を追加します。
@@ -50,7 +50,9 @@ az ad sp create --id ${APPLICATION_ID}
 事前に提供されるスクリプトを読み込んで環境設定を行い、環境変数が正しく設定されているかご確認ください。
 
 ```shell
-source ./scripts/setup-sso-variables-ad.sh
+cd ./scripts
+source ./setup-sso-variables-ad.sh
+cd ..
 
 echo ${CLIENT_ID}
 echo ${CLIENT_SECRET}
