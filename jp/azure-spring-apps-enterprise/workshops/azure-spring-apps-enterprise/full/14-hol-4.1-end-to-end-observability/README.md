@@ -6,6 +6,8 @@ Application Insights の Instrumentation Key を Java 以外のアプリケー�
 
 > ご注意: 将来のバージョンでは、Java 以外のアプリケーション用のビルドパックも Application Insights のバインディングをサポートし、このステップは不要になる予定です。
 
+Application Insights　のインストルメンテーション・キーを取得し、Key Vault に追加する
+
 ```shell
 export INSTRUMENTATION_KEY=$(az monitor app-insights component show --app ${APPLICATION_INSIGHTS} | jq -r '.connectionString')
 
