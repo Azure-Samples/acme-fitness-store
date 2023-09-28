@@ -6,6 +6,58 @@ Application Insights の Instrumentation Key を Java 以外のアプリケー�
 
 > ご注意: 将来のバージョンでは、Java 以外のアプリケーション用のビルドパックも Application Insights のバインディングをサポートし、このステップは不要になる予定です。
 
+```shell
+export INSTRUMENTATION_KEY=$(az monitor app-insights component show --app ${APPLICATION_INSIGHTS} | jq -r '.connectionString')
+
+az keyvault secret set --vault-name ${KEY_VAULT} \
+    --name "ApplicationInsights--ConnectionString" --value ${INSTRUMENTATION_KEY}
+```
+
+### サンプリングレートの更新
+
+Application Insights バインドのサンプリング・レートを増加します。
+
+```shell
+az spring build-service builder buildpack-binding set \
+    --builder-name default \
+    --name default \
+    --type ApplicationInsights \
+    --properties sampling-rate=100 connection_string=${INSTRUMENTATION_KEY}
+```
+
+### アプリケーションのリロード
+
+アプリケーションを再起動し設定をリロードします。Java アプリケーションでは、これにより新しいサンプリング・レートが有効になります。Java 以外のアプリケーションの場合、これにより、Key Vault からインストルメンテーション キーにアクセスできるようになります。
+
+```shell
+az spring app restart -n ${CART_SERVICE_APP}
+az spring app restart -n ${ORDER_SERVICE_APP}
+az spring app restart -n ${IDENTITY_SERVICE_APP}
+az spring app restart -n ${CATALOG_SERVICE_APP}
+az spring app restart -n ${PAYMENT_SERVICE_APP}
+```
+
+### アプリケーションのログ・ストリームを取得
+
+下記のコマンドを使用して、カタログ・サービスから最新の 100 行のアプリ・コンソール・ログを取得します
+
+```shell
+az spring app logs \
+    -n ${CATALOG_SERVICE_APP} \
+    --lines 100
+```
+
+`-f`　のパラメーターを追加することで、リアルタイムでアプリのログ・ストリーミングを取得できます。ストリーミングで、カタログ・サービスのログを表示してください
+
+
+```shell
+az spring app logs \
+    -n ${CATALOG_SERVICE_APP} \
+    -f
+```
+
+`az spring app logs -h` を使用して、より多くのパラメーターとログ・ストリーム機能を調べることができます。
+
 ### トラフィックの生成
 
 ACME Fitness Shop アプリケーションに対してトラフィックを生成します。アプリケーション内の画面を繊維し、カタログを表示したり、注文を行ったりします。
