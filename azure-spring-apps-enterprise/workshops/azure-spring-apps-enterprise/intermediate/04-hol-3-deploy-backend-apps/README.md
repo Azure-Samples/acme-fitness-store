@@ -52,7 +52,7 @@ wait
 
 ## 4. Bind apps to Service Registry
 
-Applications need to communicate with each other. As we learnt in [section before](../07-asa-e-components-overview/service-registry/README.md) ASA-E internally uses Tanzu Service Registry for dynamic service discovery. To achieve this, required services/apps need to be bound to the service registry using the commands below: 
+Applications need to communicate with each other. As we learnt in [section before](../../full/07-asa-e-components-overview/service-registry/README.md) ASA-E internally uses Tanzu Service Registry for dynamic service discovery. To achieve this, required services/apps need to be bound to the service registry using the commands below: 
 
 ```shell
 az spring service-registry bind --app ${PAYMENT_SERVICE_APP}
