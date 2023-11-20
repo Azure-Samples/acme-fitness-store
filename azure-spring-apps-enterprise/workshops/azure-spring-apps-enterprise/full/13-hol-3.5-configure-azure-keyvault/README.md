@@ -19,9 +19,13 @@ az keyvault secret set --vault-name ${KEY_VAULT} \
     --name "POSTGRES-SERVER-NAME" --value ${POSTGRES_SERVER_FULL_NAME}
 
 az keyvault secret set --vault-name ${KEY_VAULT} \
-    --name "ConnectionStrings--OrderContext" --value "Server=${POSTGRES_SERVER_FULL_NAME}; \
-     Database=${ORDER_SERVICE_DB};Port=5432;Ssl Mode=Require;User Id=${POSTGRES_SERVER_USER};Password=${POSTGRES_SERVER_PASSWORD}"
-    
+    --name "ConnectionStrings--OrderContext" \
+    --value "Server=${POSTGRES_SERVER_FULL_NAME}; \
+             Database=${ORDER_SERVICE_DB};Port=5432; \
+             SSL Mode=Require;Trust Server Certificate=true; \
+             User ID=${POSTGRES_SERVER_USER}; \
+             Password=${POSTGRES_SERVER_PASSWORD}"
+ 
 az keyvault secret set --vault-name ${KEY_VAULT} \
     --name "CATALOG-DATABASE-NAME" --value ${CATALOG_SERVICE_DB}
     

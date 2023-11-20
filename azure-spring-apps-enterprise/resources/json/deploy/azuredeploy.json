@@ -41,12 +41,12 @@
     "resources": [
         {
             "type": "Microsoft.Cache/Redis",
-            "apiVersion": "2021-06-01",
+            "apiVersion": "2023-08-01",
             "name": "[parameters('cacheName')]",
             "location": "[variables('location')]",
             "tags": "[parameters('tags')]",
             "properties": {
-                "redisVersion": "4.1.14",
+                "redisVersion": "6",
                 "sku": {
                     "name": "Basic",
                     "family": "C",
@@ -101,7 +101,7 @@
             "apiVersion": "2021-06-01",
             "name": "[concat(parameters('dbServerName'), '/azure.extensions')]",
             "dependsOn": [
-                "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('dbServerName'))]"
+                "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers/firewallRules', parameters('dbServerName'), 'allAzureIPs')]"
             ],
             "properties": {
                 "value": "uuid-ossp",
