@@ -1,0 +1,20 @@
+{
+    "ignorePatterns": [
+      {
+        "pattern": "^http://127.0.0.1"
+      },
+      {
+        "pattern": "^https://127.0.0.1"
+      },
+      {
+        "pattern": "^http://localhost"
+      },
+      {
+        "pattern": "^https://localhost"
+      },
+      {
+        "pattern": "^http://proxyserver"
+      }
+    ],
+    "aliveStatusCodes": [200]
+  }

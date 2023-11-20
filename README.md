@@ -11,6 +11,7 @@ description: "Deploy Microservice Apps to Azure"
 urlFragment: "acme-fitness-store"
 ---
 # ACME Fitness Store
+![Check Markdown Links](https://github.com/Azure-Samples/Azure-Spring-Cloud-Samples/actions/workflows/markdown-link-check.yml/badge.svg)
 
 ACME Fitness store is a fictional online retailer selling sporting goods. This repo contains the source code and deployment scripts for the ACME Fitness store application.
 
