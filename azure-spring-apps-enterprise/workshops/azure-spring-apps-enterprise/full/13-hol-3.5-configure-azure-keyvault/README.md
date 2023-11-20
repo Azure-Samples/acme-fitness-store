@@ -90,7 +90,7 @@ az keyvault set-policy --name ${KEY_VAULT} \
     --object-id ${IDENTITY_SERVICE_APP_IDENTITY} --secret-permissions get list
 ```
 
-> Note: Identity Service will not exist if you haven't completed [Section 10](../10-hol-4-configure-single-signon/README.md). Skip configuring an identity or policy for this service if not configuring Single Sign-On at this point.
+> Note: Identity Service will not exist if you haven't completed [Section 10](../12-hol-3.4-configure-single-signon/README.md). Skip configuring an identity or policy for this service if not configuring Single Sign-On at this point.
 
 ## 7. Activate applications to load secrets from Azure Key Vault
 

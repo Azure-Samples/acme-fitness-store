@@ -25,7 +25,7 @@ Goal of this workshop is to introduce users all the different components of ASA-
 
 [09 - HOL-3.1 - Deploy Acme Fitness Backend Apps](./09-hol-3.1-deploy-backend-apps/README.md)
 
-[10 - HOL-3.2 - Configure Applicatio Configuration Service and Service Registry](./10-hol-3.2-bind-apps-to-acs-service-reg/README.md)
+[10 - HOL-3.2 - Configure Application Configuration Service and Service Registry](./10-hol-3.2-bind-apps-to-acs-service-reg/README.md)
 
 [11 - HOL-3.3 - Configure Database and Cache](./11-hol-3.3-configure-database-cache/README.md)
 
