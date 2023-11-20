@@ -7,7 +7,7 @@ Azure Spring Apps Enterprise enables you to easily run Spring Boot and polyglot 
 This quickstart shows you how to deploy existing applications written in Java, Python, and C# to Azure. When you're 
 finished, you can continue to manage the application via the Azure CLI or switch to using the Azure Portal.
 
-* [Deploy Applications to Azure Spring Apps](#deploy-spring-boot-apps-to-azure)
+* [Deploy Applications to Azure Spring Apps](#deploy-spring-boot-apps-to-azure-spring-apps-enterprise)
   * [What will you experience](#what-will-you-experience)
   * [What you will need](#what-you-will-need)
   * [Install the Azure CLI extension](#install-the-azure-cli-extension)
