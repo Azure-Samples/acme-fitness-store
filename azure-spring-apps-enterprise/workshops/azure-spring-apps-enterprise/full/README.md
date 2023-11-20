@@ -13,7 +13,7 @@ Goal of this workshop is to introduce users all the different components of ASA-
 
 [03 - Environment Setup](./03-workshop-environment-setup/README.md)
 
-[04 - Create ASA-E Instance](./04-create-asa-e-instance/README.md)
+[04 - Configure Log Analytics workspace](./04-log-analytics-setup/README.md)
 
 [05 - HOL-1 - Deploy Hello World App](./05-hol-1-hello-world-app/README.md)
 

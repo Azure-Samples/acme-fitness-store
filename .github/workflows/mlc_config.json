@@ -19,6 +19,9 @@
         "pattern": "^http://example.com"
       },
       {
+        "pattern": "^https://example.com"
+      },
+      {
         "pattern": "^https://github.com/Azure-Samples/acme-fitness-store/invitations"
       }
     ],
