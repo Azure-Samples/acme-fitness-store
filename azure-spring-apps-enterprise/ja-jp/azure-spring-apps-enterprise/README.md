@@ -241,7 +241,7 @@ az spring create --name ${SPRING_APPS_SERVICE} \
     --build-pool-size S2 
 ```
 
-> 注: `create` コマンドが失敗した場合は、[ここで](#install-the-azure-cli-extension)説明する Azure Spring Apps 拡張機能を更新してみてください
+> 注: `create` コマンドが失敗した場合は、[ここで](#azure-cli-extension-のインストール)説明する Azure Spring Apps 拡張機能を更新してみてください
 
 > 注: サービス インスタンスのデプロイには約 10 分から 15 分かかります。
 
@@ -365,7 +365,7 @@ az spring build-service builder create -n ${CUSTOM_BUILDER} \
 
 前提条件：
 
-* [作業 0 - インストール環境の準備](#unit-0---prepare-environment) の完了
+* [作業 0 - インストール環境の準備](#作業-0---インストール環境の準備) の完了
 
 ### Azure Spring Apps でアプリケーションを作成
 
@@ -532,12 +532,12 @@ echo "https://${PORTAL_URL}"
 
 前提条件：
 
-* [作業 1 - アプリケーションのビルドとデプロイ](#unit-1---deploy-and-build-applications) の完了
+* [作業 1 - アプリケーションのビルドとデプロイ](#作業-1---アプリケーションのビルドとデプロイ) の完了
 * シングル サインオン ID プロバイダーに Azure Active Directory アプリケーションの登録または資格情報を管理するためのアクセス許可
 
 > 注意:
 > このユニットはオプション(省略可能)です。アプリケーションは、この作業を完了しなくても機能します。ログイン、カートへのアイテムの追加、注文の完了など、特定の機能だけが利用できません。 
-> その場合 SSO を構成せずに、[作業 3 - Azure Database for PostgreSQL および Azure Cache for Redis の統合](#unit-3---integrate-with-azure-database-for-postgresql-and-azure-cache-for-redis)に進み、ほかの作業を継続します。
+> その場合 SSO を構成せずに、[作業 3 - Azure Database for PostgreSQL および Azure Cache for Redis の統合](#作業-3---azure-database-for-postgresql-および-azure-cache-for-redis-の統合)に進み、ほかの作業を継続します。
 
 ### アプリケーションを Microsoft Entra ID (Azure AD) に登録
 
@@ -792,7 +792,7 @@ Azure クラウド・シェルもしくは Windows を使用している場合�
 echo "https://${PORTAL_URL}"
 ```
 
-> 保護された API にアクセスするには、承認をクリックし、SSO プロバイダーの指示に従ってください 。API ポータルを使用した API 承認の詳細については、[こちら](https://docs.vmware.com/en/API-portal-for-VMware-Tanzu/1.0/api-portal/GUID-api-viewer.html#api-authorization)を参照してください。
+> 保護された API にアクセスするには、承認をクリックし、SSO プロバイダーの指示に従ってください 。API ポータルを使用した API 承認の詳細については、[こちら](https://docs.vmware.com/en/API-portal-for-VMware-Tanzu/1.0/api-portal-1-0.pdf)を参照してください。
 
 ## 作業 3 - Azure Database for PostgreSQL および Azure Cache for Redis の統合
 
@@ -800,7 +800,7 @@ echo "https://${PORTAL_URL}"
 
 前提条件：
 
-* [作業 1 - アプリケーションのビルドとデプロイ](#unit-1---deploy-and-build-applications)の完了
+* [作業 1 - アプリケーションのビルドとデプロイ](#作業-1---アプリケーションのビルドとデプロイ)の完了
 
 ### 環境を準備
 
@@ -1063,8 +1063,8 @@ az spring app restart --name ${ORDER_SERVICE_APP}
 
 前提条件：
 
-* [作業 1 - アプリケーションのビルドとデプロイ](#unit-1---deploy-and-build-applications) の完了
-* [作業 3 - Azure Database for PostgreSQL および Azure Cache for Redis の統合](#unit-3---integrate-with-azure-database-for-postgresql-and-azure-cache-for-redis) の完了
+* [作業 1 - アプリケーションのビルドとデプロイ](#作業-1---アプリケーションのビルドとデプロイ) の完了
+* [作業 3 - Azure Database for PostgreSQL および Azure Cache for Redis の統合](#作業-3---azure-database-for-postgresql-および-azure-cache-for-redis-の統合) の完了
 
 ### Azure キー コンテナーを作成して機密情報を格納
 
@@ -1223,9 +1223,9 @@ az spring app update --name ${CART_SERVICE_APP} \
 
 前提条件：
 
-* [ユニット 1 - アプリケーションのデプロイとビルドの完了](#unit-1---deploy-and-build-applications)
-* [ユニット 3 - Azure Database for PostgreSQL および Azure Cache for Redis の統合の完了](#unit-3---integrate-with-azure-database-for-postgresql-and-azure-cache-for-redis)
-* [ユニット 4 の完了 - アプリケーション シークレットの安全な読み込み](#unit-4---securely-load-application-secrets)
+* [ユニット 1 - アプリケーションのデプロイとビルドの完了](#作業-1---アプリケーションのビルドとデプロイ)
+* [ユニット 3 - Azure Database for PostgreSQL および Azure Cache for Redis の統合の完了](#作業-3---azure-database-for-postgresql-および-azure-cache-for-redis-の統合)
+* [ユニット 4 の完了 - アプリケーション シークレットの安全な読み込み](#作業-4---アプリケーション内の機密情報の安全な読み込み)
 
 ### インストルメンテーション・キーを Key Vault に追加
 
@@ -1439,7 +1439,7 @@ Log Analytics ページで、`Logs` 画面を選択し、以下に示す Azure S
 
 前提条件：
 
-* [作業 1 - アプリケーションのビルドとデプロイ](#unit-1---deploy-and-build-applications)の完了
+* [作業 1 - アプリケーションのビルドとデプロイ](#作業-1---アプリケーションのビルドとデプロイ)の完了
 
 ### Spring Cloud Gateway RateLimit Filter
 
@@ -1687,7 +1687,7 @@ AZURE_LOCATION
 
 #### `JWK_SET_URI` を使用し OIDC_JWK_SET_URI シークレットを作成
 
-[作業 2](#unit-2---configure-single-sign-on) で定義した内容を利用します。
+[作業 2](#作業-2---シングル-サインオンの構成) で定義した内容を利用します。
 環境変数からも使用できます
 ```text
 OIDC_JWK_SET_URI
@@ -1695,20 +1695,20 @@ OIDC_JWK_SET_URI
 
 #### `CLIENT_ID` を使用して OIDC_CLIENT_ID シークレットを作成
 
-[作業 2](#unit-2---configure-single-sign-on) で定義され、環境変数でも使用できます
+[作業 2](#作業-2---シングル-サインオンの構成) で定義され、環境変数でも使用できます
 
 ```text
 OIDC_CLIENT_ID
 ```
 
 #### `CLIENT_SECRET` を使用して OIDC_CLIENT_SECRET シークレットを作成
-[作業 2](#unit-2---configure-single-sign-on) で定義され、環境変数としても使用できます
+[作業 2](#作業-2---シングル-サインオンの構成) で定義され、環境変数としても使用できます
 ```text
 OIDC_CLIENT_SECRET
 ```
 
 #### `ISSUER_URI`　を使用し OIDC_ISSUER_URI シークレットを作成
-[作業 2](#unit-2---configure-single-sign-on) で定義され、環境変数としても使用できます
+[作業 2](#作業-2---シングル-サインオンの構成) で定義され、環境変数としても使用できます
 ```text
 OIDC_ISSUER_URI
 ```

@@ -168,7 +168,7 @@ az spring api-portal update \
 echo "https://${PORTAL_URL}"
 ```
 
-保護された API にアクセスするには、認証をクリックし、SSOプ ロバイダーに合わせた手順で実行します。API　ポータルでの　API　認証についての詳細は、[こちら](https://docs.vmware.com/jp/API-portal-for-VMware-Tanzu/1.0/api-portal/GUID-api-viewer.html#api-authorization)をご参照ください。
+保護された API にアクセスするには、認証をクリックし、SSOプ ロバイダーに合わせた手順で実行します。API　ポータルでの　API　認証についての詳細は、[こちら](https://docs.vmware.com/en/API-portal-for-VMware-Tanzu/1.0/api-portal-1-0.pdf)をご参照ください。
 
 ## 5. アプリのテスト
 
