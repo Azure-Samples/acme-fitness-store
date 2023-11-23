@@ -608,7 +608,7 @@ az ad app update --id ${APPLICATION_ID} \
 
 ### 既存の SSO ID プロバイダーの使用
 
-> 注: Azure AD アプリケーションの登録を作成した場合は、[SSO を使用した Spring Cloud Gateway の構成](#configure-spring-cloud-gateway-with-sso) に進みます。
+> 注: Azure AD アプリケーションの登録を作成した場合は、[SSO を使用した Spring Cloud Gateway の構成](#ssoを使用したspringcloud-gateway-の設定) に進みます。
 
 
 既存の SSO ID プロバイダーを使用したい場合、既存のテンプレートをコピーします
@@ -1548,7 +1548,7 @@ To navigate to the Health page, select the Health option from the Information Ca
 
 GitHub Actions からこのサンプル アプリのデプロイを開始するには、以下を行ってください。
 
-1. [こちら](#register-application-with-azure-ad)で説明されている Azure AD アプリの登録を完了するか、もしくは、[こちらの](#using-an-existing-sso-identity-provider)説明に従って SSO 資格情報を準備します
+1. [こちら](#アプリケーションを-microsoft-entra-id-azure-ad-に登録)で説明されている Azure AD アプリの登録を完了するか、もしくは、[こちらの](#既存の-sso-id-プロバイダーの使用)説明に従って SSO 資格情報を準備します
 2. このリポジトリをフォークし、フォークしたレポジトリで GitHub Actions をオンにします
 
 
@@ -1909,7 +1909,7 @@ cd apps/acme-assist
 
 1. Assist アプリケーションで生成された出力を確認します
 
-   ![A screenshot of the ACME Fitness Store with FitAssist](../azure-spring-apps-enterprise/fitassist.png)
+   ![A screenshot of the ACME Fitness Store with FitAssist](../azure-spring-apps-enterprise/media/homepage-fitassist.png)
 
 
 ## 次の作業
