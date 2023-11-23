@@ -76,3 +76,5 @@ in [tanzu-application-platform/README.md](./tanzu-application-platform/README.md
 to deploy the application to TAP.
 
 
+## Notes
+ For Japanese-speaking audience, we invite you to access the [Japanese version](./azure-spring-apps-enterprise/ja-jp/). Thanks for contribution from @yoshioterada.
