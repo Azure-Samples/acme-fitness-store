@@ -4,7 +4,7 @@ There are two things that will be taken care of in this section.
 
 ## Create Azure Resources using ARM template
 
-As we had already noted in the prior sections and also as we go to next sections, there are quite a few number of resources that need to be in place to execute this workshop. As the goal of this workshop is to focus more on the app/service related tasks and less on the underlying infrastructre tasks, we are providing an Azure ARM template that will provision the required reources.
+As we had already noted in the prior sections and also as we go to next sections, there are quite a few number of resources that need to be in place to execute this workshop. As the goal of this workshop is to focus more on the app/service related tasks and less on the underlying infrastructure tasks, we are providing an Azure ARM template that will provision the required resources.
 
  - Resource Group
  - Azure Cache for Redis
@@ -18,7 +18,7 @@ Please right click on the below button and choose the Open in new tab option. Th
 
 [![Deploy to Azure](images/deploybutton.svg)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3a%2f%2fraw.githubusercontent.com%2fAzure-Samples%2facme-fitness-store%2fAzure%2fazure-spring-apps-enterprise%2fworkshops%2fazure-spring-apps-enterprise%2ffull%2f03-workshop-environment-setup%2facmedeploy.json)
 
-To know about the description of the fields, click on the little info icon next to every field. For the fields where default value is populated, the recommendation is to use the default for the first time use. The only field that needs to be popluated in here is the ``ObjectId``. To get the value for this field, perform the below steps
+To know about the description of the fields, click on the little info icon next to every field. For the fields where default value is populated, the recommendation is to use the default for the first time use. The only field that needs to be populated in here is the ``ObjectId``. To get the value for this field, perform the below steps
 
 - In Services tab, search for Azure Active Directory
 - On the left side, find ``Users`` link and click on that.
@@ -42,7 +42,7 @@ This workshop leverages Github Codespaces to provide a development environment f
 
 2. Upon getting the confirmation that you are added to the Org, navigate to https://github.com/Azure-Samples/acme-fitness-store/tree/Azure, click "Code" button. You should be able to "Codespaces" as an option listed. If you do not see that option listed, most probably you are not added to [Azure-Samples](https://github.com/Azure-Samples/) org or your github id is still not active in this org. Please discuss this issue with your workshop co-ordinator.
 
-3. Assuming the above steps are succesful, you should be able to open a terminal inside VS Code that opens up in Codespaces. Refer to this link to understand more about [Codespaces](https://github.com/CodeSpaces). This Codespace comes installed with the following software:
+3. Assuming the above steps are successful, you should be able to open a terminal inside VS Code that opens up in Codespaces. Refer to this link to understand more about [Codespaces](https://docs.github.com/codespaces). This Codespace comes installed with the following software:
    1. * [JDK 17](https://docs.microsoft.com/java/openjdk/download?WT.mc_id=azurespringcloud-github-judubois#openjdk-17)
    2. * The environment variable `JAVA_HOME` should be set to the path of the JDK installation. The directory specified by this path should have `bin`, `jre`, and `lib` among its subdirectories. Further, ensure your `PATH` variable contains the directory `${JAVA_HOME}/bin`. To test, type `which javac` into bash shell ensure the resulting path points to a file inside `${JAVA_HOME}/bin`.
    3. * [Azure CLI version 2.31.0 or higher](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest) version 2.31.0 or later. You can check the version of your current Azure CLI installation by running:
@@ -53,7 +53,7 @@ This workshop leverages Github Codespaces to provide a development environment f
 
 ### Prepare your environment for deployments
 
-This step should be completed only after the successful completion of the above step 1. However as step 1 takes 25-30 minutes to fully complete, but some resources like resrouce-group and within that key-vault, log-analytics and opertational-insights should be completed within 4-5 mins. You can use these completed resources as a reference to complete the steps below.
+This step should be completed only after the successful completion of the above step 1. However as step 1 takes 25-30 minutes to fully complete, but some resources like resource-group and within that key-vault, log-analytics and operational-insights should be completed within 4-5 mins. You can use these completed resources as a reference to complete the steps below.
 
 This and following steps should be completed from within the terminal of your VS Code in Github Codespaces.
 
@@ -68,7 +68,7 @@ export LOG_ANALYTICS_WORKSPACE=acme-fitness-la-CHANGE-ME   # By replacing CHANGE
 
 - To get the Subscription ID, go to Azure portal, in search bar type subscriptions. The results should display your subscription and its id.
 
-This env file comes with default values that were provided as part of arm template. It is recommended to leave the values as-is for the purpose of this workshop. If for any reason you updated these default values in the arm template, those values need to be entereted in here.
+This env file comes with default values that were provided as part of arm template. It is recommended to leave the values as-is for the purpose of this workshop. If for any reason you updated these default values in the arm template, those values need to be entered in here.
 
 Now, set the environment:
 

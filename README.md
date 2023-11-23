@@ -11,6 +11,7 @@ description: "Deploy Microservice Apps to Azure"
 urlFragment: "acme-fitness-store"
 ---
 # ACME Fitness Store
+![Check Markdown Links](https://github.com/Azure-Samples/acme-fitness-store/actions/workflows/markdown-link-check.yml/badge.svg)
 
 ACME Fitness store is a fictional online retailer selling sporting goods. This repo contains the source code and deployment scripts for the ACME Fitness store application.
 
@@ -41,7 +42,7 @@ The sample can be deployed to Azure Spring Apps Enterprise or Tanzu Application 
 | Directory                                                        | Purpose |
 | ---------------------------------------------------------------- | ------------- |
 | [apps/](./apps)                                                   | source code for the services  |
-| [azure-spring-apps-enterprise/](./azure-spring-apps-enterprise)   | documentaion and scripts for deploying to Azure Spring Apps Enterprise |
+| [azure-spring-apps-enterprise/](./azure-spring-apps-enterprise)   | documentation and scripts for deploying to Azure Spring Apps Enterprise |
 | [tanzu-application-platform/](./tanzu-application-platform)       | documentation and scripts for deploying to Tanzu Application Platform|
 
 ## Deploy Apps to Azure Spring Apps Enterprise (ASA-E)
@@ -52,7 +53,7 @@ polyglot applications on Azure. The quickstart guide in
 shows you how to deploy the ACME Fitness store application to Azure Spring Apps
  Enterprise.
 
-* [Deploy Applications to Azure Spring Apps](./azure-spring-apps-enterprise/README.md#deploy-spring-boot-apps-to-azure)
+* [Deploy Applications to Azure Spring Apps](./azure-spring-apps-enterprise/README.md#deploy-spring-boot-apps-to-azure-spring-apps-enterprise)
   * [What will you experience](./azure-spring-apps-enterprise/#what-will-you-experience)
   * [What you will need](./azure-spring-apps-enterprise/#what-you-will-need)
   * [Install the Azure CLI extension](./azure-spring-apps-enterprise/#install-the-azure-cli-extension)
