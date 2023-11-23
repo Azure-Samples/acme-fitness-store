@@ -541,7 +541,7 @@ echo "https://${PORTAL_URL}"
 
 ### アプリケーションを Microsoft Entra ID (Azure AD) に登録
 
-下記で、Azure AD を使用してシングル・サインオン・プロバイダーを作成する手順について説明します。 既存のプロバイダーを使用する場合、[既存の ID プロバイダーの使用](#using-an-existing-sso-identity-provider) に進んでください
+下記で、Azure AD を使用してシングル・サインオン・プロバイダーを作成する手順について説明します。 既存のプロバイダーを使用する場合、[既存の ID プロバイダーの使用](#既存の-sso-id-プロバイダーの使用) に進んでください
 
 アプリケーションを登録するために、一意の表示名を選択してください
 
@@ -677,7 +677,7 @@ echo "https://${PORTAL_URL}/oauth2-redirect.html"
 echo "https://${PORTAL_URL}/login/oauth2/code/sso"
 ```
 
-### SSO　を使用した　Spring　Cloud Gateway の設定
+### SSO を使用した Spring Cloud Gateway の設定
 
 #### SSO を有効にして Spring Cloud Gateway を構成
 
