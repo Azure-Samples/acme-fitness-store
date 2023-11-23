@@ -77,4 +77,4 @@ to deploy the application to TAP.
 
 
 ## Notes
- For Japanese-speaking audience, we invite you to access the [Japanese version](./azure-spring-apps-enterprise/ja-jp/). Thanks for contribution from @yoshioterada.
+ For Japanese-speaking audience, we invite you to access the [Japanese version](./azure-spring-apps-enterprise/ja-jp/). 日本語を話す皆様へ、[日本語版](./azure-spring-apps-enterprise/ja-jp/)にアクセスいただくようお勧めいたします。Thanks for contribution from @yoshioterada.

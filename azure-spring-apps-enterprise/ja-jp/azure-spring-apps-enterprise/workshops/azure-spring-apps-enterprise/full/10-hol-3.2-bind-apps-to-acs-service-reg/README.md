@@ -31,7 +31,7 @@ wait
 
 ## 2. Service Registry にアプリケーションをバインド
 
-アプリケーションは互いに通信する必要があります。[前のワークショップ](../07-asa-e-components-overview/service-registry/README-jp.md)で学んだように、ASA-E は内部的に Tanzu Service Registry を使用して動的にサービスのディスカバリーを行います。これを実現するために、サービス/アプリは以下のコマンドを実行して、Service Registry にバインドする必要があります:
+アプリケーションは互いに通信する必要があります。[前のワークショップ](../07-asa-e-components-overview/service-registry/README.md)で学んだように、ASA-E は内部的に Tanzu Service Registry を使用して動的にサービスのディスカバリーを行います。これを実現するために、サービス/アプリは以下のコマンドを実行して、Service Registry にバインドする必要があります:
 
 ```shell
 az spring service-registry bind --app ${PAYMENT_SERVICE_APP}

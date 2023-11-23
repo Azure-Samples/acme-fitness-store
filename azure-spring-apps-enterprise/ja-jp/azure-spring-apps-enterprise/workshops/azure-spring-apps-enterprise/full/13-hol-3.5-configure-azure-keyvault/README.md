@@ -91,7 +91,7 @@ az keyvault set-policy --name ${KEY_VAULT} \
     --object-id ${IDENTITY_SERVICE_APP_IDENTITY} --secret-permissions get list
 ```
 
-> ご注意：[12 - ハンズオン・ラボ 3.4 シングル・サイン・オンの設定](../12-hol-3.4-configure-single-signon/README-jp.md)を完了していない場合、Identity Service は存在していません。シングル・サイン・オンを設定していない場合、この設定をスキップしてください。
+> ご注意：[12 - ハンズオン・ラボ 3.4 シングル・サイン・オンの設定](../12-hol-3.4-configure-single-signon/README.md)を完了していない場合、Identity Service は存在していません。シングル・サイン・オンを設定していない場合、この設定をスキップしてください。
 
 ## 7. Azure Key Vault から機密情報を読み込むためのアプリケーション設定
 
