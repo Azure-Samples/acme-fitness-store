@@ -60,7 +60,7 @@ Azure Key Vault は一旦作成すると、リソースを削除した後も、�
 
 2. 組織に追加されたと表示された後、[https://github.com/Azure-Samples/acme-fitness-store/tree/Azure](https://github.com/Azure-Samples/acme-fitness-store/tree/Azure) に移動し、[コード]ボタンをクリックしてください。リストされているオプションとして「Codespaces」を実行できるようになっています。Codespaces のオプションが表示されない場合、Azure-Samples の組織に GitHub の ID が追加されていないかもしくは、まだアクティブになっていない可能性があります。表示されない場合は、ワークショップのコーディネーターにお声掛けください。
 
-3. 上記の手順が成功した場合、Codespaces の中で VSCode のターミナルを開くことができるようになります。詳細は [Codespaces](https://github.com/codespaces) をご参照ください。
+3. 上記の手順が成功した場合、Codespaces の中で VSCode のターミナルを開くことができるようになります。詳細は [Codespaces](https://docs.github.com/codespaces) をご参照ください。
 
 	この Codespaces の環境には、次のソフトウェアがインストールされています。
 

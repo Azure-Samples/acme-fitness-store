@@ -14,7 +14,7 @@ Github Codespaces を利用して、開発環境・実行環境を構築可能�
 
 2. GitHu Codespaces へのアクセス許可が与えられた後、[https://github.com/Azure-Samples/acme-fitness-store/tree/Azure に移動し、「Code」ボタンをクリックしてください。リストされているオプションとして「codespaces」が実行できるようになっています。このオプションが表示されない場合は、Azure-Samples 組織に追加されていないか、Github ID が組織でまだアクティブになっていない可能性があります。この問題についてワークショップコーディネーターにご相談ください。招待状が送信されたメールが場合は、https://github.com/Azure-Samples/acme-fitness-store/invitations にアクセスして直接申請できます。
 
-3. 上記の手順が成功した場合、Codespaces の VSCode 内でターミナルを開くことができるようになっています。Codespaces の詳細については、[こちら](https://github.com/CodeSpaces)をご参照ください。この Codespaces の環境では、次のソフトウェアがインストールされています。
+3. 上記の手順が成功した場合、Codespaces の VSCode 内でターミナルを開くことができるようになっています。Codespaces の詳細については、[こちら](https://docs.github.com/codespaces)をご参照ください。この Codespaces の環境では、次のソフトウェアがインストールされています。
    1. * [JDK 17](https://docs.microsoft.com/java/openjdk/download?WT.mc_id=azurespringcloud-github-judubois#openjdk-17)
    2. * 環境変数は、`JAVA_HOME` は JDK のインストール・パスを設定する必要があります。このパスで指定するディレクトリには、`bin`, `jre`, `lib` とそのサブディレクトリが必要です。さらに、`PATH` 変数に `${JAVA_HOME}/bin` ディレクトリが含まれていることも確認してください。テストするには、bashシェルに `which javac` 入力して、結果のパスが内のファイルを指していることを確認します。
    3. * [Azure CLI バージョン 2.31.0](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest) 以降のバージョン。現在の Azure CLI インストールのバージョンを確認するには、次のコマンドを実行してください。

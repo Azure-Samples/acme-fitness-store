@@ -5,7 +5,7 @@ Azure Spring Apps Enterprise を使用すると、Azure 上で Spring Boot ア�
 
 このクイック スタートでは、Java、Python、C# で記述された既存のアプリケーションを Azure にデプロイする方法について説明します。完了すると、Azure CLI もしくは Azure ポータルを使用して引き続きアプリケーションを管理できます。
 
-* [Azure Spring Apps へのアプリケーションのデプロイ](#deploy-spring-boot-apps-to-azure)
+* [Azure Spring Apps へのアプリケーションのデプロイ](#spring-boot-apps-を-azure-spring-apps-enterprise-にデプロイする)
   * [本ワークショップで得られる内容](#本ワークショップで得られる内容)
   * [事前準備](#事前準備)
   * [Azure CLI extension のインストール](#azure-cli-extension-のインストール)
@@ -59,7 +59,7 @@ Azure Spring Apps Enterprise を使用すると、Azure 上で Spring Boot ア�
 
 ## 事前準備
 
-Azure 上に Java アプリケーションをデプロイするため、Azure サブスクリプションが必要です。 Azure のアカウントをお持ちでない場合、[MSDN サブスクライバーの特典](https://azure.microsoft.com/pricing/member-offers/msdn-benefits-details/)を有効にするか、もしくは[無料の Azure アカウント]((https://azure.microsoft.com/free/))を作成してください。
+Azure 上に Java アプリケーションをデプロイするため、Azure サブスクリプションが必要です。 Azure のアカウントをお持ちでない場合、[MSDN サブスクライバーの特典](https://azure.microsoft.com/pricing/member-offers/msdn-benefits-details/)を有効にするか、もしくは[無料の Azure アカウント](https://azure.microsoft.com/free/)を作成してください。
 
 さらに、次のものが必要になります。
 
@@ -1922,7 +1922,7 @@ Azure Spring Apps もしくは VMware Tanzu コンポーネントの詳細は下
 * [Deploy Spring Apps from scratch](https://github.com/microsoft/azure-spring-cloud-training)
 * [Deploy existing Spring Apps](https://github.com/Azure-Samples/azure-spring-cloud)
 * [Azure for Java Cloud Developers](https://docs.microsoft.com/en-us/azure/java/)
-* [Spring Cloud Azure](https://cloud.spring.io/spring-cloud-azure/)
+* [Spring Cloud Azure](https://spring.io/projects/spring-cloud-azure)
 * [Spring Cloud](https://spring.io/projects/spring-cloud)
 * [Spring Cloud Gateway](https://docs.vmware.com/en/VMware-Spring-Cloud-Gateway-for-Kubernetes/index.html)
 * [API Portal](https://docs.vmware.com/en/API-portal-for-VMware-Tanzu/index.html)

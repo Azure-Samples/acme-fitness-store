@@ -49,7 +49,7 @@ ACME Fitness Store は、架空のスポーツ用品を販売するオンライ�
 Azure Spring Apps Enterprise を使用すると、Azure 上で Spring Boot や 多言語のアプリケーションを動作させることができます。
 azure-spring-apps-enterprise/README.md のクイックスタート ガイドでは、ACME Fitness ストア・アプリケーションを Azure Spring Apps Enterprise にデプロイする方法について記載しています。
 
-* [Azure Spring Apps へのアプリケーションのデプロイ](./azure-spring-apps-enterprise/README.md#deploy-spring-boot-apps-to-azure)
+* [Azure Spring Apps へのアプリケーションのデプロイ](./azure-spring-apps-enterprise/README.md#spring-boot-apps-を-azure-spring-apps-enterprise-にデプロイする)
   * [本ワークショップで得られる内容](./azure-spring-apps-enterprise/README.md#本ワークショップで得られる内容)
   * [事前準備](./azure-spring-apps-enterprise/README.md#事前準備)
   * [Azure CLI extension のインストール](./azure-spring-apps-enterprise/README.md#azure-cli-extension-のインストール)
@@ -67,4 +67,4 @@ azure-spring-apps-enterprise/README.md のクイックスタート ガイドで�
 ## Tanzuアプリケーションプラットフォーム(TAP)へのアプリのデプロイ
 
 Tanzuアプリケーションプラットフォーム(TAP) を使用すると、多言語アプリを CNCF に準拠する Kubernetes クラスター上に、簡単に構築して実行できます。
-[tanzu-application-platform/README.md](./tanzu-application-platform/README.md) の記載内容に従い、アプリケーションを TAP にデプロイします。
+[tanzu-application-platform/README.md](../../tanzu-application-platform/README.md) の記載内容に従い、アプリケーションを TAP にデプロイします。

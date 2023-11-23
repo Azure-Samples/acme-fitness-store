@@ -1,9 +1,9 @@
 ここでは、前の作業でデプロイしたバックエンド・アプリを Application Config Service と Service Registry にバインドする方法を説明します。
 
 下記に、Application Configuration Service と Service Registry にバインドする手順を示します。
-- [1. Application Configuration Service の作成](#1-create-application-configuration-service)
-  - [1.1. Application Configuration Service でアプリケーションの設定](#11-configure-apps-to-application-configuration-service)
-- [2. Service Registry にアプリケーションをバインド](#2-bind-apps-to-service-registry)
+- [1. Application Configuration Service の作成](#1-application-configuration-service-の作成)
+  - [1.1. Application Configuration Service でアプリケーションの設定](#11-application-configuration-service-でアプリケーションの設定)
+- [2. Service Registry にアプリケーションをバインド](#2-service-registry-にアプリケーションをバインド)
 
 
 ## 1. Application Configuration Service の作成]

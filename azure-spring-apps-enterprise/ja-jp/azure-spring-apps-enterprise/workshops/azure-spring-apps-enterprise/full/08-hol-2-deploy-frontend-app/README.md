@@ -6,13 +6,13 @@
 
 以下は、アプリケーション・サービスを正常にデプロイするための手順です
 
-- [1. Application Insights のサンプリングレートを設定](#1-configure-sampling-rate-for-application-insights)
-  - [1.1. サンプリングレートの更新](#11-update-sampling-rate)
-- [2. フロント・エンド・アプリケーションを Azure Spring Apps に作成しデプロイ](#2-create-and-deploy-frontend-application-in-azure-spring-apps)
-- [3. Spring Cloud Gateway の設定](#3-configure-spring-cloud-gateway)
-  - [3.1. アプリケーションのルーティング・ルールを作成](#31-create--routing-rules-for-the-applications)
-- [4. Spring Cloud Gateway 経由でアプリケーションにアクセス](#4-access-the-application-through-spring-cloud-gateway)
-- [5. API ポータルで API を確認](#5-explore-the-api-using-api-portal)
+- [1. Application Insights のサンプリングレートを設定](#1-application-insights-のサンプリングレートを設定)
+  - [1.1. サンプリングレートの更新](#11-サンプリングレートの更新)
+- [2. フロント・エンド・アプリケーションを Azure Spring Apps に作成しデプロイ](#2-フロントエンドアプリケーションを-azure-spring-apps-に作成しデプロイ)
+- [3. Spring Cloud Gateway の設定](#3-spring-cloud-gateway-の設定)
+  - [3.1. アプリケーションのルーティング・ルールを作成](#31-アプリケーションのルーティングルールを作成)
+- [4. Spring Cloud Gateway 経由でアプリケーションにアクセス](#4-spring-cloud-gateway-経由でアプリケーションにアクセス)
+- [5. API ポータルで API を確認](#5-api-ポータルで-api-を確認)
 
 ## 1. Application Insights のサンプリングレートを設定
 

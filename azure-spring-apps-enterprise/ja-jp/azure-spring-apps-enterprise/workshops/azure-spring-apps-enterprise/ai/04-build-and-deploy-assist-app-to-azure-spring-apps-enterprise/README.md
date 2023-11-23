@@ -54,7 +54,7 @@
 
 1. Assist アプリケーションで生成された出力を確認します
 
-   ![A screenshot of the ACME Fitness Store with FitAssist](../../../../media/fitassist.png)
+   ![A screenshot of the ACME Fitness Store with FitAssist](../../../../media/homepage-fitassist.png)
 
 1. おめでとうございます！多言語対応の電子商取引アプリケーションに AI の機能を追加する事ができました。
 
@@ -69,7 +69,7 @@ Azure Spring Apps や VMware Tanzu コンポーネントについてさらに詳
 * [Deploy Spring Apps from scratch](https://github.com/microsoft/azure-spring-cloud-training)
 * [Deploy existing Spring Apps](https://github.com/Azure-Samples/azure-spring-cloud)
 * [Azure for Java Cloud Developers](https://docs.microsoft.com/en-us/azure/java/)
-* [Spring Cloud Azure](https://cloud.spring.io/spring-cloud-azure/)
+* [Spring Cloud Azure](https://spring.io/projects/spring-cloud-azure)
 * [Spring Cloud](https://spring.io/projects/spring-cloud)
 * [Spring Cloud Gateway](https://docs.vmware.com/en/VMware-Spring-Cloud-Gateway-for-Kubernetes/index.html)
 * [API Portal](https://docs.vmware.com/en/API-portal-for-VMware-Tanzu/index.html)
