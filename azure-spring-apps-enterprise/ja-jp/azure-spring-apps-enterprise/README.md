@@ -36,7 +36,7 @@ Azure Spring Apps Enterprise を使用すると、Azure 上で Spring Boot ア�
 
 次の図は、このガイドで使用する ACME フィットネスストアのアーキテクチャを示しています。
 
-![ACME フィットネス・ストアの関連サービスを示す画像。アプリケーションと依存関係を示す](./media/acme-fitness-store-architecture.jpg)
+![ACME フィットネス・ストアの関連サービスを示す画像。アプリケーションと依存関係を示す](../../media/acme-fitness-store-architecture.jpg)
 
 このアプリケーションは、いくつかのサービスから構成されています。
 
@@ -389,7 +389,7 @@ az spring app create --name ${FRONTEND_APP} --instance-count 1 --memory 1Gi
 
 Azure ポータルを確認し、すべてのサービス(4サービスおよびフロントエンドアプリ)が作成されていることを確認してください。下記のように表示されます。
 
-![An image of the ACME Fitness Store Applications List](./media/AppServicesCreated.jpg)
+![An image of the ACME Fitness Store Applications List](../../media/AppServicesCreated.jpg)
 
 
 ### Application Configuration サービスにバインド
@@ -505,7 +505,7 @@ echo "https://${GATEWAY_URL}"
 
 ACME フィットネス・ストア・アプリケーションが表示されます。
 
-![An image of the ACME Fitness Store Application homepage](./media/homepage.png)
+![An image of the ACME Fitness Store Application homepage](../../media/homepage.png)
 
 アプリケーションを操作できるようになりましたが、まだすべてが機能しているわけではないことにご注意ください。`作業 2 - シングル サインオンの構成` 以降を構成して、残りの機能を有効にします。
 
@@ -1307,40 +1307,40 @@ Azure Spring Apps で作成した Application Insights を開き、Spring Boot �
 
 #### `Application Map` の画面に移動
 
-![An image showing the Application Map of Azure Application Insights](media/fitness-store-application-map.jpg)
+![An image showing the Application Map of Azure Application Insights](../../media/fitness-store-application-map.jpg)
 
 #### `Peformance` の画面に移動
 
-![An image showing the Performance Blade of Azure Application Insights](media/performance.jpg)
+![An image showing the Performance Blade of Azure Application Insights](../../media/performance.jpg)
 
 #### `Performance/Dependenices` の画面に移動
 
 依存関係、特に SQL 呼び出しのパフォーマンスを確認できます
 
-![An image showing the Dependencies section of the Performance Blade of Azure Application Insights](media/performance_dependencies.jpg)
+![An image showing the Dependencies section of the Performance Blade of Azure Application Insights](../../media/performance_dependencies.jpg)
 
 #### `Performance/Roles` 画面に移動
 
 個々のインスタンスまたはロールのパフォーマンス・メトリクスを確認できます
 
-![An image showing the Roles section of the Performance Blade of Azure Application Insights](media/fitness-store-roles-in-performance-blade.jpg)
+![An image showing the Roles section of the Performance Blade of Azure Application Insights](../../media/fitness-store-roles-in-performance-blade.jpg)
 
 SQL 呼び出しをクリックすると、エンドツーエンドのトランザクションがコンテキストで表示されます。
 
-![An image showing the end-to-end transaction of a SQL call](media/fitness-store-end-to-end-transaction-details.jpg)
+![An image showing the end-to-end transaction of a SQL call](../../media/fitness-store-end-to-end-transaction-details.jpg)
 
 #### `Failures` と `Exceptions` の画面に移動 
 
 例外の一覧を確認できます
 
-![An image showing application failures graphed](media/fitness-store-exceptions.jpg)
+![An image showing application failures graphed](../../media/fitness-store-exceptions.jpg)
 
 ####　`Metrics` の画面に移動
 
 Spring Boot アプリ、Spring Cloud のモジュールと依存関係で提供されるメトリックを確認できます。 
 以下のチャートは、 `http_server_requests` と `Heap Memory Used` を示しています。
 
-![An image showing metrics over time](media/metrics.jpg)
+![An image showing metrics over time](../../media/metrics.jpg)
 
 Spring Boot　は、JVM、CPU、Tomcat、Logback　など、多くのコアメトリックを登録します。 Spring Boot の auto-configuration により、Spring MVC で処理するリクエストのインストルメンテーションが可能になります。
 
@@ -1353,13 +1353,13 @@ Spring Boot　は、JVM、CPU、Tomcat、Logback　など、多くのコアメ�
 
 #### `Metrics` 画面でカスタムメトリクスを確認
 
-![An image showing custom metrics instrumented by Micrometer](media/fitness-store-custom-metrics-with-payments-2.jpg)
+![An image showing custom metrics instrumented by Micrometer](../../media/fitness-store-custom-metrics-with-payments-2.jpg)
 
 #### `Live Metrics` 画面に移動
 
 ライブ メトリックは、1 秒より短い待機時間で画面に表示されます
 
-![An image showing the live metrics of all applications](media/live-metrics.jpg)
+![An image showing the live metrics of all applications](../../media/live-metrics.jpg)
 
 ### Azure Log Analytics で ACME フィットネス・ストアのログとメトリックの監視を開始
 
@@ -1377,7 +1377,7 @@ Log Analytics ページで、`Logs` 画面を選択し、以下に示す Azure S
     | project TimeGenerated, AppName, Log
 ```
 
-![Example output from all application logs query](media/all-app-logs-in-log-analytics.jpg)
+![Example output from all application logs query](../../media/all-app-logs-in-log-analytics.jpg)
 
 #### Kusto クエリを実行し、 `catalog-service` アプリケーション・ログを表示
 
@@ -1389,7 +1389,7 @@ Log Analytics ページで、`Logs` 画面を選択し、以下に示す Azure S
     | project TimeGenerated, AppName, Log
 ```
 
-![Example output from catalog service logs](media/catalog-app-logs-in-log-analytics.jpg)
+![Example output from catalog service logs](../../media/catalog-app-logs-in-log-analytics.jpg)
 
 #### Kusto クエリを実行し、各アプリでスローされたエラーと例外を確認
 
@@ -1402,7 +1402,7 @@ Log Analytics ページで、`Logs` 画面を選択し、以下に示す Azure S
     | render piechart
 ```
 
-![An example output from the Ingress Logs](media/ingress-logs-in-log-analytics.jpg)
+![An example output from the Ingress Logs](../../media/ingress-logs-in-log-analytics.jpg)
 
 #### Kusto クエリを実行し、Azure Spring Apps のインバウンの呼び出しをすべてを表示
 
@@ -1420,7 +1420,7 @@ Log Analytics ページで、`Logs` 画面を選択し、以下に示す Azure S
     | project TimeGenerated,Log
 ```
 
-![An example out from the Spring Cloud Gateway Logs](media/spring-cloud-gateway-logs-in-log-analytics.jpg)
+![An example out from the Spring Cloud Gateway Logs](../../media/spring-cloud-gateway-logs-in-log-analytics.jpg)
 
 #### Kusto クエリを実行し、Azure Spring Apps で管理する Spring Cloud Service Registry のすべてのログを表示
 
@@ -1430,7 +1430,7 @@ Log Analytics ページで、`Logs` 画面を選択し、以下に示す Azure S
     | project TimeGenerated, Log
 ```
 
-![An example output from service registry logs](media/service-registry-logs-in-log-analytics.jpg)
+![An example output from service registry logs](../../media/service-registry-logs-in-log-analytics.jpg)
 
 ## 作業 6 - リクエスト数に対するレート制限の設定
 
@@ -1528,18 +1528,18 @@ echo "https://${SPRING_DEV_TOOL}/app-live-view"
 To navigate to the Health page, select the Health option from the Information Category drop-down.
 ヘルス・ページに移動するには、Information Category ドロップダウンから Health オプションを選択します
 
-![An example output from app live view health](media/health.png)
+![An example output from app live view health](../../media/health.png)
 
 #### メモリー・ページ
 
 メモリ・ページに移動するには、Information Category ドロップダウンからメモリ・オプションを選択します
 
-![An example output from app live view memory](media/memory.png)
+![An example output from app live view memory](../../media/memory.png)
 
 #### スレッド・ページ
 スレッド・ページに移動するには、Information Category ドロップダウンからスレッド・オプションを選択します
 
-![An example output from app live view threads](media/threads.png)
+![An example output from app live view threads](../../media/threads.png)
 
 ## 作業 7 - アイデアから生産までの自動化
 
@@ -1732,7 +1732,7 @@ key                  = "dev.terraform.tfstate"
 
 #### GitHub Actions シークレット設定完了
 完了すると、(8つの秘密鍵)の内容が表示されます
-![Output from GithubSecretsSetup](media/GitHubSecretsSetup.jpg)
+![Output from GithubSecretsSetup](../../media/GitHubSecretsSetup.jpg)
 
 ### GitHub Actions　の実行
 
@@ -1740,17 +1740,17 @@ Now you can run GitHub Actions in your repository. The `provision` workflow will
 
 以上で、GitHub Actions を実行できます。`provision` のワークフローは、最初の 4 つのユニットで作成されたすべてのリソースがプロビジョニングされます。実行例を以下に示します。
 
-![Output from the provision workflow](media/provision.png)
+![Output from the provision workflow](../../media/provision.png)
 
 > 注: プロビジョニング・ワークフロー全体の処理時間は約 60 分かかります
 
 各アプリケーションには、そのアプリケーションに変更が加えられたときにアプリケーションを再デプロイする  `Deploy` ワークフローがあります。カタログ・サービスの出力例を下記に示します
 
-![Output from the Deploy Catalog workflow](media/deploy-catalog.png)
+![Output from the Deploy Catalog workflow](../../media/deploy-catalog.png)
 
 `cleanup` ワークフローを手動で実行し、`provision` ワークフローで作成された、すべてのリソースを削除できます。出力は下記のように表示されます。
 
-![Output from the cleanup workflow](media/cleanup.png)
+![Output from the cleanup workflow](../../media/cleanup.png)
 
 ## 作業 8 - フィットネス・ストアに AI を適用
 
@@ -1798,7 +1798,7 @@ Now you can run GitHub Actions in your repository. The `provision` workflow will
    You can check the resource has been created in Azure Portal under `Azure AI Services`, e.g.
    Azure ポータルでリソースが作成されたことを確認します。`Azure AI Services` の下に下記のように表示されます。
 
-   ![A screenshot of the Azure AI services.](./media/openai-azure-ai-services.png)
+   ![A screenshot of the Azure AI services.](../../media/openai-azure-ai-services.png)
 
 1. Azure OpenAI サービスに `text-embedding-ada-002` と `gpt-35-turbo-16k` のモデルをデプロイします。
 
@@ -1824,21 +1824,21 @@ Now you can run GitHub Actions in your repository. The `provision` workflow will
 
    この手順は、 `Azure AI Studio` でも実行できます。Open AI サービスの `Deployments` から `Azure AI Studio` に移動し `Manage Deployments` ボタンをクリックすると、移動できます。
 
-   ![A screenshot of the Azure Portal OpenAI Services deployments.](./media/openai-azure-ai-services-deployments.png)
+   ![A screenshot of the Azure Portal OpenAI Services deployments.](../../media/openai-azure-ai-services-deployments.png)
 
    もしくは、直接リンク [https://oai.azure.com/](https://oai.azure.com/) をクリックすることでアクセスできます
 
-   ![A screenshot of the Azure AI Studio with no deployments.](./media/openai-azure-ai-studio-deployments-01.png)
+   ![A screenshot of the Azure AI Studio with no deployments.](../../media/openai-azure-ai-studio-deployments-01.png)
 
-   ![A screenshot of the Azure AI Studio creating first deployment.](./media/openai-azure-ai-studio-deployments-02.png)
+   ![A screenshot of the Azure AI Studio creating first deployment.](../../media/openai-azure-ai-studio-deployments-02.png)
 
-   ![A screenshot of the Azure AI Studio creating second deployment.](./media/openai-azure-ai-studio-deployments-03.png)
+   ![A screenshot of the Azure AI Studio creating second deployment.](../../media/openai-azure-ai-studio-deployments-03.png)
 
 1. `azure-spring-apps-enterprise/scripts/setup-ai-env-variables.sh` の値を編集します。
 
     * エンドポイントと API キー - Azure Portal の OpenAI インスタンスで `Keys and Endpoint` の箇所をオンにします
     
-     ![A screenshot of the Azure Portal OpenAI instance.](./media/openai-azure-ai-services-api-key.png)    
+     ![A screenshot of the Azure Portal OpenAI instance.](../../media/openai-azure-ai-services-api-key.png)    
     * `gpt-35-turbo-16k`　のようにすでにに定義したモデルを使用する場合は、`AZURE_OPENAI_CHATDEPLOYMENTID` を使用します。
     * `text-embedding-ada-002` のようにすでに定義したモデルを使用する場合は、`AZURE_OPENAI_EMBEDDINGDEPLOYMENTID` を使用します。
     * `AI_APP` は `assist-service`　のようなデフォルトの値を使用します。
@@ -1904,7 +1904,7 @@ cd apps/acme-assist
    I need a bike for a commute to work.
    ```
 
-   ![A screenshot of the ACME Fitness Store.](./media/homepage.png)
+   ![A screenshot of the ACME Fitness Store.](../../media/homepage.png)
 
 1. Assist アプリケーションで生成された出力を確認します
 

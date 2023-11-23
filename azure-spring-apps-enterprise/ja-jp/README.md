@@ -15,7 +15,7 @@ urlFragment: "acme-fitness-store"
 ACME Fitness Store は、架空のスポーツ用品を販売するオンライン・ショップです。このリポジトリで、ACME Fitness Store アプリケーションのソース・コードとデプロイ用スクリプトを提供しています。
 
 ## ハイ・レベルのアーキテクチャ
-![An image showing the services involved in the ACME Fitness Store. It depicts the applications and their dependencies](./azure-spring-apps-enterprise/media/acme-fitness-store-architecture.jpg)
+![An image showing the services involved in the ACME Fitness Store. It depicts the applications and their dependencies](../media/acme-fitness-store-architecture.jpg)
 
 このアプリケーションは、下記の複数のサービスから構成されています。
 
