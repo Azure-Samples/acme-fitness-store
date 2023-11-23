@@ -4,7 +4,7 @@
 
 下記の図は、このワークショップで使用する ACME Fitness Store のアーキテクチャを示しています。
 
-![An image showing the services involved in the ACME Fitness Store. It depicts the applications and their dependencies](../../../../media/acme-fitness-store-architecture.jpg)
+![An image showing the services involved in the ACME Fitness Store. It depicts the applications and their dependencies](../../../../../../media/acme-fitness-store-architecture.jpg)
 
 ワークショップのインストラクターに相談し、事前に作成しているものは何か、ログイン方法や、Azure Spring Apps 環境へのアクセス方法を理解してください。
 

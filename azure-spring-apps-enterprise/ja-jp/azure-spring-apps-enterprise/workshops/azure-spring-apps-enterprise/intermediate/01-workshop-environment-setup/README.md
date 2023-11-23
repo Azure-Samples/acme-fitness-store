@@ -93,11 +93,11 @@ Github Codespaces を利用して、開発環境・実行環境を構築可能�
 
 Azure ポータルにログインし、クラウド・シェルから bash プロンプトを開く
 
-![Alt text](../../../../media/cloudshell.png?raw=true "Optional Title")
+![Alt text](../../../../../../media/cloudshell.png?raw=true "Optional Title")
 
 ドロップダウンで、利用するシェルが Bash シェルとして選択されていることを確認してください
 
-![Alt text](../../../../media/bashshell.png?raw=true "Optional Title")
+![Alt text](../../../../../../media/bashshell.png?raw=true "Optional Title")
 
 ## Git Bash
 
@@ -114,7 +114,7 @@ jq-win64.exe の名前を jq.exe に変更し PATH に追加してください
 9. Visual Studio Code > ファイル> [フォルダーを開く] を開き>手順 8 で作成したフォルダーを選択します
 10. Visual Studio Code > ターミナル>新しいターミナルを開く > 右下の + をクリックし、GitBash を選択します。
 
-![Alt text](../../../../media/gitbash.png?raw=true "Git Bash in VS Code Terminal")
+![Alt text](../../../../../../media/gitbash.png?raw=true "Git Bash in VS Code Terminal")
 
 ## デプロイ用の環境準備 (Codespaces/Cloud Shell/Git Bash) 
 
@@ -259,14 +259,14 @@ az monitor log-analytics workspace create \
 
 1. Azure ポータルにログイン>上部の検索バーで Log Analytics ワークスペースを検索してください
 
-    ![Alt text](../../../../media/la.png?raw=true "Git Bash in VS Code Terminal")
+    ![Alt text](../../../../../../media/la.png?raw=true "Git Bash in VS Code Terminal")
 
 2. Log Analytics workspaces の選択
     Create Resource Group:　Azure Spring Apps と同じリソース・グループを指定してください
     Name: 任意の名前を指定してください
     Review + Create をクリックしワークスペースを作成してください
 
-    ![Alt text](../../../../media/la2.png?raw=true "Git Bash in VS Code Terminal")
+    ![Alt text](../../../../../../media/la2.png?raw=true "Git Bash in VS Code Terminal")
 
 ワークスペースのリソース ID を取得してください
 

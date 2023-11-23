@@ -34,7 +34,7 @@ Log Analyticsページで、`Logs` を選択し、以下に記載するサンプ
     | project TimeGenerated, AppName, Log
 ```
 
-![Example output from all application logs query](../../../../media/all-app-logs-in-log-analytics.jpg)
+![Example output from all application logs query](../../../../../../media/all-app-logs-in-log-analytics.jpg)
 
 下記の Kusto クエリを実行して、`catalog-service` アプリケーションのログを表示します:
 
@@ -46,7 +46,7 @@ Log Analyticsページで、`Logs` を選択し、以下に記載するサンプ
     | project TimeGenerated, AppName, Log
 ```
 
-![Example output from catalog service logs](../../../../media/catalog-app-logs-in-log-analytics.jpg)
+![Example output from catalog service logs](../../../../../../media/catalog-app-logs-in-log-analytics.jpg)
 
 下記の Kusto クエリを実行し、各アプリでスローされたエラーや例外を表示します:
 
@@ -59,7 +59,7 @@ Log Analyticsページで、`Logs` を選択し、以下に記載するサンプ
     | render piechart
 ```
 
-![An example output from the Ingress Logs](../../../../media/ingress-logs-in-log-analytics.jpg)
+![An example output from the Ingress Logs](../../../../../../media/ingress-logs-in-log-analytics.jpg)
 
 
 下記の Kusto クエリを入力し実行して、Azure Spring Apps に対するすべてのインバウンド呼び出しを表示します:
@@ -78,7 +78,7 @@ Log Analyticsページで、`Logs` を選択し、以下に記載するサンプ
     | project TimeGenerated,Log
 ```
 
-![An example out from the Spring Cloud Gateway Logs](../../../../media/spring-cloud-gateway-logs-in-log-analytics.jpg)
+![An example out from the Spring Cloud Gateway Logs](../../../../../../media/spring-cloud-gateway-logs-in-log-analytics.jpg)
 
 下記の Kusto クエリを実行し、Azure Spring Apps で管理する Spring Cloud Service Registry からの全ログを表示します:"
 
@@ -88,7 +88,7 @@ Log Analyticsページで、`Logs` を選択し、以下に記載するサンプ
     | project TimeGenerated, Log
 ```
 
-![An example output from service registry logs](../../../../media/service-registry-logs-in-log-analytics.jpg)
+![An example output from service registry logs](../../../../../../media/service-registry-logs-in-log-analytics.jpg)
 
 ⬅️ 前の作業: [14 - ハンズオン・ラボ 4.1 - End-End Observability](../14-hol-4.1-end-to-end-observability/README.md)
 

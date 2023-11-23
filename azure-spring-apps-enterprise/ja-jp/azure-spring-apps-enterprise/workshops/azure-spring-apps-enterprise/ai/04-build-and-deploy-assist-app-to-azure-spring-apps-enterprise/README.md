@@ -50,11 +50,11 @@
    通勤用の自転車が必要です。
    ```
 
-   ![A screenshot of the ACME Fitness Store.](../../../../media/homepage.png)
+   ![A screenshot of the ACME Fitness Store.](../../../../../../media/homepage.png)
 
 1. Assist アプリケーションで生成された出力を確認します
 
-   ![A screenshot of the ACME Fitness Store with FitAssist](../../../../media/homepage-fitassist.png)
+   ![A screenshot of the ACME Fitness Store with FitAssist](../../../../../../media/homepage-fitassist.png)
 
 1. おめでとうございます！多言語対応の電子商取引アプリケーションに AI の機能を追加する事ができました。
 

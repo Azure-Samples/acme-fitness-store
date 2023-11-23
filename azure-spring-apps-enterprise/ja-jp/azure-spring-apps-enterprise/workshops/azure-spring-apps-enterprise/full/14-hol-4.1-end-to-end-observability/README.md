@@ -82,31 +82,31 @@ Application Insights は、Azure Spring Apps サービスインスタンスを�
 
 `Application Map`タブに移動します:
 
-![An image showing the Application Map of Azure Application Insights](../../../../media/fitness-store-application-map.jpg)
+![An image showing the Application Map of Azure Application Insights](../../../../../../media/fitness-store-application-map.jpg)
 
 `Performance`タブに移動します:
 
-![An image showing the Performance Blade of Azure Application Insights](../../../../media/performance.jpg)
+![An image showing the Performance Blade of Azure Application Insights](../../../../../../media/performance.jpg)
 
 `Performance/Dependencies` タブに移動します - ここでは、特に SQL 呼び出しにおけるパフォーマンスを確認できます:
 
-![An image showing the Dependencies section of the Performance Blade of Azure Application Insights](../../../../media/performance_dependencies.jpg)
+![An image showing the Dependencies section of the Performance Blade of Azure Application Insights](../../../../../../media/performance_dependencies.jpg)
 
 `Performance/Roles` タブに移動します - ここでは、個々のインスタンスやロールのパフォーマンス・メトリクスを確認できます:
 
-![An image showing the Roles section of the Performance Blade of Azure Application Insights](../../../../media/fitness-store-roles-in-performance-blade.jpg)
+![An image showing the Roles section of the Performance Blade of Azure Application Insights](../../../../../../media/fitness-store-roles-in-performance-blade.jpg)
 
 SQL 呼び出しをクリックすると、エンドツーエンドのトランザクションを確認できます:
 
-![An image showing the end-to-end transaction of a SQL call](../../../../media/fitness-store-end-to-end-transaction-details.jpg)
+![An image showing the end-to-end transaction of a SQL call](../../../../../../media/fitness-store-end-to-end-transaction-details.jpg)
 
 `Failures` で `Exceptions` パネルに移動します - ここでは、例外の一覧を確認できます:
 
-![An image showing application failures graphed](../../../../media/fitness-store-exceptions.jpg)
+![An image showing application failures graphed](../../../../../../media/fitness-store-exceptions.jpg)
 
 `Metrics` タブに移動します - ここでは Spring Boot アプリ、Spring Cloud モジュール、および依存関係によって提供されるメトリクスを確認できます。以下のチャートは、`http_server_requests` と `Heap Memory Used` を表示しています。
 
-![An image showing metrics over time](../../../../media/metrics.jpg)
+![An image showing metrics over time](../../../../../../media/metrics.jpg)
 
 Spring Boot は多くのコア・メトリクスを登録します: JVM、CPU、Tomcat、Logbackなど...
 Spring Boot　の auto-configuration は、Spring MVC で処理するリクエストの計測を可能にします。
@@ -119,11 +119,11 @@ REST コントローラーの `ProductController` と `PaymentController` は、
 
 これらのカスタム・メトリクスは `Metrics` タブで確認できます:
 
-![An image showing custom metrics instrumented by Micrometer](../../../../media/fitness-store-custom-metrics-with-payments-2.jpg)
+![An image showing custom metrics instrumented by Micrometer](../../../../../../media/fitness-store-custom-metrics-with-payments-2.jpg)
 
 `Live Metrics` タブに移動します - ここでは、遅延が 1 秒未満のライブ・メトリクスを画面上で確認できます:"
 
-![An image showing the live metrics of all applications](../../../../media/live-metrics.jpg)
+![An image showing the live metrics of all applications](../../../../../../media/live-metrics.jpg)
 
 ⬅️ 前の作業: [13 - ハンズオン・ラボ 3.5 - Azure KeyVault の設定](../13-hol-3.5-configure-azure-keyvault/README.md)
 
