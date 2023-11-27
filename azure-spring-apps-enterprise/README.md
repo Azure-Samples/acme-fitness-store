@@ -43,7 +43,7 @@ The following diagram shows the architecture of the ACME Fitness Store that will
 This application is composed of several services:
 
 * 4 Java Spring Boot applications:
-  * A catalog service for fetching available products. This application will use Azure AD authentication to connect to PostgreSQL
+  * A catalog service for fetching available products. This application will use Microsoft Entra ID (formerly Azure Active Directory) authentication to connect to PostgreSQL
   * A payment service for processing and approving payments for users' orders
   * An identity service for referencing the authenticated user
   * An assist service for infusing AI into fitness store
@@ -561,9 +561,9 @@ Prerequisites:
 > This Unit is optional. The application will continue to function without completing this unit. Certain features will remain unavailable including: log in, adding items to the cart, or completing an order.
 > Continue on to [Unit 3 - Integrate with Azure Database for PostgreSQL and Azure Cache For Redis](#unit-3---integrate-with-azure-database-for-postgresql-and-azure-cache-for-redis) to continue this guide without configuring SSO.
 
-### Register Application with Azure AD
+### Register Application with Microsoft Entra ID
 
-The following section steps through creating a Single Sign On Provider using Azure AD.
+The following section steps through creating a Single Sign On Provider using Microsoft Entra ID.
 To use an existing provider, skip ahead to [Using an Existing Identity Provider](#using-an-existing-sso-identity-provider)
 
 Choose a unique display name for your Application Registration.
@@ -572,7 +572,7 @@ Choose a unique display name for your Application Registration.
 export AD_DISPLAY_NAME=change-me    # unique application display name
 ```
 
-#### Create an Application registration with Azure AD and save the output.
+#### Create an Application registration with Microsoft Entra ID and save the output.
 
 ```shell
 az ad app create --display-name ${AD_DISPLAY_NAME} > ../resources/json/ad.json
@@ -620,7 +620,7 @@ echo ${PORTAL_URL}
 The `ISSUER_URI` should take the form `https://login.microsoftonline.com/${TENANT_ID}/v2.0`
 The `JWK_SET_URI` should take the form `https://login.microsoftonline.com/${TENANT_ID}/discovery/v2.0/keys`
 
-#### Add the necessary web redirect URIs to the Azure AD Application Registration:
+#### Add the necessary web redirect URIs to App Registration in Microsoft Entra ID:
 
 ```shell
 az ad app update --id ${APPLICATION_ID} \
@@ -632,7 +632,7 @@ Detailed information about redirect URIs can be found [here](https://docs.micros
 ### Using an Existing SSO Identity Provider
 
 > Note: Continue on to [Configure Spring Cloud Gateway with SSO](#configure-spring-cloud-gateway-with-sso) if you 
-> just created an Azure AD Application Registration
+> just created an app registration in Microsoft Entra ID
 
 To use an existing SSO Identity Provider, copy the existing template
 
@@ -970,7 +970,7 @@ az spring connection create postgres-flexible \
     --client-type dotnet
 ```
 
-Catalog service uses Azure AD authentication to connect to Postgres, so it is not required to include the password
+Catalog service uses Microsoft Entra authentication to connect to Postgres, so it is not required to include the password
 
 #### Bind catalog service to Postgres
 
@@ -1571,7 +1571,7 @@ To navigate to the Threads page, select the Threads option from the Information 
 
 To get started with deploying this sample app from GitHub Actions, please:
 
-1. Complete an Azure AD App registration outlined [here](#register-application-with-azure-ad) or have SSO Credentials prepared as described [here](#using-an-existing-sso-identity-provider)
+1. Complete an App registration in Microsoft Entra ID outlined [here](#register-application-with-microsoft-entra-id) or have SSO Credentials prepared as described [here](#using-an-existing-sso-identity-provider)
 2. Fork this repository and turn on GitHub Actions in your fork
 
 ### Create a Storage Account

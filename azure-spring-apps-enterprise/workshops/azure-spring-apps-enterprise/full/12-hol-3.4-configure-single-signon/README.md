@@ -3,7 +3,7 @@ In this Unit, you will configure Single Sign-On for Spring Cloud Gateway using A
 Once this section is complete, the architecture looks as below:
 ![architecture](images/scg-sso-services.png) 
 
-## 1. Register Application with Azure AD
+## 1. Register Application with Microsoft Entra ID
 
 Choose a unique display name for your Application Registration.
 
@@ -11,7 +11,7 @@ Choose a unique display name for your Application Registration.
 export AD_DISPLAY_NAME=acme-ad-YOUR-UNIQUE_USERNAME    # unique application display name
 ```
 
-Create an Application registration with Azure AD and save the output.
+Create an Application registration with Microsoft Entra ID and save the output.
 
 ```shell
 az ad app create --display-name ${AD_DISPLAY_NAME} > ad.json
@@ -25,7 +25,7 @@ export APPLICATION_ID=$(cat ad.json | jq -r '.appId')
 az ad app credential reset --id ${APPLICATION_ID} --append > sso.json
 ```
 
-Add the necessary web redirect URIs to the Azure AD Application Registration:
+Add the necessary web redirect URIs to App Registration in Microsoft Entra ID :
 
 ```shell
 az ad app update --id ${APPLICATION_ID} \
