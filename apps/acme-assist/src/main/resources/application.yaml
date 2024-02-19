@@ -1,8 +1,17 @@
+vector-store:
+  file: /src/main/resources/cosmosdb_vector_store.json
+
 spring:
+  data:
+    mongodb:
+      enabled : false
+      uri: mongodb://localhost:27017/cosmosdb-vector-store
+      database: cosmosdb-vector-store
   ai:
     azure:
       openai:
         model: gpt-35-turbo-16k
+
 management:
   endpoints:
     web:

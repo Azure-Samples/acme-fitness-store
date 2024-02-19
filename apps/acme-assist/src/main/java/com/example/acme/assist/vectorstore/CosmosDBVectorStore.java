@@ -1,4 +1,4 @@
-package com.microsoft.azure.spring.chatgpt.sample.common.vectorstore;
+package com.example.acme.assist.vectorstore;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.AggregateIterable;
@@ -8,20 +8,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 
-@EnableMongoRepositories(basePackages = "com.microsoft.azure.spring.chatgpt.sample.common.vectorstore")
-@Component
+@EnableMongoRepositories(basePackages = "com.example.acme.assist.vectorstore")
+//@Component
 @Slf4j
 public class CosmosDBVectorStore implements VectorStore {
 
@@ -67,10 +63,11 @@ public class CosmosDBVectorStore implements VectorStore {
         List<DocEntry> result = new ArrayList<>();
         for (Document doc : docs) {
             String id = doc.getString("id");
-            String hash = doc.getString("hash");
             String text = doc.getString("text");
+            MetaData metadata = new MetaData();
+            metadata.setName(doc.getString("metadata.name"));
             List<Double> embedding1 = (List<Double>) doc.get("embedding");
-            DocEntry docEntry = new DocEntry(id, hash, text, embedding1);
+            DocEntry docEntry = new DocEntry(embedding1, id, metadata, text);
             result.add(docEntry);
         }
         return result;
@@ -96,7 +93,7 @@ public class CosmosDBVectorStore implements VectorStore {
             List<DocEntry> list = new ArrayList<DocEntry>(data.store.values());
             List<MongoEntity> mongoEntities = new ArrayList<>();
             for (DocEntry docEntry : list) {
-                MongoEntity doc = new MongoEntity(docEntry.getId(), docEntry.getHash(), docEntry.getText(), docEntry.getEmbedding());
+                MongoEntity doc = new MongoEntity(docEntry.getEmbedding(), docEntry.getId(), docEntry.getMetadata(), docEntry.getText());
                 if (dimensions == 0) {
                     dimensions = docEntry.getEmbedding().size();
                 } else if (dimensions != docEntry.getEmbedding().size()) {
@@ -121,7 +118,7 @@ public class CosmosDBVectorStore implements VectorStore {
                         }
                     }
                 }
-                createVectorIndex(100, dimensions, "COS");
+                createVectorIndex(5, dimensions, "COS");
             }
             return mongoEntities;
         } catch (Exception e) {

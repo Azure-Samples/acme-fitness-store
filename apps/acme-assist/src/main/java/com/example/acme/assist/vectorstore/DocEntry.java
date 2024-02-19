@@ -1,4 +1,4 @@
-package com.microsoft.azure.spring.chatgpt.sample.common.vectorstore;
+package com.example.acme.assist.vectorstore;
 
 import lombok.Builder;
 import lombok.Data;
@@ -14,19 +14,29 @@ import java.util.List;
 @Document(collection = "vectorstore")
 public class DocEntry {
 
+    private List<Double> embedding;
     @Id
     private String id;
-    private String hash;
+
+    public MetaData getMetadata() {
+        return metadata;
+    }
+
+    public void setMetadata(MetaData metadata) {
+        this.metadata = metadata;
+    }
+
+    private MetaData metadata;
     private String text;
-    private List<Double> embedding;
+
 
     public DocEntry() {}
 
-    public DocEntry(String id, String hash, String text, List<Double> embedding) {
+    public DocEntry(List<Double> embedding, String id, MetaData metadata, String text) {
         this.id = id;
-        this.hash = hash;
         this.text = text;
         this.embedding = embedding;
+        this.metadata = metadata;
     }
 
     public String getId() {
@@ -35,14 +45,6 @@ public class DocEntry {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getHash() {
-        return hash;
-    }
-
-    public void setHash(String hash) {
-        this.hash = hash;
     }
 
     public String getText() {
@@ -65,7 +67,6 @@ public class DocEntry {
     public String toString() {
         return "DocEntry{" +
                 "id='" + id + '\'' +
-                ", hash='" + hash + '\'' +
                 ", text='" + text + '\'' +
                 ", embedding='" + embedding + '\'' +
                 '}';

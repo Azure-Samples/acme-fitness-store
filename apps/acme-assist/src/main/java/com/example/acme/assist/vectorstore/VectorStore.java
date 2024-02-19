@@ -1,4 +1,4 @@
-package com.microsoft.azure.spring.chatgpt.sample.common.vectorstore;
+package com.example.acme.assist.vectorstore;
 
 import java.util.List;
 
