@@ -37,8 +37,7 @@ public class CosmosDBVectorStore implements VectorStore {
 
     @Override
     public DocEntry getDocument(String key) {
-        var doc = mongoTemplate.findById(key, DocEntry.class);
-        return doc;
+        return mongoTemplate.findById(key, DocEntry.class);
     }
 
     @Override
@@ -56,27 +55,26 @@ public class CosmosDBVectorStore implements VectorStore {
         // perform vector search in Cosmos DB Mongo API - vCore
         String command = "{\"$search\":{\"cosmosSearch\":{\"vector\":" + embedding + ",\"path\":\"embedding\",\"k\":" + k + "}}}\"";
         Document bsonCmd = Document.parse(command);
+
         var db = mongoTemplate.getDb();
         AggregateIterable<Document> mongoresult = db.getCollection("vectorstore").aggregate(List.of(bsonCmd));
+
         List<Document> docs = new ArrayList<>();
         mongoresult.into(docs);
+
         List<DocEntry> result = new ArrayList<>();
-        for (Document doc : docs) {
-            String id = doc.getString("id");
-            String text = doc.getString("text");
-            MetaData metadata = new MetaData();
-            metadata.setName(doc.getString("metadata.name"));
-            List<Double> embedding1 = (List<Double>) doc.get("embedding");
-            DocEntry docEntry = new DocEntry(embedding1, id, metadata, text);
-            result.add(docEntry);
-        }
+        docs.forEach(doc ->
+                result.add(new DocEntry((List<Double>) doc.get("embedding"),
+                        doc.getString("id"),
+                        new MetaData(doc.getString("metadata.name")),
+                        doc.getString("text"))));
         return result;
     }
 
     public void createVectorIndex(int numLists, int dimensions, String similarity) {
         String bsonCmd = "{\"createIndexes\":\"vectorstore\",\"indexes\":" +
                 "[{\"name\":\"vectorsearch\",\"key\":{\"embedding\":\"cosmosSearch\"},\"cosmosSearchOptions\":" +
-                "{\"kind\":\"vector-ivf\",\"numLists\":"+numLists+",\"similarity\":\""+similarity+"\",\"dimensions\":"+dimensions+"}}]}";
+                "{\"kind\":\"vector-ivf\",\"numLists\":" + numLists + ",\"similarity\":\"" + similarity + "\",\"dimensions\":" + dimensions + "}}]}";
         log.info("creating vector index in Cosmos DB Mongo vCore...");
         try {
             mongoTemplate.executeCommand(bsonCmd);
@@ -125,6 +123,7 @@ public class CosmosDBVectorStore implements VectorStore {
             throw new RuntimeException(e);
         }
     }
+
     @Setter
     @Getter
     private static class VectorStoreData {
