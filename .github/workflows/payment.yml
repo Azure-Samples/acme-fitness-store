@@ -8,7 +8,7 @@ on:
     paths:
       - 'apps/acme-payment/**'
 env:
-  SPRING_APPS_SERVICE: ${{ secrets.SUBSCRIPTION }}
+  SPRING_APPS_SERVICE: ${{ secrets.SPRING_APPS_SERVICE }}
   RESOURCE_GROUP: ${{ secrets.RESOURCE_GROUP }}
   PAYMENT_SERVICE_APP: payment-service
 
