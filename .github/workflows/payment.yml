@@ -12,6 +12,10 @@ env:
   RESOURCE_GROUP: ${{ secrets.RESOURCE_GROUP }}
   PAYMENT_SERVICE_APP: payment-service
 
+permissions:
+      id-token: write
+      contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
