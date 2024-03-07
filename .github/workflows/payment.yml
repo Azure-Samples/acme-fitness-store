@@ -24,12 +24,6 @@ jobs:
         working-directory: apps/acme-payment
     steps:
       - uses: actions/checkout@v3
-      - name: 'Az CLI login'
-        uses: azure/login@v1
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.SUBSCRIPTION }}
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
@@ -42,6 +36,12 @@ jobs:
         with:
           arguments: build
           build-root-directory: apps/acme-payment
+      - name: Set up Azure
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.SUBSCRIPTION }}
       - name: Set up Azure Spring Extension
         run: az extension add --name spring
       - name: Deploy Payment
