@@ -1,0 +1,56 @@
+name: Deploy Assist
+on:
+  workflow_dispatch:
+    inputs: { }
+  push:
+    branches:
+      - Azure
+    paths:
+      - 'apps/acme-assist/**'
+env:
+  SPRING_APPS_SERVICE: ${{ secrets.SPRING_APPS_SERVICE }}
+  RESOURCE_GROUP: ${{ secrets.RESOURCE_GROUP }}
+  KEY_VAULT: ${{ secrets.KEY_VAULT }}
+  AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
+  AZURE_OPENAI_APIKEY: ${{ secrets.AZURE_OPENAI_APIKEY }}
+  AI_APP: assist-service
+  AZURE_OPENAI_MODEL: gpt-35-turbo-16k
+  AZURE_OPENAI_EMBEDDINGMODEL: text-embedding-ada-002
+
+permissions:
+      id-token: write
+      contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/acme-assist
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+      - name: Run the Maven local build
+        run: mvn package clean
+      - name: Set up Azure
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.SUBSCRIPTION }}
+      - name: Set up Azure Spring Extension
+        run: az extension add --name spring
+      - name: Deploy Identity
+        run: |
+          az spring app deploy --name ${AI_APP} \
+              --source-path ./ \
+              --build-env BP_JVM_VERSION=17 \
+              --env \
+                  SPRING_AI_AZURE_OPENAI_ENDPOINT=${AZURE_OPENAI_ENDPOINT} \
+                  SPRING_AI_AZURE_OPENAI_APIKEY=${AZURE_OPENAI_APIKEY} \
+                  SPRING_AI_AZURE_OPENAI_MODEL=${AZURE_OPENAI_MODEL} \
+                  SPRING_AI_AZURE_OPENAI_EMBEDDINGMODEL=${AZURE_OPENAI_EMBEDDINGMODEL} \
