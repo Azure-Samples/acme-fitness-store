@@ -44,9 +44,11 @@ jobs:
           subscription-id: ${{ secrets.SUBSCRIPTION }}
       - name: Set up Azure Spring Extension
         run: az extension add --name spring
-      - name: Deploy Identity
+      - name: Deploy Assist
         run: |
           az spring app deploy --name ${AI_APP} \
+              --resource-group ${RESOURCE_GROUP} \
+              --service ${SPRING_APPS_SERVICE} \
               --source-path ./ \
               --build-env BP_JVM_VERSION=17 \
               --env \
