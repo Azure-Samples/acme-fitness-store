@@ -52,7 +52,7 @@ jobs:
            --name ${KEY_VAULT} \
            --query properties.vaultUri -o tsv)
 
-          az spring app deploy \
+           az spring app deploy \
             --name ${CATALOG_SERVICE_APP} \
             --resource-group "$RESOURCE_GROUP" \
             --service "$SPRING_APPS_SERVICE" \
