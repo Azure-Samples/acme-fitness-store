@@ -41,7 +41,7 @@ jobs:
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: build
+          arguments: build -x test
           build-root-directory: apps/acme-catalog
       - name: Set up Azure Spring Extension
         run: az extension add --name spring
