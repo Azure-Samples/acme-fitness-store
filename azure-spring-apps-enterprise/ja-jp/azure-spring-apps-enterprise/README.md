@@ -541,7 +541,7 @@ echo "https://${PORTAL_URL}"
 
 ### アプリケーションを Microsoft Entra ID (Azure AD) に登録
 
-下記で、Azure AD を使用してシングル・サインオン・プロバイダーを作成する手順について説明します。 既存のプロバイダーを使用する場合、[既存の ID プロバイダーの使用](#既存の-sso-id-プロバイダーの使用) に進んでください
+下記で、Entra ID を使用してシングル・サインオン・プロバイダーを作成する手順について説明します。 既存のプロバイダーを使用する場合、[既存の ID プロバイダーの使用](#既存の-sso-id-プロバイダーの使用) に進んでください
 
 アプリケーションを登録するために、一意の表示名を選択してください
 
@@ -549,7 +549,7 @@ echo "https://${PORTAL_URL}"
 export AD_DISPLAY_NAME=change-me    # unique application display name
 ```
 
-#### Azure AD へのアプリケーション登録を作成し、出力を JSON に保存
+#### Entra ID へのアプリケーション登録を作成し、出力を JSON に保存
 
 ```shell
 az ad app create --display-name ${AD_DISPLAY_NAME} > ../resources/json/ad.json
@@ -597,7 +597,7 @@ echo ${PORTAL_URL}
 The `ISSUER_URI` should take the form `https://login.microsoftonline.com/${TENANT_ID}/v2.0`
 The `JWK_SET_URI` should take the form `https://login.microsoftonline.com/${TENANT_ID}/discovery/v2.0/keys`
 
-#### Web リダイレクト URI（必須） を Azure AD アプリケーションの登録に追加
+#### Web リダイレクト URI（必須） を Entra ID アプリケーションの登録に追加
 
 ```shell
 az ad app update --id ${APPLICATION_ID} \
@@ -608,7 +608,7 @@ az ad app update --id ${APPLICATION_ID} \
 
 ### 既存の SSO ID プロバイダーの使用
 
-> 注: Azure AD アプリケーションの登録を作成した場合は、[SSO を使用した Spring Cloud Gateway の構成](#sso-を使用した-spring-cloud-gateway-の設定) に進みます。
+> 注: Entra ID アプリケーションの登録を作成した場合は、[SSO を使用した Spring Cloud Gateway の構成](#sso-を使用した-spring-cloud-gateway-の設定) に進みます。
 
 既存の SSO ID プロバイダーを使用したい場合、既存のテンプレートをコピーします
 
@@ -946,7 +946,7 @@ az spring connection create postgres-flexible \
     --client-type dotnet
 ```
 
-カタログ サービスは Azure AD 認証を使用して Postgres に接続するため、パスワードを含める必要はありません
+カタログ サービスは Entra ID 認証を使用して Postgres に接続するため、パスワードを含める必要はありません
 
 #### カタログサービスをPostgresにバインド
 
@@ -1547,11 +1547,11 @@ To navigate to the Health page, select the Health option from the Information Ca
 
 GitHub Actions からこのサンプル アプリのデプロイを開始するには、以下を行ってください。
 
-1. [こちら](#アプリケーションを-microsoft-entra-id-azure-ad-に登録)で説明されている Azure AD アプリの登録を完了するか、もしくは、[こちらの](#既存の-sso-id-プロバイダーの使用)説明に従って SSO 資格情報を準備します
+1. [こちら](#アプリケーションを-microsoft-entra-id-azure-ad-に登録)で説明されている Entra ID アプリの登録を完了するか、もしくは、[こちらの](#既存の-sso-id-プロバイダーの使用)説明に従って SSO 資格情報を準備します
 2. このリポジトリをフォークし、フォークしたレポジトリで GitHub Actions をオンにします
 
 
-こちらで説明されている Azure AD アプリの登録を完了するか、こちらの説明に従って SSO 資格情報を準備します
+こちらで説明されている Entra ID アプリの登録を完了するか、こちらの説明に従って SSO 資格情報を準備します
 このリポジトリをフォークし、フォークでGitHubアクションをオンにします
 
 ### ストレージ アカウントの作成
