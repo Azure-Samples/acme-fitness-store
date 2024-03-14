@@ -2,7 +2,12 @@ spring:
   ai:
     azure:
       openai:
-        model: gpt-35-turbo-16k
+        chat:
+          options:
+            deployment-name: gpt-35-turbo-16k
+        embedding:
+          options:
+            deployment-name: text-embedding-ada-002
 management:
   endpoints:
     web:

@@ -1,9 +1,9 @@
 package com.example.acme.assist.tools;
 
 import org.springframework.ai.document.Document;
-import org.springframework.ai.loader.impl.JsonLoader;
-import org.springframework.ai.loader.impl.JsonMetadataGenerator;
-import org.springframework.ai.vectorstore.impl.SimplePersistentVectorStore;
+import org.springframework.ai.reader.JsonMetadataGenerator;
+import org.springframework.ai.reader.JsonReader;
+import org.springframework.ai.vectorstore.SimpleVectorStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.DefaultApplicationArguments;
@@ -25,7 +25,7 @@ import java.util.Map;
 public class BuildVectorStoreApplication implements CommandLineRunner {
 
     @Autowired
-    private SimplePersistentVectorStore simpleVectorStore;
+    private SimpleVectorStore simpleVectorStore;
 
     public static void main(String[] args) {
         new SpringApplicationBuilder(BuildVectorStoreApplication.class)
@@ -50,10 +50,10 @@ public class BuildVectorStoreApplication implements CommandLineRunner {
 
         for (var file : jsonFiles) {
             File sourceFile = new File(file);
-            JsonLoader jsonLoader = new JsonLoader(new FileSystemResource(sourceFile),
+            JsonReader jsonLoader = new JsonReader(new FileSystemResource(sourceFile),
                     new ProductMetadataGenerator(),
                     "price", "name", "shortDescription", "description", "tags");
-            List<Document> documents = jsonLoader.load();
+            List<Document> documents = jsonLoader.get();
             this.simpleVectorStore.add(documents);
         }
         this.simpleVectorStore.save(new File(to.get(0)));

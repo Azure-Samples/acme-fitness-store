@@ -1,40 +1,41 @@
 package com.example.acme.assist;
 
-import com.azure.ai.openai.models.ChatRole;
-import com.example.acme.assist.model.AcmeChatRequest;
-import com.example.acme.assist.model.Product;
-import io.micrometer.common.util.StringUtils;
-import org.apache.logging.log4j.util.Strings;
-import org.springframework.ai.client.AiClient;
-import org.springframework.ai.client.AiResponse;
-import org.springframework.ai.client.Generation;
-import org.springframework.ai.document.Document;
-import org.springframework.ai.prompt.Prompt;
-import org.springframework.ai.prompt.SystemPromptTemplate;
-import org.springframework.ai.prompt.messages.ChatMessage;
-import org.springframework.ai.prompt.messages.Message;
-import org.springframework.ai.vectorstore.impl.SimplePersistentVectorStore;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.util.Strings;
+import org.springframework.ai.chat.ChatClient;
+import org.springframework.ai.chat.ChatResponse;
+import org.springframework.ai.chat.messages.ChatMessage;
+import org.springframework.ai.chat.messages.Message;
+import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.ai.chat.prompt.SystemPromptTemplate;
+import org.springframework.ai.document.Document;
+import org.springframework.ai.vectorstore.SimpleVectorStore;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Service;
+
+import com.azure.ai.openai.models.ChatRole;
+import com.example.acme.assist.model.AcmeChatRequest;
+import com.example.acme.assist.model.Product;
+
+import io.micrometer.common.util.StringUtils;
+
 @Service
 public class ChatService {
 
     @Autowired
-    private SimplePersistentVectorStore store;
+    private SimpleVectorStore store;
 
     @Autowired
     private ProductRepository productRepository;
 
     @Autowired
-    private AiClient aiClient;
+    private ChatClient chatClient;
 
     @Value("classpath:/prompts/chatWithoutProductId.st")
     private Resource chatWithoutProductIdResource;
@@ -66,7 +67,7 @@ public class ChatService {
         String question = chatRequestMessages.get(chatRequestMessages.size() - 1).getContent();
 
         // step 1. Query for documents that are related to the question from the vector store
-        List<Document> candidateDocuments = this.store.similaritySearch(question, 5, 0.4);
+        List<Document> candidateDocuments = this.store.similaritySearch(question);
 
         // step 2. Create a SystemMessage that contains the product information in addition to related documents.
         List<Message> messages = new ArrayList<>();
@@ -89,13 +90,13 @@ public class ChatService {
         String question = acmeChatRequestMessages.get(acmeChatRequestMessages.size() - 1).getContent();
 
         // step 1. Query for documents that are related to the question from the vector store
-        List<Document> relatedDocuments = store.similaritySearch(question, 5, 0.4);
+        List<Document> relatedDocuments = store.similaritySearch(question);
 
         // step 2. Create the system message with the related documents;
         List<Message> messages = new ArrayList<>();
         SystemPromptTemplate systemPromptTemplate = new SystemPromptTemplate(this.chatWithoutProductIdResource);
         String relatedDocsAsString = relatedDocuments.stream()
-                .map(entry -> String.format("Product Name: %s\nText: %s\n", entry.getMetadata().get("name"), entry.getText()))
+                .map(entry -> String.format("Product Name: %s\nText: %s\n", entry.getMetadata().get("name"), entry.getContent()))
                 .collect(Collectors.joining("\n"));
         Message systemMessage = systemPromptTemplate.createMessage(Map.of("context", relatedDocsAsString));
         messages.add(systemMessage);
@@ -113,7 +114,7 @@ public class ChatService {
 
         // Call to OpenAI chat API
         Prompt prompt = new Prompt(messages);
-        AiResponse aiResponse = this.aiClient.generate(prompt);
+        ChatResponse aiResponse = this.chatClient.call(prompt);
 
         // Process the result and return to client
         List<String> response = processResult(aiResponse);
@@ -123,21 +124,21 @@ public class ChatService {
 
     public Message getProductDetailMessage(Product product, List<Document> documents) {
         String additionalContext = documents.stream()
-                .map(entry -> String.format("Product Name: %s\nText: %s\n", entry.getMetadata().get("name"), entry.getText()))
+                .map(entry -> String.format("Product Name: %s\nText: %s\n", entry.getMetadata().get("name"), entry.getContent()))
                 .collect(Collectors.joining("\n"));
-        Map map = Map.of(
+        Map<String,Object> map = Map.of(
                 "name", product.getName(),
                 "tags", String.join(",", product.getTags()),
                 "shortDescription", product.getShortDescription(),
                 "fullDescription", product.getDescription(),
                 "additionalContext", additionalContext);
         SystemPromptTemplate systemPromptTemplate = new SystemPromptTemplate(this.chatWithProductIdResource);
-        return systemPromptTemplate.create(map).getMessages().get(0);
+        return systemPromptTemplate.create(map).getInstructions().get(0);
     }
 
-    private List<String> processResult(AiResponse aiResponse) {
-        List<String> response = aiResponse.getGenerations().stream()
-                .map(Generation::getText)
+    private List<String> processResult(ChatResponse aiResponse) {
+        List<String> response = aiResponse.getResults().stream()
+                .map(result -> result.getOutput().getContent())
                 .filter(text -> !StringUtils.isEmpty(text))
                 .map(this::filterMessage)
                 .collect(Collectors.toList());
