@@ -26,7 +26,7 @@ Github Codespaces を利用して、開発環境・実行環境を構築可能�
     #### 環境変数の更新
     ```shell
     cd acme-fitness-store/azure-spring-apps-enterprise
-    cp ./scripts/setup-env-variables-template.sh ./scripts/setup-env-variables.sh
+    cp ./scripts/setup-env-variables-template.sh ./scripts/setup-env-variables.sh -i
     code ./scripts/setup-env-variables.sh # Use the editor of your choice
     ```
 
@@ -144,7 +144,7 @@ az extension update --name spring
 
 ```shell
 cd acme-fitness-store/azure-spring-apps-enterprise
-cp ./scripts/setup-env-variables-template.sh ./scripts/setup-env-variables.sh
+cp ./scripts/setup-env-variables-template.sh ./scripts/setup-env-variables.sh -i
 code ./scripts/setup-env-variables.sh # Use the editor of your choice
 ```
 

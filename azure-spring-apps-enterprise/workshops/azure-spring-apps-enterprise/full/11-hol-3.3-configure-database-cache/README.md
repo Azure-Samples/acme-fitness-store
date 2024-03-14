@@ -8,7 +8,7 @@ Once this section is complete, the architecture looks as below:
 Create a bash script with environment variables by making a copy of the supplied template:
 
 ```shell
-cp ./scripts/setup-db-env-variables-template.sh ./scripts/setup-db-env-variables.sh
+cp ./scripts/setup-db-env-variables-template.sh ./scripts/setup-db-env-variables.sh -i
 ```
 
 Open `./scripts/setup-db-env-variables.sh` and enter the following information:

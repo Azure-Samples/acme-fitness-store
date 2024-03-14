@@ -1801,10 +1801,10 @@ The `cleanup` workflow can be manually run to delete all resources created by th
 
    ```bash
    source ./azure-spring-apps-enterprise/scripts/setup-env-variables.sh
-   export OPENAI_RESOURCE_NAME=acme-fitness-store
+   export OPENAI_RESOURCE_NAME=<choose-a-resource-name>
    az cognitiveservices account create \
       -n ${OPENAI_RESOURCE_NAME} \
-      -g acme-fitness-store \
+      -g ${RESOURCE_GROUP} \
       -l eastus \
       --kind OpenAI \
       --sku s0 \

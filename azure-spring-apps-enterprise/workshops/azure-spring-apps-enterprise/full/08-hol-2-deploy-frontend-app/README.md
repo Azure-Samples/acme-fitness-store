@@ -20,7 +20,7 @@ This is a preliminary step that is not related to deploying the frontend app. Bu
 Create a bash script with the key-vault environment varialbe by making a copy of the supplied template:
 
 ```shell
-cp ./scripts/setup-keyvault-env-variables-template.sh ./scripts/setup-keyvault-env-variables.sh
+cp ./scripts/setup-keyvault-env-variables-template.sh ./scripts/setup-keyvault-env-variables.sh -i
 ```
 
 Open `./scripts/setup-keyvault-env-variables.sh` and update the following information:
