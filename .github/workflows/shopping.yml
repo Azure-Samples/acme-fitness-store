@@ -8,9 +8,13 @@ on:
     paths:
       - 'apps/acme-shopping/**'
 env:
-  SPRING_APPS_SERVICE: ${{ secrets.TF_PROJECT_NAME }}-asa
-  RESOURCE_GROUP: ${{ secrets.TF_PROJECT_NAME }}-grp
+  SPRING_APPS_SERVICE: ${{ secrets.SPRING_APPS_SERVICE }}
+  RESOURCE_GROUP: ${{ secrets.RESOURCE_GROUP }}
   FRONTEND_APP: frontend
+
+permissions:
+      id-token: write
+      contents: read
 
 jobs:
   build:
@@ -30,7 +34,9 @@ jobs:
       - name: Set up Azure
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.SUBSCRIPTION }}
       - name: Set up Azure Spring Extension
         run: az extension add --name spring
       - name: Deploy Shopping

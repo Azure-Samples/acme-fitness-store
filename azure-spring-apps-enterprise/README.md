@@ -176,7 +176,7 @@ Should show something like:
 Create a bash script with environment variables by making a copy of the supplied template:
 
 ```shell
-cp ./setup-env-variables-template.sh ./setup-env-variables.sh
+cp ./setup-env-variables-template.sh ./setup-env-variables.sh -i
 ```
 
 Using an editor of your choice, edit the file, (for the purposes of example we will use the nano editor), and add the following values.
@@ -290,11 +290,15 @@ Retrieve the resource ID for the recently create Azure Spring Apps Service and L
 ```shell
 export LOG_ANALYTICS_RESOURCE_ID=$(az monitor log-analytics workspace show \
     --resource-group ${RESOURCE_GROUP} \
-    --workspace-name ${LOG_ANALYTICS_WORKSPACE} | jq -r '.id')
+    --workspace-name ${LOG_ANALYTICS_WORKSPACE} \
+    --query id \
+    -o tsv)
 
 export SPRING_APPS_RESOURCE_ID=$(az spring show \
     --name ${SPRING_APPS_SERVICE} \
-    --resource-group ${RESOURCE_GROUP} | jq -r '.id')
+    --resource-group ${RESOURCE_GROUP} \
+    --query id \
+    -o tsv)
 ```
 
 Configure diagnostic settings for the Azure Spring Apps Service:
@@ -537,7 +541,7 @@ Assign an endpoint to API Portal and open it in a browser:
 
 ```shell
 az spring api-portal update --assign-endpoint true
-export PORTAL_URL=$(az spring api-portal show | jq -r '.properties.url')
+export PORTAL_URL=$(az spring api-portal show --query properties.url -o tsv)
 
 open "https://${PORTAL_URL}"
 ```
@@ -649,7 +653,7 @@ Should return something like:
 Next, make a copy of setup-sso-variables-template.sh for your custom values.
 
 ```shell
-cp ./setup-sso-variables-template.sh ./setup-sso-variables.sh
+cp ./setup-sso-variables-template.sh ./setup-sso-variables.sh -i
 ```
 
 Echo the following values:
@@ -762,7 +766,7 @@ az spring app update --name ${CART_SERVICE_APP} \
     --env "AUTH_URL=https://${GATEWAY_URL}" "CART_PORT=8080" 
     
 # Update the Order Service
-az spring app  update --name ${ORDER_SERVICE_APP} \
+az spring app update --name ${ORDER_SERVICE_APP} \
     --env "AcmeServiceSettings__AuthUrl=https://${GATEWAY_URL}" 
 ```
 
@@ -789,7 +793,7 @@ be available. This includes adding items to the cart and placing an order.
 Configure API Portal with SSO enabled:
 
 ```shell
-export PORTAL_URL=$(az spring api-portal show | jq -r '.properties.url')
+export PORTAL_URL=$(az spring api-portal show --query properties.url -o tsv)
 
 az spring api-portal update \
     --client-id ${CLIENT_ID} \
@@ -846,7 +850,7 @@ Should show something like:
 #### Create a bash script with environment variables by making a copy of the supplied template:
 
 ```shell
-cp ./setup-db-env-variables-template.sh ./setup-db-env-variables.sh
+cp ./setup-db-env-variables-template.sh ./setup-db-env-variables.sh -i
 ```
 
 ```shell
@@ -1031,7 +1035,9 @@ export POSTGRES_CONNECTION_STR=$(az spring connection show \
     --service ${SPRING_APPS_SERVICE} \
     --deployment default \
     --connection ${ORDER_SERVICE_DB_CONNECTION} \
-    --app ${ORDER_SERVICE_APP} | jq '.configurations[0].value' -r)
+    --app ${ORDER_SERVICE_APP} \
+    --query configurations[0].value \
+    -o tsv)"Trust Server Certificate=true;"
 ```
 
 ```shell
@@ -1048,7 +1054,9 @@ export REDIS_CONN_STR=$(az spring connection show \
     --service ${SPRING_APPS_SERVICE} \
     --deployment default \
     --connection ${CART_SERVICE_CACHE_CONNECTION} \
-    --app ${CART_SERVICE_APP} | jq -r '.configurations[0].value')
+    --app ${CART_SERVICE_APP} \
+    --query configurations[0].value \
+    -o tsv)
 ```
 
 ```shell
@@ -1104,7 +1112,9 @@ export KEY_VAULT=change-me      # customize this
 
 ```shell
 az keyvault create --name ${KEY_VAULT} -g ${RESOURCE_GROUP}
-export KEYVAULT_URI=$(az keyvault show --name ${KEY_VAULT} | jq -r '.properties.vaultUri')
+export KEYVAULT_URI=$(az keyvault show --name ${KEY_VAULT} \
+    --query properties.vaultUri \
+    -o tsv)
 ```
 
 #### Store database connection secrets in Key Vault.
@@ -1118,7 +1128,7 @@ az keyvault secret set --vault-name ${KEY_VAULT} \
     --name "POSTGRES-SERVER-NAME" --value ${POSTGRES_SERVER_FULL_NAME}
 
 az keyvault secret set --vault-name ${KEY_VAULT} \
-    --name "ConnectionStrings--OrderContext" --value "Server=${POSTGRES_SERVER_FULL_NAME};Database=${ORDER_SERVICE_DB};Port=5432;Ssl Mode=Require;User Id=${POSTGRES_SERVER_USER};Password=${POSTGRES_SERVER_PASSWORD};"
+    --name "ConnectionStrings--OrderContext" --value "${POSTGRES_CONNECTION_STR}"
 
 az keyvault secret set --vault-name ${KEY_VAULT} \
     --name "CATALOG-DATABASE-NAME" --value ${CATALOG_SERVICE_DB}
@@ -1133,15 +1143,14 @@ az keyvault secret set --vault-name ${KEY_VAULT} \
 #### Retrieve and store redis connection secrets in Key Vault.
 
 ```shell
-az redis show -n ${AZURE_CACHE_NAME} > redis.json
-export REDIS_HOST=$(cat redis.json | jq -r '.hostName')
-export REDIS_PORT=$(cat redis.json | jq -r '.sslPort')
-export REDIS_PRIMARY_KEY=$(az redis list-keys -n ${AZURE_CACHE_NAME} | jq -r '.primaryKey')
+export REDIS_HOST=$(az redis show -n ${AZURE_CACHE_NAME} --query hostName -o tsv)
+export REDIS_PORT=$(az redis show -n ${AZURE_CACHE_NAME} --query sslPort -o tsv)
+export REDIS_PRIMARY_KEY=$(az redis list-keys -n ${AZURE_CACHE_NAME} --query primaryKey -o tsv)
 ```
 
 ```shell
 az keyvault secret set --vault-name ${KEY_VAULT} \
-  --name "CART-REDIS-CONNECTION-STRING" --value "rediss://:${REDIS_PRIMARY_KEY}@${REDIS_HOST}:${REDIS_PORT}/0"
+  --name "CART-REDIS-CONNECTION-STRING" --value "${REDIS_CONN_STR}"
 ```
 
 #### Store SSO Secrets in Key Vault.
@@ -1156,17 +1165,17 @@ az keyvault secret set --vault-name ${KEY_VAULT} \
 #### Enable System Assigned Identities for applications and export identities to environment.
 
 ```shell
-az spring app identity assign --name ${CART_SERVICE_APP}
-export CART_SERVICE_APP_IDENTITY=$(az spring app show --name ${CART_SERVICE_APP} | jq -r '.identity.principalId')
+az spring app identity assign --name ${CART_SERVICE_APP} --system-assigned
+export CART_SERVICE_APP_IDENTITY=$(az spring app show --name ${CART_SERVICE_APP} --query identity.principalId -o tsv)
 
-az spring app identity assign --name ${ORDER_SERVICE_APP}
-export ORDER_SERVICE_APP_IDENTITY=$(az spring app show --name ${ORDER_SERVICE_APP} | jq -r '.identity.principalId')
+az spring app identity assign --name ${ORDER_SERVICE_APP} --system-assigned
+export ORDER_SERVICE_APP_IDENTITY=$(az spring app show --name ${ORDER_SERVICE_APP} --query identity.principalId -o tsv)
 
-az spring app identity assign --name ${CATALOG_SERVICE_APP}
-export CATALOG_SERVICE_APP_IDENTITY=$(az spring app show --name ${CATALOG_SERVICE_APP} | jq -r '.identity.principalId')
+az spring app identity assign --name ${CATALOG_SERVICE_APP} --system-assigned
+export CATALOG_SERVICE_APP_IDENTITY=$(az spring app show --name ${CATALOG_SERVICE_APP} --query identity.principalId -o tsv)
 
-az spring app identity assign --name ${IDENTITY_SERVICE_APP}
-export IDENTITY_SERVICE_APP_IDENTITY=$(az spring app show --name ${IDENTITY_SERVICE_APP} | jq -r '.identity.principalId')
+az spring app identity assign --name ${IDENTITY_SERVICE_APP} --system-assigned
+export IDENTITY_SERVICE_APP_IDENTITY=$(az spring app show --name ${IDENTITY_SERVICE_APP} --query identity.principalId -o tsv)
 ```
 
 #### Add an access policy to Azure Key Vault to allow Managed Identities to read secrets.
@@ -1218,7 +1227,7 @@ az spring connection delete \
     --connection ${CART_SERVICE_CACHE_CONNECTION} \
     --app ${CART_SERVICE_APP} \
     --deployment default \
-    --yes     
+    --yes
 ```
 
 ```shell    
@@ -1229,13 +1238,13 @@ az spring app update --name ${ORDER_SERVICE_APP} \
 ```shell
 az spring app update --name ${CATALOG_SERVICE_APP} \
     --config-file-pattern catalog/default,catalog/key-vault \
-    --env "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_ENDPOINT=${KEYVAULT_URI}" "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_NAME='acme-fitness-store-vault'" "SPRING_PROFILES_ACTIVE=default,key-vault"
+    --env "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_ENDPOINT=${KEYVAULT_URI}" "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_NAME=${KEY_VAULT}" "SPRING_PROFILES_ACTIVE=default,key-vault"
 ```
 
 ```shell  
 az spring app update --name ${IDENTITY_SERVICE_APP} \
     --config-file-pattern identity/default,identity/key-vault \
-    --env "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_ENDPOINT=${KEYVAULT_URI}" "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_NAME='acme-fitness-store-vault'" "SPRING_PROFILES_ACTIVE=default,key-vault"
+    --env "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_ENDPOINT=${KEYVAULT_URI}" "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_NAME=${KEY_VAULT}" "SPRING_PROFILES_ACTIVE=default,key-vault"
 ```
 
 ```shell    
@@ -1600,7 +1609,7 @@ Should show something like:
 #### Create a bash script with environment variables by making a copy of the supplied template:
 
 ```shell
-cp ./setup-storage-env-variables-template.sh ./setup-storage-env-variables.sh
+cp ./setup-storage-env-variables-template.sh ./setup-storage-env-variables.sh -i
 ```
 
 #### Using an editor of your choice, edit the file, (for the purposes of example we will use the nano editor), and add the following values.
@@ -1775,7 +1784,7 @@ The `cleanup` workflow can be manually run to delete all resources created by th
 1. Copy the AI environment variables template file, e.g. 
 
    ```bash
-   cp azure-spring-apps-enterprise/scripts/setup-ai-env-variables-template.sh azure-spring-apps-enterprise/scripts/setup-ai-env-variables.sh
+   cp azure-spring-apps-enterprise/scripts/setup-ai-env-variables-template.sh azure-spring-apps-enterprise/scripts/setup-ai-env-variables.sh -i
    ```
 
 1. Update the values in `azure-spring-apps-enterprise/scripts/setup-ai-env-variables.sh` with your own values, as configured in Azure OpenAI instance:
@@ -1843,8 +1852,6 @@ The `cleanup` workflow can be manually run to delete all resources created by th
 1. Update the values in `azure-spring-apps-enterprise/scripts/setup-ai-env-variables.sh`, e.g.
     * for Endpoint and API KEY - check under Azure Portal OpenAI instances in `Keys and Endpoint` section
     ![A screenshot of the Azure Portal OpenAI instance.](./media/openai-azure-ai-services-api-key.png)    
-    * for `SPRING_AI_AZURE_OPENAI_MODEL` use previously defined model, e.g. `gpt-35-turbo-16k`
-    * for `SPRING_AI_AZURE_OPENAI_EMBEDDINGMODEL` use previously defined model, e.g. `text-embedding-ada-002`
     * for `AI_APP` use default name, e.g. `assist-service`
     
 > Note: You can get the endpoint by querying the `cognitiveservices` from Azure CLI, e.g.
@@ -1896,9 +1903,7 @@ cd apps/acme-assist
         --build-env BP_JVM_VERSION=17 \
         --env \
             SPRING_AI_AZURE_OPENAI_ENDPOINT=${SPRING_AI_AZURE_OPENAI_ENDPOINT} \
-            SPRING_AI_AZURE_OPENAI_APIKEY=${SPRING_AI_AZURE_OPENAI_APIKEY} \
-            SPRING_AI_AZURE_OPENAI_MODEL=${SPRING_AI_AZURE_OPENAI_MODEL} \
-            SPRING_AI_AZURE_OPENAI_EMBEDDINGMODEL=${SPRING_AI_AZURE_OPENAI_EMBEDDINGMODEL}
+            SPRING_AI_AZURE_OPENAI_API_KEY=${SPRING_AI_AZURE_OPENAI_API_KEY}
     ```
 
 1. Test the `acme-fitness` application in the browser again. Go to `ASK TO FITASSIST` and converse with the assistant, e.g.

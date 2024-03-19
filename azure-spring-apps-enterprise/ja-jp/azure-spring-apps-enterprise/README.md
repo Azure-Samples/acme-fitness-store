@@ -157,7 +157,7 @@ pwd
 提供されているテンプレートを元に、環境変数を設定した bash スクリプトを作成します。
 
 ```shell
-cp ./setup-env-variables-template.sh ./setup-env-variables.sh
+cp ./setup-env-variables-template.sh ./setup-env-variables.sh -i
 ```
 
 任意のエディターを使用し、ファイルの内容を編集し(例として Visual Studio Code のエディターを使用します)、次の値を追加します。
@@ -272,11 +272,15 @@ az monitor log-analytics workspace create \
 ```shell
 export LOG_ANALYTICS_RESOURCE_ID=$(az monitor log-analytics workspace show \
     --resource-group ${RESOURCE_GROUP} \
-    --workspace-name ${LOG_ANALYTICS_WORKSPACE} | jq -r '.id')
+    --workspace-name ${LOG_ANALYTICS_WORKSPACE} \
+    --query id \
+    -o tsv)
 
 export SPRING_APPS_RESOURCE_ID=$(az spring show \
     --name ${SPRING_APPS_SERVICE} \
-    --resource-group ${RESOURCE_GROUP} | jq -r '.id')
+    --resource-group ${RESOURCE_GROUP} \
+    --query id \
+    -o tsv)
 ```
 
 Azure Spring Apps サービスの診断設定を構成します。
@@ -515,7 +519,7 @@ API ポータルにエンドポイントを割り当て、ブラウザーで開�
 
 ```shell
 az spring api-portal update --assign-endpoint true
-export PORTAL_URL=$(az spring api-portal show | jq -r '.properties.url')
+export PORTAL_URL=$(az spring api-portal show --query properties.url -o tsv)
 
 open "https://${PORTAL_URL}"
 ```
@@ -541,7 +545,7 @@ echo "https://${PORTAL_URL}"
 
 ### アプリケーションを Microsoft Entra ID (Azure AD) に登録
 
-下記で、Azure AD を使用してシングル・サインオン・プロバイダーを作成する手順について説明します。 既存のプロバイダーを使用する場合、[既存の ID プロバイダーの使用](#既存の-sso-id-プロバイダーの使用) に進んでください
+下記で、Entra ID を使用してシングル・サインオン・プロバイダーを作成する手順について説明します。 既存のプロバイダーを使用する場合、[既存の ID プロバイダーの使用](#既存の-sso-id-プロバイダーの使用) に進んでください
 
 アプリケーションを登録するために、一意の表示名を選択してください
 
@@ -549,7 +553,7 @@ echo "https://${PORTAL_URL}"
 export AD_DISPLAY_NAME=change-me    # unique application display name
 ```
 
-#### Azure AD へのアプリケーション登録を作成し、出力を JSON に保存
+#### Entra ID へのアプリケーション登録を作成し、出力を JSON に保存
 
 ```shell
 az ad app create --display-name ${AD_DISPLAY_NAME} > ../resources/json/ad.json
@@ -597,7 +601,7 @@ echo ${PORTAL_URL}
 The `ISSUER_URI` should take the form `https://login.microsoftonline.com/${TENANT_ID}/v2.0`
 The `JWK_SET_URI` should take the form `https://login.microsoftonline.com/${TENANT_ID}/discovery/v2.0/keys`
 
-#### Web リダイレクト URI（必須） を Azure AD アプリケーションの登録に追加
+#### Web リダイレクト URI（必須） を Entra ID アプリケーションの登録に追加
 
 ```shell
 az ad app update --id ${APPLICATION_ID} \
@@ -608,7 +612,7 @@ az ad app update --id ${APPLICATION_ID} \
 
 ### 既存の SSO ID プロバイダーの使用
 
-> 注: Azure AD アプリケーションの登録を作成した場合は、[SSO を使用した Spring Cloud Gateway の構成](#sso-を使用した-spring-cloud-gateway-の設定) に進みます。
+> 注: Entra ID アプリケーションの登録を作成した場合は、[SSO を使用した Spring Cloud Gateway の構成](#sso-を使用した-spring-cloud-gateway-の設定) に進みます。
 
 既存の SSO ID プロバイダーを使用したい場合、既存のテンプレートをコピーします
 
@@ -626,7 +630,7 @@ pwd
 次に、カスタムな値を設定するため setup-sso-variables-template.sh のコピーを作成します
 
 ```shell
-cp ./setup-sso-variables-template.sh ./setup-sso-variables.sh
+cp ./setup-sso-variables-template.sh ./setup-sso-variables.sh -i
 ```
 
 次に、次の値をエコーで確認します。
@@ -740,7 +744,7 @@ az spring app update --name ${CART_SERVICE_APP} \
     --env "AUTH_URL=https://${GATEWAY_URL}" "CART_PORT=8080" 
     
 # Order Service の更新
-az spring app  update --name ${ORDER_SERVICE_APP} \
+az spring app update --name ${ORDER_SERVICE_APP} \
     --env "AcmeServiceSettings__AuthUrl=https://${GATEWAY_URL}" 
 ```
 
@@ -768,7 +772,7 @@ be available. This includes adding items to the cart and placing an order.
 API ポータルで SSO を有効に設定します
 
 ```shell
-export PORTAL_URL=$(az spring api-portal show | jq -r '.properties.url')
+export PORTAL_URL=$(az spring api-portal show --query properties.url -o tsv)
 
 az spring api-portal update \
     --client-id ${CLIENT_ID} \
@@ -823,7 +827,7 @@ pwd
 #### 提供さてたいるテンプレートをコピーし、環境変数を設定する bash スクリプトを作成
 
 ```shell
-cp ./setup-db-env-variables-template.sh ./setup-db-env-variables.sh
+cp ./setup-db-env-variables-template.sh ./setup-db-env-variables.sh -i
 ```
 
 ```shell
@@ -946,7 +950,7 @@ az spring connection create postgres-flexible \
     --client-type dotnet
 ```
 
-カタログ サービスは Azure AD 認証を使用して Postgres に接続するため、パスワードを含める必要はありません
+カタログ サービスは Entra ID 認証を使用して Postgres に接続するため、パスワードを含める必要はありません
 
 #### カタログサービスをPostgresにバインド
 
@@ -1002,7 +1006,9 @@ export POSTGRES_CONNECTION_STR=$(az spring connection show \
     --service ${SPRING_APPS_SERVICE} \
     --deployment default \
     --connection ${ORDER_SERVICE_DB_CONNECTION} \
-    --app ${ORDER_SERVICE_APP} | jq '.configurations[0].value' -r)
+    --app ${ORDER_SERVICE_APP} \
+    --query configurations[0].value \
+    -o tsv)"Trust Server Certificate=true;"
 ```
 
 ```shell
@@ -1019,7 +1025,9 @@ export REDIS_CONN_STR=$(az spring connection show \
     --service ${SPRING_APPS_SERVICE} \
     --deployment default \
     --connection ${CART_SERVICE_CACHE_CONNECTION} \
-    --app ${CART_SERVICE_APP} | jq -r '.configurations[0].value')
+    --app ${CART_SERVICE_APP} \
+    --query configurations[0].value \
+    -o tsv)
 ```
 
 ```shell
@@ -1077,7 +1085,9 @@ export KEY_VAULT=change-me      # customize this
 
 ```shell
 az keyvault create --name ${KEY_VAULT} -g ${RESOURCE_GROUP}
-export KEYVAULT_URI=$(az keyvault show --name ${KEY_VAULT} | jq -r '.properties.vaultUri')
+export KEYVAULT_URI=$(az keyvault show --name ${KEY_VAULT} \
+    --query properties.vaultUri \
+    -o tsv)
 ```
 
 #### Key Vault にデータベース接続情報を格納
@@ -1091,7 +1101,7 @@ az keyvault secret set --vault-name ${KEY_VAULT} \
     --name "POSTGRES-SERVER-NAME" --value ${POSTGRES_SERVER_FULL_NAME}
 
 az keyvault secret set --vault-name ${KEY_VAULT} \
-    --name "ConnectionStrings--OrderContext" --value "Server=${POSTGRES_SERVER_FULL_NAME};Database=${ORDER_SERVICE_DB};Port=5432;Ssl Mode=Require;User Id=${POSTGRES_SERVER_USER};Password=${POSTGRES_SERVER_PASSWORD};"
+    --name "ConnectionStrings--OrderContext" --value "${POSTGRES_CONNECTION_STR}"
 
 az keyvault secret set --vault-name ${KEY_VAULT} \
     --name "CATALOG-DATABASE-NAME" --value ${CATALOG_SERVICE_DB}
@@ -1106,15 +1116,14 @@ az keyvault secret set --vault-name ${KEY_VAULT} \
 #### Redis 接続情報を取得し　Key Vault に格納
 
 ```shell
-az redis show -n ${AZURE_CACHE_NAME} > redis.json
-export REDIS_HOST=$(cat redis.json | jq -r '.hostName')
-export REDIS_PORT=$(cat redis.json | jq -r '.sslPort')
-export REDIS_PRIMARY_KEY=$(az redis list-keys -n ${AZURE_CACHE_NAME} | jq -r '.primaryKey')
+export REDIS_HOST=$(az redis show -n ${AZURE_CACHE_NAME} --query hostName -o tsv)
+export REDIS_PORT=$(az redis show -n ${AZURE_CACHE_NAME} --query sslPort -o tsv)
+export REDIS_PRIMARY_KEY=$(az redis list-keys -n ${AZURE_CACHE_NAME} --query primaryKey -o tsv)
 ```
 
 ```shell
 az keyvault secret set --vault-name ${KEY_VAULT} \
-  --name "CART-REDIS-CONNECTION-STRING" --value "rediss://:${REDIS_PRIMARY_KEY}@${REDIS_HOST}:${REDIS_PORT}/0"
+  --name "CART-REDIS-CONNECTION-STRING" --value "${REDIS_CONN_STR}"
 ```
 
 #### SSO サービスの情報を Key Vault に格納
@@ -1129,17 +1138,17 @@ az keyvault secret set --vault-name ${KEY_VAULT} \
 #### アプリケーションでシステム割り当てマネージド ID を有効にし、マネージド ID を環境変数にエクスポート
 
 ```shell
-az spring app identity assign --name ${CART_SERVICE_APP}
-export CART_SERVICE_APP_IDENTITY=$(az spring app show --name ${CART_SERVICE_APP} | jq -r '.identity.principalId')
+az spring app identity assign --name ${CART_SERVICE_APP} --system-assigned
+export CART_SERVICE_APP_IDENTITY=$(az spring app show --name ${CART_SERVICE_APP} --query identity.principalId -o tsv)
 
-az spring app identity assign --name ${ORDER_SERVICE_APP}
-export ORDER_SERVICE_APP_IDENTITY=$(az spring app show --name ${ORDER_SERVICE_APP} | jq -r '.identity.principalId')
+az spring app identity assign --name ${ORDER_SERVICE_APP} --system-assigned
+export ORDER_SERVICE_APP_IDENTITY=$(az spring app show --name ${ORDER_SERVICE_APP} --query identity.principalId -o tsv)
 
-az spring app identity assign --name ${CATALOG_SERVICE_APP}
-export CATALOG_SERVICE_APP_IDENTITY=$(az spring app show --name ${CATALOG_SERVICE_APP} | jq -r '.identity.principalId')
+az spring app identity assign --name ${CATALOG_SERVICE_APP} --system-assigned
+export CATALOG_SERVICE_APP_IDENTITY=$(az spring app show --name ${CATALOG_SERVICE_APP} --query identity.principalId -o tsv)
 
-az spring app identity assign --name ${IDENTITY_SERVICE_APP}
-export IDENTITY_SERVICE_APP_IDENTITY=$(az spring app show --name ${IDENTITY_SERVICE_APP} | jq -r '.identity.principalId')
+az spring app identity assign --name ${IDENTITY_SERVICE_APP} --system-assigned
+export IDENTITY_SERVICE_APP_IDENTITY=$(az spring app show --name ${IDENTITY_SERVICE_APP} --query identity.principalId -o tsv)
 ```
 
 #### Key Vault に許可を与え、マネージド ID が機密情報を読み込み可能に設定
@@ -1171,7 +1180,7 @@ az spring connection delete \
     --connection ${ORDER_SERVICE_DB_CONNECTION} \
     --app ${ORDER_SERVICE_APP} \
     --deployment default \
-    --yes 
+    --yes
 ```
 
 ```shell
@@ -1181,7 +1190,7 @@ az spring connection delete \
     --connection ${CATALOG_SERVICE_DB_CONNECTION} \
     --app ${CATALOG_SERVICE_APP} \
     --deployment default \
-    --yes 
+    --yes
 ```
 
 ```shell
@@ -1191,7 +1200,7 @@ az spring connection delete \
     --connection ${CART_SERVICE_CACHE_CONNECTION} \
     --app ${CART_SERVICE_APP} \
     --deployment default \
-    --yes     
+    --yes
 ```
 
 ```shell    
@@ -1202,13 +1211,13 @@ az spring app update --name ${ORDER_SERVICE_APP} \
 ```shell
 az spring app update --name ${CATALOG_SERVICE_APP} \
     --config-file-pattern catalog/default,catalog/key-vault \
-    --env "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_ENDPOINT=${KEYVAULT_URI}" "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_NAME='acme-fitness-store-vault'" "SPRING_PROFILES_ACTIVE=default,key-vault"
+    --env "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_ENDPOINT=${KEYVAULT_URI}" "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_NAME=${KEY_VAULT}" "SPRING_PROFILES_ACTIVE=default,key-vault"
 ```
 
 ```shell  
 az spring app update --name ${IDENTITY_SERVICE_APP} \
     --config-file-pattern identity/default,identity/key-vault \
-    --env "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_ENDPOINT=${KEYVAULT_URI}" "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_NAME='acme-fitness-store-vault'" "SPRING_PROFILES_ACTIVE=default,key-vault"
+    --env "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_ENDPOINT=${KEYVAULT_URI}" "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_NAME=${KEY_VAULT}" "SPRING_PROFILES_ACTIVE=default,key-vault"
 ```
 
 ```shell    
@@ -1236,7 +1245,7 @@ Application Insights のインストルメンテーション・キーは、Java 
 Application Insights　のインストルメンテーション・キーを取得し、Key Vault に追加する
 
 ```shell
-export INSTRUMENTATION_KEY=$(az monitor app-insights component show --app ${APPLICATION_INSIGHTS} | jq -r '.connectionString')
+export INSTRUMENTATION_KEY=$(az monitor app-insights component show --app ${APPLICATION_INSIGHTS} --query connectionString -o tsv)
 
 az keyvault secret set --vault-name ${KEY_VAULT} \
     --name "ApplicationInsights--ConnectionString" --value ${INSTRUMENTATION_KEY}
@@ -1547,11 +1556,11 @@ To navigate to the Health page, select the Health option from the Information Ca
 
 GitHub Actions からこのサンプル アプリのデプロイを開始するには、以下を行ってください。
 
-1. [こちら](#アプリケーションを-microsoft-entra-id-azure-ad-に登録)で説明されている Azure AD アプリの登録を完了するか、もしくは、[こちらの](#既存の-sso-id-プロバイダーの使用)説明に従って SSO 資格情報を準備します
+1. [こちら](#アプリケーションを-microsoft-entra-id-azure-ad-に登録)で説明されている Entra ID アプリの登録を完了するか、もしくは、[こちらの](#既存の-sso-id-プロバイダーの使用)説明に従って SSO 資格情報を準備します
 2. このリポジトリをフォークし、フォークしたレポジトリで GitHub Actions をオンにします
 
 
-こちらで説明されている Azure AD アプリの登録を完了するか、こちらの説明に従って SSO 資格情報を準備します
+こちらで説明されている Entra ID アプリの登録を完了するか、こちらの説明に従って SSO 資格情報を準備します
 このリポジトリをフォークし、フォークでGitHubアクションをオンにします
 
 ### ストレージ アカウントの作成
@@ -1580,7 +1589,7 @@ pwd
 #### 提供されているテンプレートをコピーし、環境変数を設定した bash スクリプトの作成
 
 ```shell
-cp ./setup-storage-env-variables-template.sh ./setup-storage-env-variables.sh
+cp ./setup-storage-env-variables-template.sh ./setup-storage-env-variables.sh -i
 ```
 
 #### 任意のエディターを使用し、ファイルを編集(例として VS Code エディターを使用します)、次の値を追加
@@ -1768,7 +1777,7 @@ Now you can run GitHub Actions in your repository. The `provision` workflow will
 1. AI 用の環境変数テンプレート・ファイルをコピーしてください
 
    ```bash
-   cp azure-spring-apps-enterprise/scripts/setup-ai-env-variables-template.sh azure-spring-apps-enterprise/scripts/setup-ai-env-variables.sh
+   cp azure-spring-apps-enterprise/scripts/setup-ai-env-variables-template.sh azure-spring-apps-enterprise/scripts/setup-ai-env-variables.sh -i
    ```
 
 1. `azure-spring-apps-enterprise/scripts/setup-ai-env-variables.sh` ファイルに対して、Azure OpenAI インスタンスを構成するための各設定を行なってください
@@ -1839,8 +1848,6 @@ Now you can run GitHub Actions in your repository. The `provision` workflow will
     * エンドポイントと API キー - Azure Portal の OpenAI インスタンスで `Keys and Endpoint` の箇所をオンにします
     
      ![A screenshot of the Azure Portal OpenAI instance.](../../media/openai-azure-ai-services-api-key.png)    
-    * `gpt-35-turbo-16k`　のようにすでにに定義したモデルを使用する場合は、`AZURE_OPENAI_CHATDEPLOYMENTID` を使用します。
-    * `text-embedding-ada-002` のようにすでに定義したモデルを使用する場合は、`AZURE_OPENAI_EMBEDDINGDEPLOYMENTID` を使用します。
     * `AI_APP` は `assist-service`　のようなデフォルトの値を使用します。
 
 > 注: エンドポイントを取得するには、Azure CLI で `cognitiveservices` に対してクエリを実行します。
@@ -1892,10 +1899,8 @@ cd apps/acme-assist
         --source-path apps/acme-assist \
         --build-env BP_JVM_VERSION=17 \
         --env \
-        AZURE_OPENAI_ENDPOINT=${AZURE_OPENAI_ENDPOINT} \
-        AZURE_OPENAI_APIKEY=${AZURE_OPENAI_APIKEY} \
-        AZURE_OPENAI_CHATDEPLOYMENTID=${AZURE_OPENAI_CHATDEPLOYMENTID} \
-        AZURE_OPENAI_EMBEDDINGDEPLOYMENTID=${AZURE_OPENAI_EMBEDDINGDEPLOYMENTID}
+        SPRING_AI_AZURE_OPENAI_ENDPOINT=${SPRING_AI_AZURE_OPENAI_ENDPOINT} \
+        SPRING_AI_AZURE_OPENAI_API_KEY=${SPRING_AI_AZURE_OPENAI_API_KEY} \
     ```
 
 1. アプリケーションを再テストします。`ASK TO FITASSIST` に移動してアシスタントと会話を行います。

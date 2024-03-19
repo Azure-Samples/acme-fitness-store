@@ -8,18 +8,22 @@ on:
     paths:
       - 'apps/acme-cart/**'
 env:
-  SPRING_APPS_SERVICE: ${{ secrets.TF_PROJECT_NAME }}-asa
-  RESOURCE_GROUP: ${{ secrets.TF_PROJECT_NAME }}-grp
-  KEY_VAULT: ${{ secrets.TF_PROJECT_NAME }}-keyvault
+  SPRING_APPS_SERVICE: ${{ secrets.SPRING_APPS_SERVICE }}
+  RESOURCE_GROUP: ${{ secrets.RESOURCE_GROUP }}
+  KEY_VAULT: ${{ secrets.KEY_VAULT }}
   CUSTOM_BUILDER: no-bindings-builder
   CART_SERVICE_APP: cart-service
+
+permissions:
+      id-token: write
+      contents: read
 
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.7"]
+        python-version: ["3.11"]
     defaults:
       run:
         working-directory: apps/acme-cart
@@ -41,18 +45,22 @@ jobs:
       - name: Set up Azure
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.SUBSCRIPTION }}
       - name: Set up Azure Spring Extension
         run: az extension add --name spring
       - name: Deploy Cart
         run: |
           keyvault_uri=$(az keyvault show \
             --resource-group ${RESOURCE_GROUP} \
-            --name ${KEY_VAULT} | jq -r '.properties.vaultUri')
+            --name ${KEY_VAULT} \
+            --query properties.vaultUri -o tsv)
 
           gateway_url=$(az spring gateway show \
             --resource-group ${RESOURCE_GROUP} \
-            --service ${SPRING_APPS_SERVICE} | jq -r '.properties.url')
+            --service ${SPRING_APPS_SERVICE} \
+            --query properties.url -o tsv)
           
           az spring app deploy \
             --name ${CART_SERVICE_APP} \

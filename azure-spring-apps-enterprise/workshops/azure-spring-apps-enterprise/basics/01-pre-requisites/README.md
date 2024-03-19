@@ -30,7 +30,7 @@ The requirement to get Codespaces enabled for you is to get your gitid added to 
 ### Set the env vars
 Run the below command
 ```shell
-cp ./env/env-vars-template.sh ./env/env-vars.sh
+cp ./env/env-vars-template.sh ./env/env-vars.sh -i
 ```
 
 Update the variable names based on the comments.

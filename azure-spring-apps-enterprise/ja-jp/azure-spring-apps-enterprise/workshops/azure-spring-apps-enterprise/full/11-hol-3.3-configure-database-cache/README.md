@@ -9,7 +9,7 @@
 
 ```shell
 cd /workspaces/acme-fitness-store/azure-spring-apps-enterprise
-cp ./scripts/setup-db-env-variables-template.sh ./scripts/setup-db-env-variables.sh
+cp ./scripts/setup-db-env-variables-template.sh ./scripts/setup-db-env-variables.sh -i
 ```
 
 次に、デフォルトの Postgres Server のパスワードを変更するため、新規パスワードを作成します

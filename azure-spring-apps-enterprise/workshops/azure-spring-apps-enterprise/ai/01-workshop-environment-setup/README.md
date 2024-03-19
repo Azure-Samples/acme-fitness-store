@@ -44,7 +44,7 @@ Workshop instructors will use this information to provision your access to the w
 1. Copy the AI environment variables template file, e.g. 
 
    ```bash
-   cp azure-spring-apps-enterprise/scripts/setup-ai-env-variables-template.sh azure-spring-apps-enterprise/scripts/setup-ai-env-variables.sh
+   cp azure-spring-apps-enterprise/scripts/setup-ai-env-variables-template.sh azure-spring-apps-enterprise/scripts/setup-ai-env-variables.sh -i
    ```
 
 1. Update the values in `azure-spring-apps-enterprise/scripts/setup-ai-env-variables.sh` with your own values, as configured in Azure OpenAI instance:
@@ -58,7 +58,7 @@ Workshop instructors will use this information to provision your access to the w
 1. You might already have environment variables file from earlier labs - check with your instructor.
    Please copy the environment variables template file, e.g.
    ```bash
-   cp azure-spring-apps-enterprise/scripts/setup-env-variables-template.sh azure-spring-apps-enterprise/scripts/setup-env-variables.sh
+   cp azure-spring-apps-enterprise/scripts/setup-env-variables-template.sh azure-spring-apps-enterprise/scripts/setup-env-variables.sh -i
    ```
 
 1. Updates the values in `azure-spring-apps-enterprise/scripts/setup-env-variables.sh` as directed by your instructor.

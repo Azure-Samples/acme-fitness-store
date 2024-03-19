@@ -71,12 +71,12 @@
             </div>
             <div class="info-bar">
               <div class="row">
-                <div class="col-lg-4 products-showing">Showing <strong>8</strong> of <strong>8</strong> products</div>
+                <div class="col-lg-4 products-showing" id="productCount">Showing <strong>8</strong> of <strong>8</strong> products</div>
                 <div class="col-lg-8 products-number-sort">
                   <form class="form-inline"></form>
                   <div class="row">
                     <div class="col-6 col-lg-7">
-                      <div class="products-number"><strong>Show</strong><a href="#" class="btn btn-sm btn-outline-primary mr-1">12</a> <a href="#" class="btn btn-outline-secondary btn-sm mr-1">24</a> <a href="#" class="btn btn-outline-secondary btn-sm mr-1">All</a> products</div>
+                      <!-- <div class="products-number"><strong>Show</strong><a href="#" class="btn btn-sm btn-outline-primary mr-1" onclick="showProducts(12)">12</a> <a href="#" class="btn btn-outline-secondary btn-sm mr-1" onclick="showProducts(24)">24</a> <a href="#" class="btn btn-outline-secondary btn-sm mr-1" onclick="showProducts(-1)">All</a> products</div> -->
                     </div>
                     <div class="col-6 col-lg-5">
                       <div class="products-sort-by d-flex justify-content-end"><strong>Sort by</strong>
@@ -135,11 +135,11 @@
           if (data != null) {
 
             var content = ''
-
+            var count = 0
             $.each(data.data, function(index, product){
 
               console.log('product ID: ' + product.id)
-
+              count = count + 1
               content += '<div class="col-md-3 col-sm-4">\
                <div class="product">\
                <div class="image"><a href="detail.html?id='+ product.id+ '"' + '><img src="'+ product.imageUrl1+ '" alt=""\
@@ -158,11 +158,11 @@
             })
 
             $("#rowProducts").append(content);
+            $("#productCount").html("Showing <strong>"+count+"</strong> of <strong>"+count+"</strong> products")
 
         }
       },
         error: function(jqXHR, textStatus, errorThrown) {
-
           console.log(errorThrown)
         }
 

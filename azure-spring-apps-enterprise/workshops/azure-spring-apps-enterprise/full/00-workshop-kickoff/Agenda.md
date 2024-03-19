@@ -109,7 +109,7 @@ urlFragment: "acme-fitness-store"
 
 ## 2.8. SSO – using Spring Cloud Gateway and Azure Active Directory
 ### 2.8.1. Overview – how SSO is configured
-### 2.8.2. Show AAD app and its configuration
+### 2.8.2. Show Microsoft Entra App and its configuration
 ### 2.8.3. Demo – deploy Identity app
 ### 2.8.4. Show end-to-end experience for placing an order
 

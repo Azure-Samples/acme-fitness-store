@@ -92,7 +92,7 @@ urlFragment: "acme-fitness-store"
 ### 2.7.4. デモ - 資格情報を安全に読み込むようにカタログアプリを設定
 ## 2.8. SSO – Spring Cloud Gateway と Azure Active Directory の使用
 ### 2.8.1. 概要 – SSO の設定方法
-### 2.8.2. AAD アプリとその構成を表示
+### 2.8.2. Microsoft Entra ID アプリとその構成を表示
 ### 2.8.3. デモ – ID アプリのデプロイ
 ### 2.8.4. オーダー・サービス用の設定方法
 ## 2.9. ハンズオン 3

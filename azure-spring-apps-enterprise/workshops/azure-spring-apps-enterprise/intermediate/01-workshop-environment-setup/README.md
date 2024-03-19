@@ -24,7 +24,7 @@ Github Codespaces can be leveraged to provide a development environment for runn
     #### Update Environment Variables
     ```shell
     cd acme-fitness-store/azure-spring-apps-enterprise
-    cp ./scripts/setup-env-variables-template.sh ./scripts/setup-env-variables.sh
+    cp ./scripts/setup-env-variables-template.sh ./scripts/setup-env-variables.sh -i
     code ./scripts/setup-env-variables.sh # Use the editor of your choice
     ```
 
@@ -137,7 +137,7 @@ az extension update --name spring
 ### Update Environment Variables
 ```shell
 cd acme-fitness-store/azure-spring-apps-enterprise
-cp ./scripts/setup-env-variables-template.sh ./scripts/setup-env-variables.sh
+cp ./scripts/setup-env-variables-template.sh ./scripts/setup-env-variables.sh -i
 code ./scripts/setup-env-variables.sh # Use the editor of your choice
 ```
 
