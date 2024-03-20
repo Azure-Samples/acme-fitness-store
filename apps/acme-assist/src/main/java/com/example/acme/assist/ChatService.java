@@ -13,7 +13,8 @@ import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.SystemPromptTemplate;
 import org.springframework.ai.document.Document;
-import org.springframework.ai.vectorstore.SimpleVectorStore;
+import org.springframework.ai.vectorstore.SearchRequest;
+import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -29,13 +30,7 @@ import io.micrometer.common.util.StringUtils;
 public class ChatService {
 
     @Autowired
-    private SimpleVectorStore store;
-
-    @Autowired
-    private AzureOpenAIClient openAIClient;
-
-    @Autowired
-    private CosmosDBVectorStore cosmosDBVectorStore;
+    private VectorStore store;
 
     @Autowired
     private ProductRepository productRepository;
@@ -49,8 +44,6 @@ public class ChatService {
     @Value("classpath:/prompts/chatWithProductId.st")
     private Resource chatWithProductIdResource;
 
-    @Value("${spring.data.mongodb.enabled}")
-    private String cosmosEnabled;
     /**
      * Chat with the OpenAI API. Use the product details as the context.
      *
@@ -75,23 +68,11 @@ public class ChatService {
         // We have a specific Product
         String question = chatRequestMessages.get(chatRequestMessages.size() - 1).getContent();
 
-        var response = openAIClient.getEmbeddings(List.of(question));
-        var embedding = response.getData().get(0).getEmbedding();
-
-
-        List<Document> candidateDocuments = new ArrayList<>();;
         // step 1. Query for documents that are related to the question from the vector store
-        if (cosmosEnabled.equals("true")) {
-            List<DocEntry> cosmosVectorStoreDocs = this.cosmosDBVectorStore.searchTopKNearest(embedding, 5, 0.4);
-            for (DocEntry docEntry : cosmosVectorStoreDocs) {
-                Document document = new Document(docEntry.getText());
-                candidateDocuments.add(document);
-            }
-        }
-        else
-        {
-            candidateDocuments = this.store.similaritySearch(question, 5, 0.4);
-        }
+        SearchRequest request = SearchRequest.query(question).
+                withTopK(5).
+                withSimilarityThreshold(0.4);
+        List<Document> candidateDocuments = this.store.similaritySearch(request);
 
         // step 2. Create a SystemMessage that contains the product information in addition to related documents.
         List<Message> messages = new ArrayList<>();
@@ -113,21 +94,11 @@ public class ChatService {
 
         String question = acmeChatRequestMessages.get(acmeChatRequestMessages.size() - 1).getContent();
 
-        var response = openAIClient.getEmbeddings(List.of(question));
-        var embedding = response.getData().get(0).getEmbedding();
-
         // step 1. Query for documents that are related to the question from the vector store
-        List<Document> relatedDocuments = new ArrayList<>();;
-        if (cosmosEnabled.equals("true")) {
-            List<DocEntry> cosmosVectorStoreDocs = this.cosmosDBVectorStore.searchTopKNearest(embedding, 5, 0.4);
-            for (DocEntry docEntry : cosmosVectorStoreDocs) {
-                Document document = new Document(docEntry.getText());
-                relatedDocuments.add(document);
-            }
-        }
-        else {
-            relatedDocuments = this.store.similaritySearch(question, 5, 0.4);
-        }
+        SearchRequest request = SearchRequest.query(question).
+                withTopK(5).
+                withSimilarityThreshold(0.4);
+        List<Document> relatedDocuments = store.similaritySearch(request);
 
 
         // step 2. Create the system message with the related documents;

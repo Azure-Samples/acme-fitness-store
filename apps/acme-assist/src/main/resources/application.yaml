@@ -1,11 +1,9 @@
-vector-store:
-  file: /src/main/resources/cosmosdb_vector_store.json
+vectorstore: simple
 
 spring:
   data:
     mongodb:
-      enabled : false
-      uri: mongodb://localhost:27017/cosmosdb-vector-store
+      uri: <>
       database: cosmosdb-vector-store
   ai:
     azure:
