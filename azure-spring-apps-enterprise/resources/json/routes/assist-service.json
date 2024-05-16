@@ -10,5 +10,17 @@
     "tags": [
       "assist-service"
     ]
+  },
+  {
+    "predicates": [
+      "Path=/ai/admin/*",
+      "Method=GET"
+    ],
+    "filters": [
+      "StripPrefix=0"
+    ],
+    "tags": [
+      "assist-service"
+    ]
   }
 ]

@@ -25,6 +25,30 @@
   },
   {
     "predicates": [
+      "Path=/products",
+      "Method=POST"
+    ],
+    "filters": [
+      "StripPrefix=0"
+    ],
+    "tags": [
+      "catalog"
+    ]
+  },
+  {
+    "predicates": [
+      "Path=/products/{id}",
+      "Method=POST"
+    ],
+    "filters": [
+      "StripPrefix=0"
+    ],
+    "tags": [
+      "catalog"
+    ]
+  },
+  {
+    "predicates": [
       "Path=/catalogliveness",
       "Method=GET"
     ],

@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.springframework.util.StringUtils;
 
-public class ProductResponse {
+public class ProductVo {
 
 	private String id;
 	private String imageUrl1;
@@ -18,7 +18,10 @@ public class ProductResponse {
 	private Double price;
 	private List<String> tags = new ArrayList<>();
 
-	public ProductResponse(Product product) {
+	public ProductVo() {
+	}
+
+	public ProductVo(Product product) {
 		id = product.getId();
 		price = product.getPrice();
 		description = product.getDescription();
@@ -31,7 +34,6 @@ public class ProductResponse {
 		if (StringUtils.hasText(product.getTags())) {
 			tags = Arrays.asList(product.getTags().split(","));
 		}
-
 	}
 
 	public String getId() {

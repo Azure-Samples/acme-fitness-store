@@ -1,13 +1,16 @@
 package com.example.acme.catalog;
 
-import java.util.stream.Collectors;
-
 import io.micrometer.core.annotation.Timed;
-
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.stream.Collectors;
 
 @Timed("store.products")
 @RestController
@@ -22,12 +25,30 @@ public class ProductController {
 	@GetMapping("/products")
 	public GetProductsResponse getProducts() {
 		return new GetProductsResponse(productService.getProducts().stream()
-													 .map(ProductResponse::new)
+													 .map(ProductVo::new)
 													 .collect(Collectors.toList()));
 	}
 
 	@GetMapping("/products/{id}")
 	public GetProductResponse getProduct(@PathVariable String id) {
-		return new GetProductResponse(new ProductResponse(productService.getProduct(id)), HttpStatus.OK.value());
+		return new GetProductResponse(new ProductVo(productService.getProduct(id)), HttpStatus.OK.value());
+	}
+
+	@PostMapping("/products")
+	public ResponseEntity<ProductVo> createProduct(@RequestBody ProductVo productVo) {
+		Product product = productService.createProduct(Product.fromProductRequestToProduct(productVo));
+		return ResponseEntity.ok(new ProductVo(product));
+	}
+
+	@PostMapping("/products/{id}")
+	public ResponseEntity<ProductVo> updateProduct(@PathVariable String id, @RequestBody ProductVo productVo) {
+		Product product = productService.updateProduct(id, Product.fromProductRequestToProduct(productVo));
+		return ResponseEntity.ok(new ProductVo(product));
+	}
+
+	@DeleteMapping("/products/{id}")
+	public ResponseEntity<Void> deleteProduct(@PathVariable String id) {
+		productService.deleteProduct(id);
+		return ResponseEntity.noContent().build();
 	}
 }
