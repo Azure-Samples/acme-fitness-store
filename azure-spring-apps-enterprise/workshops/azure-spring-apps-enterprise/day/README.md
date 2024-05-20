@@ -9,6 +9,8 @@ Welcome to "Azure for Spring Developers" Workshop. This workshop has few hands o
 - [04 - Hello World Application](./04-hello-world-application/README.md)
 - [05 - Deploy Frontend Application](./05-deploy-frontend-application/README.md)
 - [06 - Deploy Backend Applications](./06-deploy-backend-applications/README.md)
-- [07 - Configure Azure OpenAI Services](./07-configure-azure-openai-services/README.md)
-- [08 - Deploy AI Assistant Application](./08-deploy-ai-assistant-application/README.md)
-- [09 - Summary](./09-summary/README.md)
+- [07 - Configure Databases](./07-configure-databases/README.md) OPTIONAL
+- [08 - Configure Single Sign-On](./08-configure-single-signon/README.md) OPTIONAL
+- [09 - Configure Azure OpenAI Services](./09-configure-azure-openai-services/README.md)
+- [10 - Deploy AI Assistant Application](./10-deploy-ai-assistant-application/README.md)
+- [11 - Summary](./09-summary/README.md)
