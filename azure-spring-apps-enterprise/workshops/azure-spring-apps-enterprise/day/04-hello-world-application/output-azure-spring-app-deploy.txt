@@ -1,0 +1,337 @@
+az spring app deploy --name hello-world --source-path . 
+
+This command usually takes minutes to run. Add '--verbose' parameter if needed.
+[1/5] Requesting for upload URL.
+[2/5] Uploading package to blob.
+[3/5] Creating or Updating build 'hello-world'.
+[4/5] Waiting for building container image to finish. This may take a few minutes.
+Build reason(s): CONFIG
+CONFIG:
+        - resources: {}
+        - source: {}
+        + resources:
+        +   limits:
+        +     cpu: "1"
+        +     memory: 2Gi
+        + services:
+        + - apiVersion: v1
+        +   kind: Secret
+        +   name: 0-7default-7default-1
+        + source:
+        +   blob:
+        +     url: https://aaaabbbbccccddddeeeeffff.file.core.windows.net/9b691e1378be429d8dd63ef79c441f08/resources/2024052008-4fb156fc-0a7d-4dbb-85d6-5fc5235b1234?sv=2020-08-04&se=2024-09-17T08%3A44%3A17Z&sr=f&sp=r
+Loading registry credentials from service account secrets
+Loading secrets for "acr1234567890abcdef1.azurecr.io" from secret "docker-kpack"
+Loading cluster credential helpers
+Downloading aaaabbbbccccddddeeeeffff.file.core.windows.net/9b691e1378be429d8dd63ef79c441f08/resources/2024052008-4fb156fc-0a7d-4dbb-85d6-5fc5235b1234...
+Successfully downloaded aaaabbbbccccddddeeeeffff.file.core.windows.net/9b691e1378be429d8dd63ef79c441f08/resources/2024052008-4fb156fc-0a7d-4dbb-85d6-5fc5235b1234 in path "/workspace"
+Builder:
+ Image: acr1234567890abcdef1.azurecr.io/build-service-builder-9b691e1378be429d8dd63ef79c441f08-default-default@sha256:21279e2cea4ab9f4ae3253cc02f60dba87d701a2b8e861b6904039de9c841eaa 
+ Name: default.default.1 
+ Kind: Builder 
+Timer: Analyzer started at 2024-05-20T08:45:58Z
+Image with name "acr1234567890abcdef1.azurecr.io/hello-world-default:result" not found
+Timer: Analyzer ran for 160.906452ms and ended at 2024-05-20T08:45:58Z
+Timer: Detector started at 2024-05-20T08:46:03Z
+11 of 42 buildpacks participating
+tanzu-buildpacks/ca-certificates            3.7.0
+tanzu-buildpacks/microsoft-openjdk          4.0.0
+paketo-buildpacks/syft                      1.10.1
+tanzu-buildpacks/maven                      6.16.0
+tanzu-buildpacks/executable-jar             6.9.0
+tanzu-buildpacks/apache-tomcat              7.15.1
+tanzu-buildpacks/apache-tomee               1.8.0
+tanzu-buildpacks/liberty                    3.9.0
+tanzu-buildpacks/dist-zip                   5.7.0
+tanzu-buildpacks/spring-boot                5.28.0
+tanzu-buildpacks/azure-application-insights 5.18.0
+Timer: Detector ran for 258.16279ms and ended at 2024-05-20T08:46:03Z
+Timer: Restorer started at 2024-05-20T08:46:04Z
+Timer: Restorer ran for 4.105889ms and ended at 2024-05-20T08:46:04Z
+    Writing env.launch/JAVA_HOME.default
+    Writing env.launch/JAVA_TOOL_OPTIONS.append
+    Writing env.launch/JAVA_TOOL_OPTIONS.delim
+    Writing env.launch/MALLOC_ARENA_MAX.default
+  Launch Helper: Contributing to layer
+    Creating /layers/tanzu-buildpacks_microsoft-openjdk/helper/exec.d/active-processor-count
+    Creating /layers/tanzu-buildpacks_microsoft-openjdk/helper/exec.d/java-opts
+    Creating /layers/tanzu-buildpacks_microsoft-openjdk/helper/exec.d/jvm-heap
+    Creating /layers/tanzu-buildpacks_microsoft-openjdk/helper/exec.d/link-local-dns
+    Creating /layers/tanzu-buildpacks_microsoft-openjdk/helper/exec.d/memory-calculator
+    Creating /layers/tanzu-buildpacks_microsoft-openjdk/helper/exec.d/security-providers-configurer
+    Creating /layers/tanzu-buildpacks_microsoft-openjdk/helper/exec.d/jmx
+    Creating /layers/tanzu-buildpacks_microsoft-openjdk/helper/exec.d/jfr
+    Creating /layers/tanzu-buildpacks_microsoft-openjdk/helper/exec.d/openssl-certificate-loader
+    Creating /layers/tanzu-buildpacks_microsoft-openjdk/helper/exec.d/security-providers-classpath-9
+    Creating /layers/tanzu-buildpacks_microsoft-openjdk/helper/exec.d/debug-9
+    Creating /layers/tanzu-buildpacks_microsoft-openjdk/helper/exec.d/nmt
+  Java Security Properties: Contributing to layer
+    Writing env.launch/JAVA_SECURITY_PROPERTIES.default
+    Writing env.launch/JAVA_TOOL_OPTIONS.append
+    Writing env.launch/JAVA_TOOL_OPTIONS.delim
+
+Paketo Syft Buildpack 1.10.1
+  https://github.com/paketo-buildpacks/syft
+    Reusing cached download from buildpack
+    Writing env.build/SYFT_CHECK_FOR_APP_UPDATE.default
+
+Tanzu Buildpack for Maven 6.16.0
+  https://github.com/pivotal-cf/tanzu-maven
+  Build Configuration:
+    $BP_EXCLUDE_FILES                                                                            colon separated list of glob patterns, matched source files are removed
+    $BP_INCLUDE_FILES                                                                            colon separated list of glob patterns, matched source files are included
+    $BP_JAVA_INSTALL_NODE                 false                                                  whether to install Yarn/Node binaries based on the presence of a package.json or yarn.lock file
+    $BP_MAVEN_ACTIVE_PROFILES                                                                    the active profiles (comma separated: such as: p1,!p2,?p3) to pass to Maven
+    $BP_MAVEN_ADDITIONAL_BUILD_ARGUMENTS                                                         the additionnal arguments (appended to BP_MAVEN_BUILD_ARGUMENTS) to pass to Maven
+    $BP_MAVEN_BUILD_ARGUMENTS             -Dmaven.test.skip=true --no-transfer-progress package  the arguments to pass to Maven
+    $BP_MAVEN_BUILT_ARTIFACT              target/*.[ejw]ar                                       the built application artifact explicitly.  Supersedes $BP_MAVEN_BUILT_MODULE
+    $BP_MAVEN_BUILT_MODULE                                                                       the module to find application artifact in
+    $BP_MAVEN_DAEMON_ENABLED              false                                                  use maven daemon
+    $BP_MAVEN_POM_FILE                    pom.xml                                                the location of the main pom.xml file, relative to the application root
+    $BP_MAVEN_SETTINGS_PATH                                                                      the path to a Maven settings file
+    $BP_MAVEN_VERSION                     3                                                      the Maven version
+    $BP_NODE_PROJECT_PATH                                                                        configure a project subdirectory to look for `package.json` and `yarn.lock` files
+  Apache Maven 3.9.6: Contributing to layer
+    Reusing cached download from buildpack
+    Expanding to /layers/tanzu-buildpacks_maven/maven
+    Creating cache directory /home/cnb/.m2
+  Compiled Application: Contributing to layer
+    Executing mvn --batch-mode -Dmaven.test.skip=true --no-transfer-progress package
+      [INFO] Scanning for projects...
+      [INFO] 
+      [INFO] --------------------------< com.example:demo >--------------------------
+      [INFO] Building demo 0.0.1-SNAPSHOT
+      [INFO]   from pom.xml
+      [INFO] --------------------------------[ jar ]---------------------------------
+      [INFO] 
+      [INFO] --- resources:3.3.1:resources (default-resources) @ demo ---
+      [INFO] Copying 1 resource from src/main/resources to target/classes
+      [INFO] Copying 0 resource from src/main/resources to target/classes
+      [INFO] 
+      [INFO] --- compiler:3.11.0:compile (default-compile) @ demo ---
+      [INFO] Changes detected - recompiling the module! :source
+      [INFO] Compiling 2 source files with javac [debug release 17] to target/classes
+      [INFO] 
+      [INFO] --- resources:3.3.1:testResources (default-testResources) @ demo ---
+      [INFO] Not copying test resources
+      [INFO] 
+      [INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ demo ---
+      [INFO] Not compiling test sources
+      [INFO] 
+      [INFO] --- surefire:3.1.2:test (default-test) @ demo ---
+      [INFO] Tests are skipped.
+      [INFO] 
+      [INFO] --- jar:3.3.0:jar (default-jar) @ demo ---
+      [INFO] Building jar: /workspace/target/demo-0.0.1-SNAPSHOT.jar
+      [INFO] 
+      [INFO] --- spring-boot:3.2.5:repackage (repackage) @ demo ---
+      [INFO] Replacing main artifact /workspace/target/demo-0.0.1-SNAPSHOT.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+      [INFO] The original artifact has been renamed to /workspace/target/demo-0.0.1-SNAPSHOT.jar.original
+      [INFO] ------------------------------------------------------------------------
+      [INFO] BUILD SUCCESS
+      [INFO] ------------------------------------------------------------------------
+      [INFO] Total time:  8.590 s
+      [INFO] Finished at: 2024-05-20T08:46:21Z
+      [INFO] ------------------------------------------------------------------------
+      
+  Removing source code
+  Restoring application artifact
+
+Tanzu Buildpack for Executable JAR 6.9.0
+  https://github.com/pivotal-cf/tanzu-executable-jar
+  Class Path: Contributing to layer
+    Writing env/CLASSPATH.delim
+    Writing env/CLASSPATH.prepend
+  Process types:
+    executable-jar: java org.springframework.boot.loader.launch.JarLauncher (direct)
+    task:           java org.springframework.boot.loader.launch.JarLauncher (direct)
+    web:            java org.springframework.boot.loader.launch.JarLauncher (direct)
+SKIPPED: `Main-Class` found in `META-INF/MANIFEST.MF`, skipping build
+
+Tanzu Buildpack for Spring Boot 5.28.0
+  https://github.com/pivotal-cf/tanzu-spring-boot
+  Build Configuration:
+    $BP_SPRING_CLOUD_BINDINGS_DISABLED   false  whether to contribute Spring Boot cloud bindings support
+    $BP_SPRING_CLOUD_BINDINGS_VERSION    1      default version of Spring Cloud Bindings library to contribute
+  Launch Configuration:
+    $BPL_SPRING_CLOUD_BINDINGS_DISABLED  false  whether to auto-configure Spring Boot environment properties from bindings
+    $BPL_SPRING_CLOUD_BINDINGS_ENABLED   true   Deprecated - whether to auto-configure Spring Boot environment properties from bindings
+  Creating slices from layers index
+    dependencies (18.7 MB)
+    spring-boot-loader (448.2 KB)
+    snapshot-dependencies (0.0 B)
+    application (40.6 KB)
+  Launch Helper: Contributing to layer
+    Creating /layers/tanzu-buildpacks_spring-boot/helper/exec.d/spring-cloud-bindings
+  Spring Cloud Bindings 2.0.2: Contributing to layer
+    Reusing cached download from buildpack
+    Copying to /layers/tanzu-buildpacks_spring-boot/spring-cloud-bindings
+  Web Application Type: Contributing to layer
+    Servlet web application detected
+    Writing env.launch/BPL_JVM_THREAD_COUNT.default
+  4 application slices
+  Image labels:
+    org.opencontainers.image.title
+    org.opencontainers.image.version
+    org.springframework.boot.version
+
+Tanzu Buildpack for Azure Application Insights 5.18.0
+  https://github.com/pivotal-cf/tanzu-azure-application-insights
+  Azure Application Insights Java Agent 3.4.19: Contributing to layer
+    Reusing cached download from buildpack
+    Copying to /layers/tanzu-buildpacks_azure-application-insights/azure-application-insights-java
+    Writing env.launch/JAVA_TOOL_OPTIONS.append
+    Writing env.launch/JAVA_TOOL_OPTIONS.delim
+  Launch Helper: Contributing to layer
+    Creating /layers/tanzu-buildpacks_azure-application-insights/helper/exec.d/properties
+Timer: Builder ran for 16.668912295s and ended at 2024-05-20T08:46:22Z
+Timer: Exporter started at 2024-05-20T08:46:23Z
+Adding layer 'tanzu-buildpacks/ca-certificates:helper'
+Adding layer 'tanzu-buildpacks/microsoft-openjdk:helper'
+Adding layer 'tanzu-buildpacks/microsoft-openjdk:java-security-properties'
+Adding layer 'tanzu-buildpacks/microsoft-openjdk:jdk'
+Adding layer 'tanzu-buildpacks/executable-jar:classpath'
+Adding layer 'tanzu-buildpacks/spring-boot:helper'
+Adding layer 'tanzu-buildpacks/spring-boot:spring-cloud-bindings'
+Adding layer 'tanzu-buildpacks/spring-boot:web-application-type'
+Adding layer 'tanzu-buildpacks/azure-application-insights:azure-application-insights-java'
+Adding layer 'tanzu-buildpacks/azure-application-insights:helper'
+Adding layer 'buildpacksio/lifecycle:launch.sbom'
+Adding 5/5 app layer(s)
+Adding layer 'buildpacksio/lifecycle:launcher'
+Adding layer 'buildpacksio/lifecycle:config'
+Adding layer 'buildpacksio/lifecycle:process-types'
+Adding label 'io.buildpacks.lifecycle.metadata'
+Adding label 'io.buildpacks.build.metadata'
+Adding label 'io.buildpacks.project.metadata'
+Adding label 'org.opencontainers.image.title'
+Adding label 'org.opencontainers.image.version'
+Adding label 'org.springframework.boot.version'
+Setting default process type 'web'
+Timer: Saving acr1234567890abcdef1.azurecr.io/hello-world-default:result... started at 2024-05-20T08:46:27Z
+*** Images (sha256:90fa61484355439b64ec21f6410f28eb2cd23c273f0d7ef7d7913409317be4c1):
+      acr1234567890abcdef1.azurecr.io/hello-world-default:result
+      acr1234567890abcdef1.azurecr.io/hello-world-default:result-1
+Timer: Saving acr1234567890abcdef1.azurecr.io/hello-world-default:result... ran for 12.813221069s and ended at 2024-05-20T08:46:40Z
+Timer: Exporter ran for 17.522224441s and ended at 2024-05-20T08:46:40Z
+Timer: Cache started at 2024-05-20T08:46:40Z
+Adding cache layer 'tanzu-buildpacks/microsoft-openjdk:jdk'
+Adding cache layer 'paketo-buildpacks/syft:syft'
+Adding cache layer 'tanzu-buildpacks/maven:application'
+Adding cache layer 'tanzu-buildpacks/maven:cache'
+Adding cache layer 'tanzu-buildpacks/maven:maven'
+Adding cache layer 'buildpacksio/lifecycle:cache.sbom'
+Timer: Cache ran for 5.920879695s and ended at 2024-05-20T08:46:46Z
+[5/5] Updating deployment in app "hello-world" (this operation can take a while to complete)
+Azure Spring Apps will use rolling upgrade to update your deployment, you have 1 instance, Azure Spring Apps will update the deployment in 1 round.
+The deployment is in round 1, 1 old instance is deleted/deleting and 1 new instance is started/starting
+Your application is successfully deployed.
+Application logs:
+Setting Active Processor Count to 8
+Adding $JAVA_OPTS to $JAVA_TOOL_OPTIONS
+Calculated JVM Memory Configuration: -XX:MaxDirectMemorySize=10M -Xmx403998K -XX:MaxMetaspaceSize=132577K -XX:ReservedCodeCacheSize=240M -Xss1M (Total Memory: 1G, Thread Count: 250, Loaded Class Count: 20993, Headroom: 0%)
+Enabling Java Native Memory Tracking
+Adding 137 container CA certificates to JVM truststore
+Spring Cloud Bindings Enabled
+Configuring Azure Application Insight properties
+Picked up JAVA_TOOL_OPTIONS: -Djava.security.properties=/layers/tanzu-buildpacks_microsoft-openjdk/java-security-properties/java-security.properties -XX:+ExitOnOutOfMemoryError -javaagent:/layers/tanzu-buildpacks_azure-application-insights/azure-application-insights-java/applicationinsights-agent-3.4.19.jar -XX:ActiveProcessorCount=8 -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=1099 -Dcom.sun.management.jmxremote.local.only=true -Dmanagement.endpoints.jmx.exposure.include=health,metrics -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Dserver.tomcat.mbeanregistry.enabled=true -Dfile.encoding=UTF8 -Dspring.config.import=optional:configserver:/ -XX:MaxDirectMemorySize=10M -Xmx403998K -XX:MaxMetaspaceSize=132577K -XX:ReservedCodeCacheSize=240M -Xss1M -XX:+UnlockDiagnosticVMOptions -XX:NativeMemoryTracking=summary -XX:+PrintNMTStatistics -Dorg.springframework.cloud.bindings.boot.enable=true
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+2024-05-20 08:47:18.797Z INFO  c.m.applicationinsights.agent - Application Insights Java Agent 3.4.19 started successfully (PID 1, JVM running for 7.039 s)
+2024-05-20 08:47:18.801Z INFO  c.m.applicationinsights.agent - Java version: 17.0.10, vendor: Microsoft, home: /layers/tanzu-buildpacks_microsoft-openjdk/jdk
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.5)
+
+2024-05-20T08:47:24.490Z  INFO 1 --- [demo] [           main] com.example.demo.DemoApplication         : Starting DemoApplication v0.0.1-SNAPSHOT using Java 17.0.10 with PID 1 (/workspace/BOOT-INF/classes started by cnb in /workspace)
+2024-05-20T08:47:24.595Z  INFO 1 --- [demo] [           main] com.example.demo.DemoApplication         : No active profile set, falling back to 1 default profile: "default"
+2024-05-20T08:47:28.899Z  INFO 1 --- [demo] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2024-05-20T08:47:29.899Z  INFO 1 --- [demo] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-05-20T08:47:29.899Z  INFO 1 --- [demo] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-05-20T08:47:30.209Z  INFO 1 --- [demo] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-05-20T08:47:30.210Z  INFO 1 --- [demo] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 5309 ms
+2024-05-20T08:47:31.790Z  INFO 1 --- [demo] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path ''
+2024-05-20T08:47:31.798Z  INFO 1 --- [demo] [           main] com.example.demo.DemoApplication         : Started DemoApplication in 10.201 seconds (process running for 20.042)
+2024-05-20T08:47:33.300Z  INFO 1 --- [demo] [nio-8080-exec-3] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-05-20T08:47:33.301Z  INFO 1 --- [demo] [nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-05-20T08:47:33.302Z  INFO 1 --- [demo] [nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+{
+  "id": "/subscriptions/00001111-aaaa-bbbb-cccc-ddddeeeeffff/resourceGroups/asae-student01/providers/Microsoft.AppPlatform/Spring/asae-student01/apps/hello-world/deployments/default",
+  "name": "default",
+  "properties": {
+    "active": true,
+    "deploymentSettings": {
+      "addonConfigs": null,
+      "apms": null,
+      "containerProbeSettings": null,
+      "environmentVariables": null,
+      "livenessProbe": {
+        "disableProbe": false,
+        "failureThreshold": 3,
+        "initialDelaySeconds": 300,
+        "periodSeconds": 10,
+        "probeAction": {
+          "type": "TCPSocketAction"
+        },
+        "successThreshold": 1,
+        "timeoutSeconds": 3
+      },
+      "readinessProbe": {
+        "disableProbe": false,
+        "failureThreshold": 3,
+        "initialDelaySeconds": 0,
+        "periodSeconds": 5,
+        "probeAction": {
+          "type": "TCPSocketAction"
+        },
+        "successThreshold": 1,
+        "timeoutSeconds": 3
+      },
+      "resourceRequests": {
+        "cpu": "1",
+        "memory": "1Gi"
+      },
+      "scale": null,
+      "startupProbe": null,
+      "terminationGracePeriodSeconds": 90
+    },
+    "instances": [
+      {
+        "discoveryStatus": "N/A",
+        "name": "hello-world-default-11-5f4cf48b45-cghfk",
+        "reason": null,
+        "startTime": "2024-05-20T08:47:07Z",
+        "status": "Running",
+        "zone": null
+      }
+    ],
+    "provisioningState": "Succeeded",
+    "source": {
+      "buildResultId": "/subscriptions/00001111-aaaa-bbbb-cccc-ddddeeeeffff/resourceGroups/asae-student01/providers/Microsoft.AppPlatform/Spring/asae-student01/buildServices/default/builds/hello-world-default/results/1",
+      "type": "BuildResult",
+      "version": null
+    },
+    "status": "Running"
+  },
+  "resourceGroup": "asae-student01",
+  "sku": {
+    "capacity": 1,
+    "name": "E0",
+    "tier": "Enterprise"
+  },
+  "systemData": {
+    "createdAt": "2024-05-20T08:25:26.963017+00:00",
+    "createdBy": ":asastudent01@outlook.com",
+    "createdByType": "User",
+    "lastModifiedAt": "2024-05-20T08:47:04.351944+00:00",
+    "lastModifiedBy": "asastudent01@outlook.com",
+    "lastModifiedByType": "User"
+  },
+  "type": "Microsoft.AppPlatform/Spring/apps/deployments"
+}
+
+

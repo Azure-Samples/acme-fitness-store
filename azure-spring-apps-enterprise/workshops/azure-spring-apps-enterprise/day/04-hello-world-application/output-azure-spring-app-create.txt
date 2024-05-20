@@ -1,0 +1,133 @@
+az spring az spring app create --name hello-world --assign-endpoint --cpu 1 --memory 1Gi
+
+This command usually takes minutes to run. Add '--verbose' parameter if needed.
+[1/2] Creating app hello-world
+[2/2] Creating default deployment with name "default"
+App create succeeded
+{
+  "id": "/subscriptions/00001111-aaaa-bbbb-cccc-ddddeeeeffff/resourceGroups/asae-student01/providers/Microsoft.AppPlatform/Spring/asae-student01/apps/hello-world",
+  "identity": null,
+  "location": "westeurope",
+  "name": "hello-world",
+  "properties": {
+    "activeDeployment": {
+      "id": "/subscriptions/00001111-aaaa-bbbb-cccc-ddddeeeeffff/resourceGroups/asae-student01/providers/Microsoft.AppPlatform/Spring/asae-student01/apps/hello-world/deployments/default",
+      "name": "default",
+      "properties": {
+        "active": true,
+        "deploymentSettings": {
+          "addonConfigs": null,
+          "apms": null,
+          "containerProbeSettings": null,
+          "environmentVariables": null,
+          "livenessProbe": {
+            "disableProbe": false,
+            "failureThreshold": 3,
+            "initialDelaySeconds": 300,
+            "periodSeconds": 10,
+            "probeAction": {
+              "type": "TCPSocketAction"
+            },
+            "successThreshold": 1,
+            "timeoutSeconds": 3
+          },
+          "readinessProbe": {
+            "disableProbe": false,
+            "failureThreshold": 3,
+            "initialDelaySeconds": 0,
+            "periodSeconds": 5,
+            "probeAction": {
+              "type": "TCPSocketAction"
+            },
+            "successThreshold": 1,
+            "timeoutSeconds": 3
+          },
+          "resourceRequests": {
+            "cpu": "1",
+            "memory": "1Gi"
+          },
+          "scale": null,
+          "startupProbe": null,
+          "terminationGracePeriodSeconds": 90
+        },
+        "instances": [
+          {
+            "discoveryStatus": "N/A",
+            "name": "hello-world-default-11-7db988bbcb-8vxk7",
+            "reason": null,
+            "startTime": "2024-05-20T08:25:31Z",
+            "status": "Running",
+            "zone": null
+          }
+        ],
+        "provisioningState": "Succeeded",
+        "source": {
+          "buildResultId": "<default>",
+          "type": "BuildResult",
+          "version": null
+        },
+        "status": "Running"
+      },
+      "resourceGroup": "asae-student01",
+      "sku": {
+        "capacity": 1,
+        "name": "E0",
+        "tier": "Enterprise"
+      },
+      "systemData": {
+        "createdAt": "2024-05-20T08:25:26.963017+00:00",
+        "createdBy": "asastudent01@outlook.com",
+        "createdByType": "User",
+        "lastModifiedAt": "2024-05-20T08:25:26.963017+00:00",
+        "lastModifiedBy": "asastudent01@outlook.com",
+        "lastModifiedByType": "User"
+      },
+      "type": "Microsoft.AppPlatform/Spring/apps/deployments"
+    },
+    "addonConfigs": {
+      "applicationConfigurationService": {},
+      "configServer": {},
+      "serviceRegistry": {}
+    },
+    "customPersistentDisks": null,
+    "enableEndToEndTls": false,
+    "fqdn": "asae-student01.azuremicroservices.io",
+    "httpsOnly": false,
+    "ingressSettings": {
+      "backendProtocol": "Default",
+      "clientAuth": null,
+      "readTimeoutInSeconds": 300,
+      "sendTimeoutInSeconds": 60,
+      "sessionAffinity": "None",
+      "sessionCookieMaxAge": 0
+    },
+    "loadedCertificates": null,
+    "persistentDisk": {
+      "mountPath": "/persistent",
+      "sizeInGb": 0,
+      "usedInGb": null
+    },
+    "provisioningState": "Succeeded",
+    "public": true,
+    "secrets": null,
+    "temporaryDisk": {
+      "mountPath": "/tmp",
+      "sizeInGb": 5
+    },
+    "testEndpointAuthState": null,
+    "testEndpointAuthStatus": "Enabled",
+    "url": "https://asae-student01-hello-world.azuremicroservices.io",
+    "vnetAddons": null,
+    "workloadProfileName": null
+  },
+  "resourceGroup": "asae-student01",
+  "systemData": {
+    "createdAt": "2024-05-20T08:25:09.257840+00:00",
+    "createdBy": "asastudent01@outlook.com",
+    "createdByType": "User",
+    "lastModifiedAt": "2024-05-20T08:25:09.257840+00:00",
+    "lastModifiedBy": "asastudent01@outlook.com",
+    "lastModifiedByType": "User"
+  },
+  "type": "Microsoft.AppPlatform/Spring/apps"
+}
