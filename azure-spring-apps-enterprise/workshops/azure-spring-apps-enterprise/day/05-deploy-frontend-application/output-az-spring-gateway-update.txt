@@ -1,0 +1,67 @@
+az spring gateway update --assign-endpoint true
+This command usually takes minutes to run. Add '--verbose' parameter if needed.
+{
+  "id": "/subscriptions/00001111-aaaa-bbbb-cccc-ddddeeeeffff/resourceGroups/asae-student01/providers/Microsoft.AppPlatform/Spring/asae-student01/gateways/default",
+  "name": "default",
+  "properties": {
+    "addonConfigs": null,
+    "apiMetadataProperties": null,
+    "apmTypes": null,
+    "apms": null,
+    "clientAuth": {
+      "certificateVerification": "Disabled",
+      "certificates": null
+    },
+    "corsProperties": null,
+    "environmentVariables": null,
+    "httpsOnly": false,
+    "instances": [
+      {
+        "name": "asc-scg-default-0",
+        "status": "Running"
+      },
+      {
+        "name": "asc-scg-default-1",
+        "status": "Running"
+      }
+    ],
+    "operatorProperties": {
+      "instances": [
+        {
+          "name": "scg-operator-6b755d7686-c5cr6",
+          "status": "Running"
+        }
+      ],
+      "resourceRequests": {
+        "cpu": "1",
+        "instanceCount": 1,
+        "memory": "2Gi"
+      }
+    },
+    "provisioningState": "Succeeded",
+    "public": true,
+    "resourceRequests": {
+      "cpu": "1",
+      "memory": "2Gi"
+    },
+    "responseCacheProperties": null,
+    "ssoProperties": null,
+    "url": "asae-student01-gateway-235fe.svc.azuremicroservices.io"
+  },
+  "resourceGroup": "asae-student01",
+  "sku": {
+    "capacity": 2,
+    "name": "E0",
+    "tier": "Enterprise"
+  },
+  "systemData": {
+    "createdAt": "2024-05-17T20:27:46.927797+00:00",
+    "createdBy": "asastudent01@outlook.com",
+    "createdByType": "User",
+    "lastModifiedAt": "2024-05-20T11:05:09.991108+00:00",
+    "lastModifiedBy": "asastudent01@outlook.com",
+    "lastModifiedByType": "User"
+  },
+  "type": "Microsoft.AppPlatform/Spring/gateways"
+}
+
