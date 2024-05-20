@@ -100,6 +100,17 @@ az spring build-service builder create \
     --no-wait
 ```
 
+## Configure default Azure Spring Apps instance
+
+* For the purpose of this workshop, we will configure a default Azure Spring Apps instance, e.g.
+
+```shell
+az configure --defaults \
+  group=${RESOURCE_GROUP} \
+  location=${REGION} \
+  spring=${SPRING_APPS_SERVICE} 
+```
+
 ## Next Guide
 
 Next guide - [04 - Hello World Application](../04-hello-world-application/README.md)
