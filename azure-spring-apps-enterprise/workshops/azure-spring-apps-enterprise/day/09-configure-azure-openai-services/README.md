@@ -130,7 +130,6 @@ code setup-ai-env-variables.sh
 
 ![Azure OpenAI Instance in Azure portal](./images/azure-openai-instance-04.png)
 
-
 * Finally, source the configured file, e.g. 
 
 ```shell
