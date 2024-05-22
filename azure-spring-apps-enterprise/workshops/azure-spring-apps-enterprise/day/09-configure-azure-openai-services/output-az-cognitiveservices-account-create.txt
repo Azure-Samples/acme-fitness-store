@@ -1,0 +1,167 @@
+{
+  "etag": "\"00001111-0000-ffff-0000-aaaabbbb0000\"",
+  "id": "/subscriptions/00001111-aaaa-bbbb-cccc-ddddeeeeffff/resourceGroups/asae-student01/providers/Microsoft.CognitiveServices/accounts/asae-student01",
+  "identity": null,
+  "kind": "OpenAI",
+  "location": "eastus",
+  "name": "asae-student01",
+  "properties": {
+    "abusePenalty": null,
+    "allowedFqdnList": null,
+    "apiProperties": null,
+    "callRateLimit": {
+      "count": null,
+      "renewalPeriod": null,
+      "rules": [
+        {
+          "count": 30.0,
+          "dynamicThrottlingEnabled": null,
+          "key": "openai.dalle.post",
+          "matchPatterns": [
+            {
+              "method": "POST",
+              "path": "dalle/*"
+            },
+            {
+              "method": "POST",
+              "path": "openai/images/*"
+            }
+          ],
+          "minCount": null,
+          "renewalPeriod": 1.0
+        },
+        {
+          "count": 30.0,
+          "dynamicThrottlingEnabled": null,
+          "key": "openai.dalle.other",
+          "matchPatterns": [
+            {
+              "method": "*",
+              "path": "dalle/*"
+            },
+            {
+              "method": "*",
+              "path": "openai/operations/images/*"
+            }
+          ],
+          "minCount": null,
+          "renewalPeriod": 1.0
+        },
+        {
+          "count": 30.0,
+          "dynamicThrottlingEnabled": null,
+          "key": "openai",
+          "matchPatterns": [
+            {
+              "method": "*",
+              "path": "openai/*"
+            }
+          ],
+          "minCount": null,
+          "renewalPeriod": 1.0
+        },
+        {
+          "count": 30.0,
+          "dynamicThrottlingEnabled": null,
+          "key": "default",
+          "matchPatterns": [
+            {
+              "method": "*",
+              "path": "*"
+            }
+          ],
+          "minCount": null,
+          "renewalPeriod": 1.0
+        }
+      ]
+    },
+    "capabilities": [
+      {
+        "name": "VirtualNetworks",
+        "value": null
+      },
+      {
+        "name": "CustomerManagedKey",
+        "value": null
+      },
+      {
+        "name": "MaxFineTuneCount",
+        "value": "100"
+      },
+      {
+        "name": "MaxRunningFineTuneCount",
+        "value": "1"
+      },
+      {
+        "name": "MaxUserFileCount",
+        "value": "50"
+      },
+      {
+        "name": "MaxTrainingFileSize",
+        "value": "512000000"
+      },
+      {
+        "name": "MaxUserFileImportDurationInHours",
+        "value": "1"
+      },
+      {
+        "name": "MaxFineTuneJobDurationInHours",
+        "value": "720"
+      },
+      {
+        "name": "TrustedServices",
+        "value": "Microsoft.CognitiveServices,Microsoft.MachineLearningServices,Microsoft.Search"
+      },
+      {
+        "name": "RaiMonitor",
+        "value": null
+      }
+    ],
+    "commitmentPlanAssociations": null,
+    "customSubDomainName": "asae-student01",
+    "dateCreated": "2024-05-22T13:24:35.9111142Z",
+    "deletionDate": null,
+    "disableLocalAuth": null,
+    "dynamicThrottlingEnabled": null,
+    "encryption": null,
+    "endpoint": "https://asae-student01.openai.azure.com/",
+    "endpoints": {
+      "OpenAI Dall-E API": "https://asae-student01.openai.azure.com/",
+      "OpenAI Language Model Instance API": "https://asae-student01.openai.azure.com/",
+      "OpenAI Model Scaleset API": "https://asae-student01.openai.azure.com/",
+      "OpenAI Whisper API": "https://asae-student01.openai.azure.com/"
+    },
+    "internalId": "11112222333344445555666677778888",
+    "isMigrated": false,
+    "locations": null,
+    "migrationToken": null,
+    "networkAcls": null,
+    "privateEndpointConnections": [],
+    "provisioningState": "Succeeded",
+    "publicNetworkAccess": "Enabled",
+    "quotaLimit": null,
+    "restore": null,
+    "restrictOutboundNetworkAccess": null,
+    "scheduledPurgeDate": null,
+    "skuChangeInfo": null,
+    "userOwnedStorage": null
+  },
+  "resourceGroup": "asae-student01",
+  "sku": {
+    "capacity": null,
+    "family": null,
+    "name": "S0",
+    "size": null,
+    "tier": null
+  },
+  "systemData": {
+    "createdAt": "2024-05-22T13:24:34.809383+00:00",
+    "createdBy": "asaestudent01@outlook.com",
+    "createdByType": "User",
+    "lastModifiedAt": "2024-05-22T13:24:34.809383+00:00",
+    "lastModifiedBy": "asaestudent01@outlook.com",
+    "lastModifiedByType": "User"
+  },
+  "tags": null,
+  "type": "Microsoft.CognitiveServices/accounts"
+}
