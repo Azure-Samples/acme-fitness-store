@@ -65,6 +65,12 @@ export REGION=westeurope                            # choose a region with Enter
 
 ![Saving setup-env-variables.sh file in VS Code in Azure Cloud Shell](./images/setup-env-variables-file-saving.png)
 
+* Load the environment variables into existing shell, e.g.
+
+```shell
+source ./setup-env-variables.sh
+```
+
 ## Configure Application Configuration Service
 
 * Create a configuration repository for Application Configuration Service using the Azure CLI, e.g.
