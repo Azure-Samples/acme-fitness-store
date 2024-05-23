@@ -181,5 +181,5 @@ export PORTAL_URL=$(az spring api-portal show --query properties.url --output ts
 
 Next guide - [07 - Configure Single Sign-On](../07-configure-single-signon/README.md) - OPTIONAL
 
-Next guide - [09 - Configure Azure OpenAI Services](../09-configure-azure-openai-services/README.md) - OPTIONAL
+Next guide - [09 - Configure Azure OpenAI Services](../09-configure-azure-openai-services/README.md)
 

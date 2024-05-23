@@ -4,7 +4,7 @@
 
 In this workshop we have walked you through few example how to deploy Spring and Polyglot applications to Azure Spring Apps environment.
 
-We have looked how to:
+We have explored how to:
 * Create Azure Spring Apps Enterprise instance
 * Deploy a simple Spring Boot application to Azure Spring Apps instance
 * Deploy a polyglot multi-microservice application to Azure Spring Apps instance

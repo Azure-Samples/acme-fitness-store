@@ -350,5 +350,5 @@ az spring api-portal update \
 
 Next guide - [08 - Configure Databases](../08-configure-databases/README.md) - OPTIONAL
  
-Next guide - [09 - Configure Azure OpenAI Services](../09-configure-azure-openai-services/README.md) - OPTIONAL
+Next guide - [09 - Configure Azure OpenAI Services](../09-configure-azure-openai-services/README.md)
 
