@@ -42,12 +42,12 @@ az version
 az version
 
 {
-  "azure-cli": "2.60.0",
-  "azure-cli-core": "2.60.0",
+  "azure-cli": "2.61.0",
+  "azure-cli-core": "2.61.0",
   "azure-cli-telemetry": "1.1.0",
   "extensions": {
     "ai-examples": "0.2.5",
-    "ml": "2.25.1",
+    "ml": "2.26.0",
     "ssh": "2.0.3"
   }
 }
