@@ -240,7 +240,8 @@ pwd
 az spring app deploy \
   --name hello-world \
   --source-path . \
-  --build-env BP_JVM_VERSION=17
+  --build-env BP_JVM_VERSION=17 \
+  --verbose
 ```
 
 * Alternatively, you can deploy an application using JAR file, e.g.
@@ -249,7 +250,8 @@ az spring app deploy \
 az spring app deploy \
     --name hello-world \
     --artifact-path target/demo-0.0.1-SNAPSHOT.jar \
-    --build-env BP_JVM_VERSION=17
+    --build-env BP_JVM_VERSION=17 \
+    --verbose
 ```
 > Note: You could skip the `--build-env BP_JVM_VERSION=17` as that is now the default Java version for Microsoft Java Buildpack. You could use `--build-env BP_JVM_VERSION=21` for Java 21 applications.
 
