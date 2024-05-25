@@ -165,18 +165,18 @@ OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader clas
 
 ## Test the project locally
 
-* If you run this in Azure Cloud Shell, the process might already have something running on port `8080`, so we need to use a different port number, e.g. `8081`
+* If you run this in Azure Cloud Shell, the process might already have something running on port `8080`, so we need to use a different port number, e.g. `9090`
 
 * Execute JAR application from command line, e.g.
 
 ```shell
-java -jar target/demo-0.0.1-SNAPSHOT.jar --server.port=8081 &
+java -jar target/demo-0.0.1-SNAPSHOT.jar --server.port=9090 &
 ```
 
 * You can request the `/hello` endpoint that should return the "Hello from Azure Spring Apps" message, e.g.
 
 ```shell
-curl http://localhost:8081/hello
+curl http://localhost:9090/hello
 ```
 
 * Finally, kill running app:
@@ -188,8 +188,8 @@ kill %1
 * Alternatively, you could execute the application from `mvn` with alternate port number as well, e.g.
 
 ```
-./mvnw spring-boot:run -Dspring-boot.run.jvmArguments='-Dserver.port=8081' &
-curl http://localhost:8081/hello
+./mvnw spring-boot:run -Dspring-boot.run.jvmArguments='-Dserver.port=9090' &
+curl http://localhost:9090/hello
 kill %1
 ```
 
