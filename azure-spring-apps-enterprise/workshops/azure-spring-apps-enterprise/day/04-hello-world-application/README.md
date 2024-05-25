@@ -18,7 +18,7 @@ pwd
 ```
 
 ```text
-/home/neven/labs
+/home/asa-student/labs
 ```
 
 * For the purpose of this workshop and simplicity of this lab exercise, we will use `curl` to invoke the Spring Initalizr.
@@ -103,7 +103,7 @@ cd hello-world
 [INFO] --------------------------------[ jar ]---------------------------------
 [INFO] 
 [INFO] --- clean:3.3.2:clean (default-clean) @ demo ---
-[INFO] Deleting /home/neven/labs/hello-world/target
+[INFO] Deleting /home/asa-student/labs/hello-world/target
 [INFO] 
 [INFO] --- resources:3.3.1:resources (default-resources) @ demo ---
 [INFO] Copying 1 resource from src/main/resources to target/classes
@@ -114,7 +114,7 @@ cd hello-world
 [INFO] Compiling 2 source files with javac [debug release 17] to target/classes
 [INFO] 
 [INFO] --- resources:3.3.1:testResources (default-testResources) @ demo ---
-[INFO] skip non existing resourceDirectory /home/neven/labs/hello-world/src/test/resources
+[INFO] skip non existing resourceDirectory /home/asa-student/labs/hello-world/src/test/resources
 [INFO] 
 [INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ demo ---
 [INFO] Changes detected - recompiling the module! :dependency
@@ -138,7 +138,7 @@ cd hello-world
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::                (v3.2.5)
 
-2024-05-19T17:58:12.285Z  INFO 2891 --- [demo] [           main] com.example.demo.DemoApplicationTests    : Starting DemoApplicationTests using Java 17.0.11 with PID 2891 (started by neven in /home/neven/labs/hello-world)
+2024-05-19T17:58:12.285Z  INFO 2891 --- [demo] [           main] com.example.demo.DemoApplicationTests    : Starting DemoApplicationTests using Java 17.0.11 with PID 2891 (started by asa-student in /home/asa-student/labs/hello-world)
 2024-05-19T17:58:12.287Z  INFO 2891 --- [demo] [           main] com.example.demo.DemoApplicationTests    : No active profile set, falling back to 1 default profile: "default"
 2024-05-19T17:58:14.551Z  INFO 2891 --- [demo] [           main] com.example.demo.DemoApplicationTests    : Started DemoApplicationTests in 3.132 seconds (process running for 5.997)
 OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
@@ -150,11 +150,11 @@ OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader clas
 [INFO] 
 [INFO] 
 [INFO] --- jar:3.3.0:jar (default-jar) @ demo ---
-[INFO] Building jar: /home/neven/labs/hello-world/target/demo-0.0.1-SNAPSHOT.jar
+[INFO] Building jar: /home/asa-student/labs/hello-world/target/demo-0.0.1-SNAPSHOT.jar
 [INFO] 
 [INFO] --- spring-boot:3.2.5:repackage (repackage) @ demo ---
-[INFO] Replacing main artifact /home/neven/labs/hello-world/target/demo-0.0.1-SNAPSHOT.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
-[INFO] The original artifact has been renamed to /home/neven/labs/hello-world/target/demo-0.0.1-SNAPSHOT.jar.original
+[INFO] Replacing main artifact /home/asa-student/labs/hello-world/target/demo-0.0.1-SNAPSHOT.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to /home/asa-student/labs/hello-world/target/demo-0.0.1-SNAPSHOT.jar.original
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
@@ -231,7 +231,7 @@ pwd
 ```
 
 ```text
-/home/neven/labs/hello-world
+/home/asa-student/labs/hello-world
 ```
 
 * Deploy an application using source, e.g. 

@@ -98,6 +98,28 @@ az account list -o table
 az account set --subscription 00001111-aaaa-bbbb-cccc-ddddeeeeffff
 ```
 
+## Register Microsoft.SaaS Provider
+
+* From your shell environment, please register Microsoft.SaaS provider, e.g.
+
+```shell
+az provider register -n Microsoft.SaaS
+```
+
+```text
+Registering is still on-going. You can monitor using 'az provider show -n Microsoft.SaaS'
+```
+
+* Similarly, please register `Microsoft.AppPlatform` provider, e.g. 
+
+```shell
+az provider register -n Microsoft.AppPlatform
+```
+
+```text
+Registering is still on-going. You can monitor using 'az provider show -n Microsoft.AppPlatform'
+```
+
 ## Add Spring extension
 
 * From your shell environment install Azure Spring extension, e.g.
@@ -115,7 +137,7 @@ Experimental    ExtensionType    Name         Path                              
 --------------  ---------------  -----------  -----------------------------------------------------------------  ---------  ---------
 False           whl              ai-examples  /usr/lib/python3.9/site-packages/azure-cli-extensions/ai-examples  True       0.2.5
 False           whl              ml           /usr/lib/python3.9/site-packages/azure-cli-extensions/ml           False      2.25.1
-False           whl              spring       /home/neven/.azure/cliextensions/spring                            False      1.24.1
+False           whl              spring       /home/asa-student/.azure/cliextensions/spring                            False      1.24.1
 False           whl              ssh          /usr/lib/python3.9/site-packages/azure-cli-extensions/ssh          False      2.0.3
 ```
 

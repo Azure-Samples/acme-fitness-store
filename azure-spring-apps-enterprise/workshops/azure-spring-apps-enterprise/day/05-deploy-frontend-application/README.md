@@ -19,7 +19,7 @@ pwd
 ```
 
 ```text
-/home/neven/labs/acme-fitness-store
+/home/asa-student/labs/acme-fitness-store
 ```
 
 * If your shell window has been restarted, make sure you executed the setup environment script we created in the previous labs. e.g.

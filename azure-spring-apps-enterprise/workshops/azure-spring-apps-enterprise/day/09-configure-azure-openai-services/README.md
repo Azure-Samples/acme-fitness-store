@@ -15,7 +15,7 @@ pwd
 ```
 
 ```text
-/home/neven/labs/acme-fitness-store/azure-spring-apps-enterprise/scripts
+/home/asa-student/labs/acme-fitness-store/azure-spring-apps-enterprise/scripts
 ```
 
 * If your shell has been closed, you need to source all the environment scripts, e.g.

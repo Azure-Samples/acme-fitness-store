@@ -34,7 +34,7 @@ pwd
 ```
 
 ```text
-/home/neven/labs/acme-fitness-store/azure-spring-apps-enterprise/scripts
+/home/asa-student/labs/acme-fitness-store/azure-spring-apps-enterprise/scripts
 ```
 
 * Create a bash script with environment variables by making a copy of the existing template, e.g. 
@@ -94,7 +94,7 @@ pwd
 * This should show something like, e.g.
 
 ```text
-/home/neven/labs/acme-fitness-store/azure-spring-apps-enterprise/scripts
+/home/asa-student/labs/acme-fitness-store/azure-spring-apps-enterprise/scripts
 ```
 
 * Create a custom builder in Tanzu Build Service using the Azure CLI, e.g.

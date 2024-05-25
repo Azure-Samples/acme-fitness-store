@@ -19,7 +19,7 @@ pwd
 ```
 
 ```text
-/home/neven/labs/acme-fitness-store/azure-spring-apps-enterprise/scripts
+/home/asa-student/labs/acme-fitness-store/azure-spring-apps-enterprise/scripts
 ```
 
 * Create a bash script with database environment variables by making a copy of the existing template, e.g. 
