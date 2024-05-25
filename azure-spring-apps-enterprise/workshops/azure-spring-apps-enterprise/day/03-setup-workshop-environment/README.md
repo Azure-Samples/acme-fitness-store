@@ -71,6 +71,17 @@ export REGION=westeurope                            # choose a region with Enter
 source ./setup-env-variables.sh
 ```
 
+## Configure default Azure Spring Apps instance
+
+* For the purpose of this workshop, we will configure a default Azure Spring Apps instance, resource group and the region, e.g.
+
+```shell
+az configure --defaults \
+  group=${RESOURCE_GROUP} \
+  location=${REGION} \
+  spring=${SPRING_APPS_SERVICE} 
+```
+
 ## Configure Application Configuration Service
 
 * Create a configuration repository for Application Configuration Service using the Azure CLI, e.g.
@@ -104,17 +115,6 @@ az spring build-service builder create \
     --name ${CUSTOM_BUILDER} \
     --builder-file ../resources/json/tbs/builder.json \
     --no-wait
-```
-
-## Configure default Azure Spring Apps instance
-
-* For the purpose of this workshop, we will configure a default Azure Spring Apps instance, e.g.
-
-```shell
-az configure --defaults \
-  group=${RESOURCE_GROUP} \
-  location=${REGION} \
-  spring=${SPRING_APPS_SERVICE} 
 ```
 
 ## Next Guide
