@@ -107,7 +107,7 @@ az provider register -n Microsoft.SaaS
 ```
 
 ```text
-Registering is still on-going. You can monitor using `az provider show -n Microsoft.SaaS`
+Registering is still on-going. You can monitor using 'az provider show -n Microsoft.SaaS'
 ```
 
 * Similarly, please register `Microsoft.AppPlatform` provider, e.g. 
@@ -117,7 +117,7 @@ az provider register -n Microsoft.AppPlatform
 ```
 
 ```text
-Registering is still on-going. You can monitor using `az provider show -n Microsoft.AppPlatform`
+Registering is still on-going. You can monitor using 'az provider show -n Microsoft.AppPlatform'
 ```
 
 ## Add Spring extension
