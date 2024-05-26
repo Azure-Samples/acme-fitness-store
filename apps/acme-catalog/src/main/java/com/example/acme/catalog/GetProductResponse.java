@@ -2,19 +2,19 @@ package com.example.acme.catalog;
 
 public class GetProductResponse {
 
-    private ProductVo data;
+    private ProductValueObject data;
     private int status;
 
-    public GetProductResponse(ProductVo data, int status) {
+    public GetProductResponse(ProductValueObject data, int status) {
         this.data = data;
         this.status = status;
     }
 
-    public ProductVo getData() {
+    public ProductValueObject getData() {
         return data;
     }
 
-    public void setData(ProductVo data) {
+    public void setData(ProductValueObject data) {
         this.data = data;
     }
 

@@ -28,24 +28,24 @@ public class Product {
     private Double price;
     private String tags;
 
-    public static Product fromProductRequestToProduct(ProductVo productVo) {
+    public static Product fromProductRequestToProduct(ProductValueObject productVO) {
 
         Product product = new Product();
-        product.setPrice(productVo.getPrice());
-        product.setDescription(productVo.getDescription());
-        product.setName(productVo.getName());
-        product.setImageUrl1(productVo.getImageUrl1());
-        product.setImageUrl2(productVo.getImageUrl2());
-        product.setImageUrl3(productVo.getImageUrl3());
-        product.setShortDescription(productVo.getShortDescription());
+        product.setPrice(productVO.getPrice());
+        product.setDescription(productVO.getDescription());
+        product.setName(productVO.getName());
+        product.setImageUrl1(productVO.getImageUrl1());
+        product.setImageUrl2(productVO.getImageUrl2());
+        product.setImageUrl3(productVO.getImageUrl3());
+        product.setShortDescription(productVO.getShortDescription());
 
         String tags = null;
 
-        if (productVo.getTags() != null && !productVo.getTags().isEmpty()) {
+        if (productVO.getTags() != null && !productVO.getTags().isEmpty()) {
             tags = "";
-            for (int i = 0; i < productVo.getTags().size(); i++) {
-                tags = tags + productVo.getTags().get(i);
-                if (i < productVo.getTags().size() - 1) {
+            for (int i = 0; i < productVO.getTags().size(); i++) {
+                tags = tags + productVO.getTags().get(i);
+                if (i < productVO.getTags().size() - 1) {
                     tags = tags + ",";
                 }
             }

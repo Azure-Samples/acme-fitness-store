@@ -25,25 +25,25 @@ public class ProductController {
 	@GetMapping("/products")
 	public GetProductsResponse getProducts() {
 		return new GetProductsResponse(productService.getProducts().stream()
-													 .map(ProductVo::new)
+													 .map(ProductValueObject::new)
 													 .collect(Collectors.toList()));
 	}
 
 	@GetMapping("/products/{id}")
 	public GetProductResponse getProduct(@PathVariable String id) {
-		return new GetProductResponse(new ProductVo(productService.getProduct(id)), HttpStatus.OK.value());
+		return new GetProductResponse(new ProductValueObject(productService.getProduct(id)), HttpStatus.OK.value());
 	}
 
 	@PostMapping("/products")
-	public ResponseEntity<ProductVo> createProduct(@RequestBody ProductVo productVo) {
-		Product product = productService.createProduct(Product.fromProductRequestToProduct(productVo));
-		return ResponseEntity.ok(new ProductVo(product));
+	public ResponseEntity<ProductValueObject> createProduct(@RequestBody ProductValueObject productVO) {
+		Product product = productService.createProduct(Product.fromProductRequestToProduct(productVO));
+		return ResponseEntity.ok(new ProductValueObject(product));
 	}
 
 	@PostMapping("/products/{id}")
-	public ResponseEntity<ProductVo> updateProduct(@PathVariable String id, @RequestBody ProductVo productVo) {
-		Product product = productService.updateProduct(id, Product.fromProductRequestToProduct(productVo));
-		return ResponseEntity.ok(new ProductVo(product));
+	public ResponseEntity<ProductValueObject> updateProduct(@PathVariable String id, @RequestBody ProductValueObject productVO) {
+		Product product = productService.updateProduct(id, Product.fromProductRequestToProduct(productVO));
+		return ResponseEntity.ok(new ProductValueObject(product));
 	}
 
 	@DeleteMapping("/products/{id}")
