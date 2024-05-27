@@ -204,7 +204,7 @@ kill %1
 az spring app create --name hello-world --assign-endpoint --cpu 1 --memory 1Gi
 ```
 
-* You can observe the example [output](output-az-spring-app-create.txt).
+* You can observe the example [output](output-azure-spring-app-create.txt).
 
 * You can also explore the Azure portal, and notice the application URL, e.g. 
 
