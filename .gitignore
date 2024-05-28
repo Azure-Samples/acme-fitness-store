@@ -2,6 +2,7 @@ __pycache__
 .DS_Store
 .env*.secret
 .idea
+.metadata
 custom-filters
 
 

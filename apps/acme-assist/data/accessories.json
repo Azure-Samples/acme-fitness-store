@@ -6,7 +6,8 @@
         "price": 34.99,
         "tags": [
             "trunkbag"
-        ]
+        ],
+        "id": "0615b286-f3d7-4867-a0e1-626628207f0e"
     },
     {
         "name": "Velocity Xplorer TrunkPak",
@@ -15,7 +16,8 @@
         "price": 21.99,
         "tags": [
             "trunkbag"
-        ]
+        ],
+        "id": "de31c206-e0be-44a4-bb30-599832d056fa"
     },
     {
         "name": "Cyclone Xpress Cargo Trunk Bag",
@@ -24,7 +26,8 @@
         "price": 54.99,
         "tags": [
             "trunkbag"
-        ]
+        ],
+        "id": "ae640b1c-9379-40d1-bc2e-d9e4f86a3623"
     },
     {
         "name": "VelozRide CargoMax Trunk Storage Bag",
@@ -33,7 +36,8 @@
         "price": 18.99,
         "tags": [
             "trunkbag"
-        ]
+        ],
+        "id": "ca74f75f-7623-4b72-a22d-a969709fb81a"
     },
     {
         "name": "VeloRide VersaRack Cargo System",
@@ -42,7 +46,8 @@
         "price": 30.99,
         "tags": [
             "trunkbag"
-        ]
+        ],
+        "id": "b6b24e3a-3604-41a3-9a63-375e8bd0543c"
     },
     {
         "name": "Zephyr AirCharge Floor Pump",
@@ -51,7 +56,8 @@
         "price": 35.99,
         "tags": [
             "pump"
-        ]
+        ],
+        "id": "c42420a5-e042-413f-be91-26a149fcb247"
     },
     {
         "name": "SwiftAir TQX Tubeless Charge Pump",
@@ -60,7 +66,8 @@
         "price": 57.99,
         "tags": [
             "pump"
-        ]
+        ],
+        "id": "6330b405-19f2-4489-bc9f-390135a612ab"
     },
     {
         "name": "BikeMax InflaCharge Floor Pump",
@@ -69,7 +76,8 @@
         "price": 38.99,
         "tags": [
             "pump"
-        ]
+        ],
+        "id": "7dc1b4f0-182d-4516-88d4-b128b0f4198c"
     },
     {
         "name": "GlideGear AirSeal Tubeless Inflator",
@@ -78,7 +86,8 @@
         "price": 99.99,
         "tags": [
             "pump"
-        ]
+        ],
+        "id": "d61bde95-90b7-4339-9925-16cff172ff54"
     },
     {
         "name": "CycleCharge Pro Tubeless Tire Inflator",
@@ -87,7 +96,8 @@
         "price": 129.99,
         "tags": [
             "pump"
-        ]
+        ],
+        "id": "412078c5-36f8-4b2d-810f-3ade3881f1c5"
     },
     {
         "name": "Velobright Commuter Pro X1 BeamLight Set",
@@ -96,7 +106,8 @@
         "price": 189.99,
         "tags": [
             "bikelight"
-        ]
+        ],
+        "id": "5045305d-0bec-496b-aca9-e1e1c3771956"
     },
     {
         "name": "Urban Commuter BeamPro RT FlareX Bike Light Set",
@@ -105,7 +116,8 @@
         "price": 159.99,
         "tags": [
             "bikelight"
-        ]
+        ],
+        "id": "2cd5cbd0-4d5b-4ec8-bfcf-fdc4f4a4c6dc"
     },
     {
         "name": "Commute Pro Plus Light System",
@@ -114,7 +126,8 @@
         "price": 172.99,
         "tags": [
             "bikelight"
-        ]
+        ],
+        "id": "65af2605-12f3-4c67-b0e7-88059b0d7e07"
     },
     {
         "name": "CommutePro RT BeamPro Bike Light Set",
@@ -123,7 +136,8 @@
         "price": 94.99,
         "tags": [
             "bikelight"
-        ]
+        ],
+        "id": "04deda76-0b51-4389-88d8-d695ad91ac0f"
     },
     {
         "name": "Commuter Pro BeamMax RT Bike Light Set",
@@ -132,7 +146,8 @@
         "price": 105.99,
         "tags": [
             "bikelight"
-        ]
+        ],
+        "id": "a93cb75e-2b2b-49aa-9ccc-a56056f3c77d"
     },
     {
         "name": "VelocityAir MIPS Road Bike Helmet",
@@ -141,7 +156,8 @@
         "price": 84.99,
         "tags": [
             "helmet"
-        ]
+        ],
+        "id": "425f164e-6596-499d-9019-3d9bcb6aacaa"
     },
     {
         "name": "Velocity Pro-X Road Bike Helmet",
@@ -150,7 +166,8 @@
         "price": 140.99,
         "tags": [
             "helmet"
-        ]
+        ],
+        "id": "5f694765-e3c6-4dfe-b8a4-b9c09393532f"
     },
     {
         "name": "Swift AeroFlow Bike Helmet",
@@ -159,7 +176,8 @@
         "price": 136.99,
         "tags": [
             "helmet"
-        ]
+        ],
+        "id": "9e125309-ee63-4ed7-9473-50b6f5ba593c"
     },
     {
         "name": "Swift AeroGuard Road Bike Helmet",
@@ -168,7 +186,8 @@
         "price": 99.99,
         "tags": [
             "helmet"
-        ]
+        ],
+        "id": "72e106e7-3b67-46ba-9601-1313dc246b77"
     },
     {
         "name": "TurboSpeed AeroLite Bike Helmet",
@@ -177,7 +196,8 @@
         "price": 108.99,
         "tags": [
             "helmet"
-        ]
+        ],
+        "id": "5b79a699-b8bb-459b-8505-276dcdac8232"
     },
     {
         "name": "Frozgo ChillMax 32oz Insulated Water Bottle",
@@ -186,7 +206,8 @@
         "price": 27.99,
         "tags": [
             "bottle"
-        ]
+        ],
+        "id": "7ea5ef6a-e92d-480c-b5e7-d86d2f7b6e40"
     },
     {
         "name": "AquaChill 32oz Insulated Water Bottle",
@@ -195,7 +216,8 @@
         "price": 24.99,
         "tags": [
             "bottle"
-        ]
+        ],
+        "id": "c3eee158-eaad-4619-8ad6-11935c31488c"
     },
     {
         "name": "AeroFlow 32oz Hydration Bottle",
@@ -204,7 +226,8 @@
         "price": 30.99,
         "tags": [
             "bottle"
-        ]
+        ],
+        "id": "f1001d18-ca70-48c9-a257-bc32c960ac4c"
     },
     {
         "name": "Velocity Frost 32oz Insulated Water Bottle",
@@ -213,7 +236,8 @@
         "price": 18.99,
         "tags": [
             "bottle"
-        ]
+        ],
+        "id": "ba8092e2-c779-4ac1-b5ac-111c23d64c2e"
     },
     {
         "name": "Xcel Aqua Freeze 32oz Water Bottle",
@@ -222,6 +246,7 @@
         "price": 16.99,
         "tags": [
             "bottle"
-        ]
+        ],
+        "id": "baabf51d-3b6d-47d5-9f34-79ca43df0d7c"
     }
 ]

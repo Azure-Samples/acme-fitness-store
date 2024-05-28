@@ -18,6 +18,9 @@ public class ProductResponse {
 	private Double price;
 	private List<String> tags = new ArrayList<>();
 
+	public ProductResponse() {
+	}
+
 	public ProductResponse(Product product) {
 		id = product.getId();
 		price = product.getPrice();
@@ -31,7 +34,6 @@ public class ProductResponse {
 		if (StringUtils.hasText(product.getTags())) {
 			tags = Arrays.asList(product.getTags().split(","));
 		}
-
 	}
 
 	public String getId() {

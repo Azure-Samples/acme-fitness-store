@@ -12,7 +12,7 @@ env:
   RESOURCE_GROUP: ${{ secrets.RESOURCE_GROUP }}
   KEY_VAULT: ${{ secrets.KEY_VAULT }}
   AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
-  AZURE_OPENAI_APIKEY: ${{ secrets.AZURE_OPENAI_APIKEY }}
+  AZURE_OPENAI_API_KEY: ${{ secrets.AZURE_OPENAI_API_KEY }}
   AI_APP: assist-service
   AZURE_OPENAI_MODEL: gpt-35-turbo-16k
   AZURE_OPENAI_EMBEDDINGMODEL: text-embedding-ada-002
@@ -53,4 +53,4 @@ jobs:
               --build-env BP_JVM_VERSION=17 \
               --env \
                   SPRING_AI_AZURE_OPENAI_ENDPOINT=${AZURE_OPENAI_ENDPOINT} \
-                  SPRING_AI_AZURE_OPENAI_API_KEY=${AZURE_OPENAI_APIKEY}
+                  SPRING_AI_AZURE_OPENAI_API_KEY=${AZURE_OPENAI_API_KEY}

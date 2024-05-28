@@ -28,23 +28,24 @@ public class Product {
     private Double price;
     private String tags;
 
-    public static Product fromProductRequestToProduct(ProductResponse productResponse) {
+    public static Product fromProductRequestToProduct(ProductResponse productVO) {
 
         Product product = new Product();
-        product.setPrice(productResponse.getPrice());
-        product.setDescription(productResponse.getDescription());
-        product.setName(productResponse.getName());
-        product.setImageUrl1(productResponse.getImageUrl1());
-        product.setImageUrl2(productResponse.getImageUrl2());
-        product.setImageUrl3(productResponse.getImageUrl3());
-        product.setShortDescription(productResponse.getShortDescription());
+        product.setPrice(productVO.getPrice());
+        product.setDescription(productVO.getDescription());
+        product.setName(productVO.getName());
+        product.setImageUrl1(productVO.getImageUrl1());
+        product.setImageUrl2(productVO.getImageUrl2());
+        product.setImageUrl3(productVO.getImageUrl3());
+        product.setShortDescription(productVO.getShortDescription());
 
-        var tags = "";
+        String tags = null;
 
-        if (productResponse.getTags() != null && !productResponse.getTags().isEmpty()) {
-            for (int i = 0; i < productResponse.getTags().size(); i++) {
-                tags = tags + productResponse.getTags().get(i);
-                if (i < productResponse.getTags().size() - 1) {
+        if (productVO.getTags() != null && !productVO.getTags().isEmpty()) {
+            tags = "";
+            for (int i = 0; i < productVO.getTags().size(); i++) {
+                tags = tags + productVO.getTags().get(i);
+                if (i < productVO.getTags().size() - 1) {
                     tags = tags + ",";
                 }
             }
