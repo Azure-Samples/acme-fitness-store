@@ -70,4 +70,4 @@ Hi! I am looking for a bike for my daughter for short commute to school. Can you
 
 ## Next Guide
 
-Next guide - [11 - Summary](../11-summary/README.md)
+Next guide - [11 - Explore AI Assistant Application](../11-explore-ai-assistant-application/README.md)

@@ -13,4 +13,5 @@ Welcome to "Azure for Spring Developers" Workshop. This workshop has few hands o
 - [08 - Configure Databases](./08-configure-databases/README.md) __OPTIONAL__
 - [09 - Configure Azure OpenAI Services](./09-configure-azure-openai-services/README.md)
 - [10 - Deploy AI Assistant Application](./10-deploy-ai-assistant-application/README.md)
-- [11 - Summary](./11-summary/README.md)
+- [11 - Explore AI Assistant Application](./11-explore-ai-assistant-application/README.md)
+- [12 - Summary](./12-summary/README.md)
