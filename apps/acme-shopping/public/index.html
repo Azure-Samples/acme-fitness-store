@@ -154,7 +154,7 @@
           // Use this logic to GET stuff and dynamically display
           $.ajax({
 
-            url: "/products",
+            url: "https://acme-fitness-store-gateway-7d0d7.svc.azuremicroservices.io/products",
             type: "GET",
             success: function(data, textStatus, jqXHR) {
 
@@ -165,7 +165,7 @@
                 $.each(data.data, function(index, product){
 
                   content += '<div class="item">\
-                  <a href="detail.html?id=' + product.id + '"' + '><img src="'+ product.imageUrl1 + '" alt=""\
+                  <a href="detail.html?id=' + product.id + '"' + '><img src="https://acme-fitness-store-gateway-7d0d7.svc.azuremicroservices.io'+ product.imageUrl1 + '" alt=""\
                   class="img-fluid"></a></div>'
 
                 });

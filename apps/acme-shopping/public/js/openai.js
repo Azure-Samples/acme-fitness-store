@@ -1,6 +1,6 @@
 const CONTEXT_MESSAGE_COUNT = 5;
-const API_HELLO_URL = '/ai/hello';
-const API_QUESTION_URL = '/ai/question';
+const API_HELLO_URL = 'https://acme-fitness-store-gateway-7d0d7.svc.azuremicroservices.io/ai/hello';
+const API_QUESTION_URL = 'https://acme-fitness-store-gateway-7d0d7.svc.azuremicroservices.io/ai/question';
 const API_HEADER = {
   "Content-Type": "application/json"
 };

@@ -169,7 +169,7 @@
       }
 
       $.ajax({
-        url: "/products/" + productid,
+        url: "https://acme-fitness-store-gateway-7d0d7.svc.azuremicroservices.io/products/" + productid,
         type: "GET",
         success: function (body, textStatus, jqXHR) {
 
@@ -183,11 +183,11 @@
             $("#productPrice").html(body.data.price)
             $("#productDispPrice").html(dollarUSLocale.format(body.data.price))
             $("#detailedDescription").html(marked.parse(body.data.description))
-            var img = '<img src="' + body.data.imageUrl2 + '" alt="" class="img-fluid">'
+            var img = '<img src="https://acme-fitness-store-gateway-7d0d7.svc.azuremicroservices.io' + body.data.imageUrl2 + '" alt="" class="img-fluid">'
             $("#mainImage").html(img);
-            var thumbImg = '<div class="col-4"><a href="' + body.data.imageUrl1 + '" class="thumb"><img  src="' + body.data.imageUrl1 + '" alt="" class="img-fluid"></a></div>\
-                                    <div class="col-4"><a href="'+ body.data.imageUrl3 + '" class="thumb"><img  src="' + body.data.imageUrl3 + '" alt="" class="img-fluid"></a></div>\
-                                    <div class="col-4"><a href="'+ body.data.imageUrl2 + '" class="thumb"><img  src="' + body.data.imageUrl2 + '" alt="" class="img-fluid"></a></div>'
+            var thumbImg = '<div class="col-4"><a href="https://acme-fitness-store-gateway-7d0d7.svc.azuremicroservices.io' + body.data.imageUrl1 + '" class="thumb"><img  src="https://acme-fitness-store-gateway-7d0d7.svc.azuremicroservices.io' + body.data.imageUrl1 + '" alt="" class="img-fluid"></a></div>\
+                                    <div class="col-4"><a href="https://acme-fitness-store-gateway-7d0d7.svc.azuremicroservices.io'+ body.data.imageUrl3 + '" class="thumb"><img  src="https://acme-fitness-store-gateway-7d0d7.svc.azuremicroservices.io' + body.data.imageUrl3 + '" alt="" class="img-fluid"></a></div>\
+                                    <div class="col-4"><a href="https://acme-fitness-store-gateway-7d0d7.svc.azuremicroservices.io'+ body.data.imageUrl2 + '" class="thumb"><img  src="https://acme-fitness-store-gateway-7d0d7.svc.azuremicroservices.io' + body.data.imageUrl2 + '" alt="" class="img-fluid"></a></div>'
             $("#thumbs").html(thumbImg)
           }
         },
@@ -212,7 +212,7 @@
         var userid = getUserID();
 
         $.ajax({
-          url: "/cart/item/add/" + userid,
+          url: "https://acme-fitness-store-gateway-7d0d7.svc.azuremicroservices.io/cart/item/add/" + userid,
           type: "POST",
           data: JSON.stringify(vals),
           success: function (data, textStatus, jqXHR) {

@@ -127,7 +127,7 @@
       // Use this logic to GET stuff and dynamically display
       $.ajax({
 
-        url: "/products",
+        url: "https://acme-fitness-store-gateway-7d0d7.svc.azuremicroservices.io/products",
         type: "GET",
         success: function(data, textStatus, jqXHR) {
           let dollarUSLocale = Intl.NumberFormat('en-US');
@@ -142,7 +142,7 @@
               count = count + 1
               content += '<div class="col-md-3 col-sm-4">\
                <div class="product">\
-               <div class="image"><a href="detail.html?id='+ product.id+ '"' + '><img src="'+ product.imageUrl1+ '" alt=""\
+               <div class="image"><a href="detail.html?id='+ product.id+ '"' + '><img src="https://acme-fitness-store-gateway-7d0d7.svc.azuremicroservices.io'+ product.imageUrl1+ '" alt=""\
                class="img-fluid image1"></a></div>\
                <div class="text">\
                <h3><a href="detail.html?id=' + product.id + '"' + ' </a>' + product.name+ '</h3>\
