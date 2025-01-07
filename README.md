@@ -78,5 +78,3 @@ to deploy the application to TAP.
 
 ## Notes
  If you would like to conduct this workshop in Japanese, please use the [Japanese version](./azure-spring-apps-enterprise/ja-jp/).
- 
- 日本語で、本ワークショップを実施されたい方は、、[日本語版](./azure-spring-apps-enterprise/ja-jp/)をご利用ください。Thanks for the contribution from @yoshioterada.
