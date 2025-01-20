@@ -61,7 +61,7 @@ az network vnet create \
 ```
 
 ```bash
-# Create subnet and nsg for Azure Container Apps environment
+# Create subnet for Azure Container Apps environment
 az network vnet subnet create \
   --resource-group ${RESOURCE_GROUP} \
   --vnet-name ${VNET_NAME} \
@@ -99,7 +99,7 @@ az network nsg rule create \
   --protocol '*' \
   --direction Outbound
 
-# Allow outbound traffic to virtual network(including private endpoint)
+# Allow outbound traffic to virtual network
 az network nsg rule create \
   --resource-group ${RESOURCE_GROUP} \
   --nsg-name ${ACA_SUBNET_NAME}-nsg \
@@ -219,19 +219,6 @@ az network nsg rule create \
   --protocol '*' \
   --direction Inbound
 
-# Deny all outbound traffic with priority 1000
-az network nsg rule create \
-  --resource-group ${RESOURCE_GROUP} \
-  --nsg-name ${ACA_SUBNET_NAME}-nsg \
-  --name DenyAllOutbound \
-  --priority 1000 \
-  --source-address-prefixes '*' \
-  --destination-address-prefixes '*' \
-  --destination-port-ranges '*' \
-  --access Deny \
-  --protocol '*' \
-  --direction Outbound
-
 # Allow SSH inbound traffic from anywhere
 az network nsg rule create \
   --resource-group ${RESOURCE_GROUP} \
@@ -298,7 +285,7 @@ az vm extension set \
     --resource-group ${RESOURCE_GROUP} \
     --vm-name ${VM_NAME}
 
-# Copy the file to the VM
+# Copy the file containing environment variables to the VM
 az vm run-command invoke \
   --command-id RunShellScript \
   --name ${VM_NAME} \
@@ -343,7 +330,7 @@ Commands following will run in the vm, you can also run in your local machine if
 ```bash
 ACR_NAME="${UNIQUE_PREFIX}acr"
 ACR_PRIVATE_ENDPOINT_NAME=${ACR_NAME}-private-endpoint
-ACR_PRIVATE_ENDPOINT_CONN_NAME=${ACR_NAME}-private-endpoint-conn
+ACR_PRIVATE_ENDPOINT_CONNECTION_NAME=${ACR_NAME}-private-endpoint-conn
 ACR_PRIVATE_DNS_LINK_NAME=${ACR_NAME}-private-dns-link
 
 # Create ACR
@@ -362,7 +349,7 @@ az network private-endpoint create \
     --subnet ${PRIVATE_ENDPOINT_SUBNET_NAME} \
     --private-connection-resource-id "${ACR_RESOURCE_ID}" \
     --group-ids registry \
-    --connection-name ${ACR_PRIVATE_ENDPOINT_CONN_NAME}
+    --connection-name ${ACR_PRIVATE_ENDPOINT_CONNECTION_NAME}
 
 # To use a private zone to override the default DNS resolution for your Azure container registry, the zone must be named `privatelink.azurecr.io`.
 az network private-dns zone create \
@@ -449,7 +436,7 @@ az storage account create \
   --enable-large-file-share \
   --public-network-access "Disabled"
 
-# Create file share.
+# Create file share to be used by container app mount.
 az storage share-rm create \
   --resource-group ${RESOURCE_GROUP} \
   --storage-account ${STORAGE_ACCOUNT_NAME} \
@@ -537,7 +524,7 @@ az network private-dns record-set a add-record \
   --resource-group ${RESOURCE_GROUP} \
   --ipv4-address $(az network private-endpoint show --name ${KEYVAULT_PRIVATE_ENDPOINT_NAME} --resource-group ${RESOURCE_GROUP} --query 'customDnsConfigs[0].ipAddresses[0]' --output tsv)
 
-# Update keyvault permission.
+# Grant manage keyvault secret permission to current account.
 az role assignment create --assignee-object-id $(az ad signed-in-user show --query id --output tsv) \
     --role "Key Vault Administrator" \
     --scope ${KEYVAULT_RESOURCE_ID}
@@ -625,7 +612,7 @@ az containerapp show \
   --output yaml > app.yaml
 ```
 
-Open the `app.yaml` in a code editor. Replace the `volumes: null` definition in the `template` section with a `volumes:` definition referencing the storage volume. The template section should look like the following:
+Open the `app.yaml` in a code editor, for example, `vim app.yaml`. Replace the `volumes: null` definition in the `template` section with a `volumes:` definition referencing the storage volume. The template section should look like the following:
 ```bash
 template:
   volumes:
@@ -683,8 +670,9 @@ You have now successfully deployed Azure Container Apps with integration to a VN
 ### 9. Clean up resources
 
 ```bash
-exit # from container app
-exit # exit from vm
+exit # exit from container app if you haven't
+exit # exit from vm if you haven't
+
 # Delete the resource group.
 az group delete --name ${RESOURCE_GROUP} --yes --no-wait
 ```
