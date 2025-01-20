@@ -678,6 +678,8 @@ ls -lrt
 echo $TEST_KEY
 ```
 
+You have now successfully deployed Azure Container Apps with integration to a VNet, ACR, Key Vault, and Storage. For further enhancements, consider setting up monitoring using Azure Monitor or Application Insights.  If you want to change the nsg rules, check [Securing a custom VNET in Azure Container Apps with Network Security Groups](https://learn.microsoft.com/en-us/azure/container-apps/firewall-integration?tabs=workload-profiles) for more details about required rules. If you want to control network with Azure Firewall instead of NSG, you can check more information in [Control outbound traffic in Azure Container Apps with user defined routes](https://learn.microsoft.com/en-us/azure/container-apps/user-defined-routes).
+
 ### 9. Clean up resources
 
 ```bash
@@ -686,6 +688,3 @@ exit # exit from vm
 # Delete the resource group.
 az group delete --name ${RESOURCE_GROUP} --yes --no-wait
 ```
-
-### Conclusion
-You have now successfully deployed Azure Container Apps with integration to a VNet, ACR, Key Vault, and Storage. For further enhancements, consider setting up monitoring using Azure Monitor or Application Insights.  If you want to change the nsg rules, check [Securing a custom VNET in Azure Container Apps with Network Security Groups](https://learn.microsoft.com/en-us/azure/container-apps/firewall-integration?tabs=workload-profiles) for more details about required rules. If you want to control network with Azure Firewall instead of NSG, you can check more information in [Control outbound traffic in Azure Container Apps with user defined routes](https://learn.microsoft.com/en-us/azure/container-apps/user-defined-routes).
