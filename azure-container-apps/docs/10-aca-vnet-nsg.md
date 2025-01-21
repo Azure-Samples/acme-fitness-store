@@ -285,7 +285,7 @@ az vm create --name ${VM_NAME} \
 ```bash
 # Grant currently logged in user with permission to login to vm. If you get a `MissingSubscription` error when using git bash, add `MSYS_NO_PATHCONV=1` before the command.
 az role assignment create \
-    --assignee-object-id $(az ad signed-in-user show --query id --output tsv) \
+    --assignee-object-id ${CURRENT_USER_OBJECT_ID} \
     --role "Virtual Machine Administrator Login" \
     --assignee-principal-type User \
     --scope /subscriptions/${SUBSCRIPTION_ID}/resourceGroups/${RESOURCE_GROUP}
