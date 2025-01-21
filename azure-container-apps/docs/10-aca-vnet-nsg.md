@@ -18,11 +18,14 @@ UNIQUE_PREFIX="<uniqueprefix>" # alpha numeric characters only, change this to y
 SUBSCRIPTION_ID="<your-subscription-id>" # change to your subscription
 LOCATION="<region-name>"  # change to your preferred region
 
+CURRENT_USER_OBJECT_ID=$(az ad signed-in-user show --query id --output tsv)
+
 cat <<EOF > setup-env-variables.sh
 UNIQUE_PREFIX=${UNIQUE_PREFIX}
 SUBSCRIPTION_ID=${SUBSCRIPTION_ID}
 LOCATION=${LOCATION}
 RESOURCE_GROUP="${UNIQUE_PREFIX}-aca-vnet"
+CURRENT_USER_OBJECT_ID=${CURRENT_USER_OBJECT_ID}
 
 VNET_NAME="${UNIQUE_PREFIX}-aca-vnet"
 VNET_ADDRESS_PREFIX='10.0.0.0/16'
@@ -49,12 +52,14 @@ source setup-env-variables.sh
 alias az='MSYS_NO_PATHCONV=1 az'
 ```
 
-### 1. Create a virtual network and subnets
+### 2. Create a virtual network and subnets
 
 ```bash
 az login --use-device-code
 az account set -s ${SUBSCRIPTION_ID}
+```
 
+```bash
 # Create resource group
 az group create --name ${RESOURCE_GROUP} --location ${LOCATION}
 
@@ -258,7 +263,7 @@ az network vnet subnet update \
   --network-security-group ${VM_SUBNET_NAME}-nsg
 ```
 
-### 2. Create a Virtual Machine
+### 3. Create a Virtual Machine
 
 Create a virtual machine to serve as a jump box for the virtual network.
 
@@ -312,7 +317,9 @@ az ssh vm -n ${VM_NAME} -g ${RESOURCE_GROUP}
 sudo apt update
 sudo apt install -y docker.io vim
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash  # Install Azure CLI
+```
 
+```bash
 # Configure docker to run without root.
 sudo groupadd docker
 sudo usermod -aG docker $USER
@@ -324,17 +331,17 @@ az ssh vm -n ${VM_NAME} -g ${RESOURCE_GROUP}
 ```
 
 ```bash
-source /tmp/setup-env-variables.sh
 az login --use-device-code
 ```
 
 ```bash
+source /tmp/setup-env-variables.sh
 az account set -s $SUBSCRIPTION_ID
 ```
 
 Commands following will run in the vm, you can also run in your local machine if you want, except those data plane commands, including push image, create storage fileshare and create keyvault secret.
 
-### 3. Prepare Azure Container Registry (ACR)
+### 4. Prepare Azure Container Registry (ACR)
 
 ```bash
 ACR_NAME="${UNIQUE_PREFIX}acr"
@@ -425,7 +432,7 @@ docker tag nginx ${ACR_NAME}.azurecr.io/nginx:latest
 docker push ${ACR_NAME}.azurecr.io/nginx:latest
 ```
 
-### 4. Prepare Azure Storage
+### 5. Prepare Azure Storage
 
 ```bash
 STORAGE_ACCOUNT_NAME="${UNIQUE_PREFIX}storage"
@@ -485,7 +492,7 @@ az network private-dns record-set a add-record \
   --ipv4-address $(az network private-endpoint show --name ${STORAGE_PRIVATE_ENDPOINT_NAME} --resource-group ${RESOURCE_GROUP} --query 'customDnsConfigs[0].ipAddresses[0]' --output tsv)
 ```
 
-### 5. Prepare Azure Key Vault
+### 6. Prepare Azure Key Vault
 
 ```bash
 KEYVAULT_NAME="${UNIQUE_PREFIX}keyvault"
@@ -536,7 +543,8 @@ az network private-dns record-set a add-record \
 
 ```bash
 # Grant manage keyvault secret permission to current account.
-az role assignment create --assignee-object-id $(az ad signed-in-user show --query id --output tsv) \
+az role assignment create --assignee-object-id ${CURRENT_USER_OBJECT_ID} \
+    --assignee-principal-type User \
     --role "Key Vault Administrator" \
     --scope ${KEYVAULT_RESOURCE_ID}
 ```
@@ -550,7 +558,7 @@ SECRET_URI=$(az keyvault secret set --vault-name ${KEYVAULT_NAME} \
     --output tsv)
 ```
 
-### 6. Create ACA Environment with VNet
+### 7. Create ACA Environment with VNet
 
 ```bash
 ACA_ENVIRONMENT_NAME="${UNIQUE_PREFIX}-aca-env"
@@ -610,7 +618,7 @@ az containerapp env storage set \
   --output table
 ```
 
-### 7. Deploy the Container App
+### 8. Deploy the Container App
 
 ```bash
 ACA_APP_NAME="test-app"
@@ -639,10 +647,6 @@ az containerapp show \
 Open the `app.yaml` in a code editor, for example, `vim app.yaml`. Replace the `volumes: null` definition in the `template` section with a `volumes:` definition referencing the storage volume. The template section should look like the following:
 ```bash
 template:
-  volumes:
-  - name: my-azure-file-volume
-    storageName: mystoragemount
-    storageType: AzureFile
   containers:
   - image: nginx
     name: my-container-app
@@ -659,6 +663,10 @@ template:
     maxReplicas: 1
     minReplicas: 1
     rules: null
+  volumes:
+  - name: my-azure-file-volume
+    storageName: mystoragemount
+    storageType: AzureFile
 ```
 
 Update the container app with the new storage mount configuration.
@@ -671,7 +679,7 @@ az containerapp update \
   --output table
 ```
 
-### 8. Verify
+### 9. Verify
 
 ```bash
 # SSH into the container app
@@ -690,7 +698,7 @@ echo $TEST_KEY
 
 You have now successfully deployed Azure Container Apps with integration to a VNet, ACR, Key Vault, and Storage. For further enhancements, consider setting up monitoring using Azure Monitor or Application Insights.  If you want to change the nsg rules, check [Securing a custom VNET in Azure Container Apps with Network Security Groups](https://learn.microsoft.com/en-us/azure/container-apps/firewall-integration?tabs=workload-profiles) for more details about required rules. If you want to control network with Azure Firewall instead of NSG, you can check more information in [Control outbound traffic in Azure Container Apps with user defined routes](https://learn.microsoft.com/en-us/azure/container-apps/user-defined-routes).
 
-### 9. Clean up resources
+### 10. Clean up resources
 
 ```bash
 exit # exit from container app if you haven't
