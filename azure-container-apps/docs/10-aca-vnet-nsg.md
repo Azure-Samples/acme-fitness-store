@@ -44,6 +44,11 @@ chmod +x setup-env-variables.sh
 source setup-env-variables.sh
 ```
 
+```bash
+# If you will run commands in GitBash, run below command to mitigate potential MissingSubscription error.
+alias az='MSYS_NO_PATHCONV=1 az'
+```
+
 ### 1. Create a virtual network and subnets
 
 ```bash
@@ -270,14 +275,18 @@ az vm create --name ${VM_NAME} \
     --assign-identity \
     --generate-ssh-keys \
     --public-ip-sku Standard 
+```
 
+```bash
 # Grant currently logged in user with permission to login to vm. If you get a `MissingSubscription` error when using git bash, add `MSYS_NO_PATHCONV=1` before the command.
 az role assignment create \
     --assignee-object-id $(az ad signed-in-user show --query id --output tsv) \
     --role "Virtual Machine Administrator Login" \
     --assignee-principal-type User \
     --scope /subscriptions/${SUBSCRIPTION_ID}/resourceGroups/${RESOURCE_GROUP}
+```
 
+```bash
 # Enable Azure AD Login for the virtual machine.
 az vm extension set \
     --publisher Microsoft.Azure.ActiveDirectory \
@@ -409,7 +418,7 @@ az network private-dns record-set a add-record \
 ```
 
 ```bash
-# Pull and push an image to the private ACR
+# Pull public nginx image and push to the private ACR
 az acr login --name ${ACR_NAME}
 docker pull nginx
 docker tag nginx ${ACR_NAME}.azurecr.io/nginx:latest
@@ -523,12 +532,16 @@ az network private-dns record-set a add-record \
   --zone-name "privatelink.vaultcore.azure.net" \
   --resource-group ${RESOURCE_GROUP} \
   --ipv4-address $(az network private-endpoint show --name ${KEYVAULT_PRIVATE_ENDPOINT_NAME} --resource-group ${RESOURCE_GROUP} --query 'customDnsConfigs[0].ipAddresses[0]' --output tsv)
+```
 
+```bash
 # Grant manage keyvault secret permission to current account.
 az role assignment create --assignee-object-id $(az ad signed-in-user show --query id --output tsv) \
     --role "Key Vault Administrator" \
     --scope ${KEYVAULT_RESOURCE_ID}
+```
 
+```bash
 # Create a test secret.
 SECRET_URI=$(az keyvault secret set --vault-name ${KEYVAULT_NAME} \
     -n ${KEYVAULT_SECRET_NAME} \
@@ -561,7 +574,9 @@ ACA_ENV_RESOURCE_ID=$(az containerapp env create \
     --enable-workload-profiles \
     --location ${LOCATION} \
     --output tsv)
+```
 
+```bash
 # Create user assigned managed identity which will be used to access keyvault and acr
 USER_MI_OBJECT_ID=$(az identity create -g ${RESOURCE_GROUP} -n ${USER_MI_NAME} --query principalId --output tsv)
 
@@ -570,10 +585,17 @@ az role assignment create --assignee-object-id ${USER_MI_OBJECT_ID} \
     --assignee-principal-type  "ServicePrincipal" \
     --role "Key Vault Secrets User" \
     --scope ${KEYVAULT_RESOURCE_ID}
+```
 
+```bash
 # Assign ACR permission for the user assigned managed identity, If you get a `MissingSubscription` error when using git bash, add `MSYS_NO_PATHCONV=1` before the command.
-az role assignment create --assignee-object-id ${USER_MI_OBJECT_ID} --scope ${ACR_RESOURCE_ID} --role acrpull
+az role assignment create --assignee-object-id ${USER_MI_OBJECT_ID} \
+   --assignee-principal-type  "ServicePrincipal" \
+   --scope ${ACR_RESOURCE_ID} \
+   --role acrpull
+```
 
+```bash
 # Create the storage link in the Azure Container Apps environment.
 STORAGE_ACCOUNT_KEY=$(az storage account keys list -n ${STORAGE_ACCOUNT_NAME} -g ${RESOURCE_GROUP} --query "[0].value" -o tsv)
 
@@ -604,7 +626,9 @@ az containerapp create \
     --registry-server ${ACR_NAME}.azurecr.io \
     --secrets "test-key=keyvaultref:${SECRET_URI},identityref:${USER_MI_RESOURCE_ID}" \
     --env-vars "TEST_KEY=secretref:test-key"
+```
 
+```bash
 # Export the container app's configuration.
 az containerapp show \
   --name ${ACA_APP_NAME} \
@@ -658,8 +682,7 @@ az containerapp exec \
 
 ```bash
 # Check file mount to storage fileshare, access.log and error.log exists under /var/log/nginx
-cd /var/log/nginx
-ls -lrt
+ls -lrt /var/log/nginx
 
 # Check environment variable TEST_KEY should print hello
 echo $TEST_KEY
