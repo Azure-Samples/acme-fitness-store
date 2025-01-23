@@ -644,7 +644,7 @@ az containerapp show \
   --output yaml > app.yaml
 ```
 
-Open the `app.yaml` in a code editor, for example, `vim app.yaml`. Replace the `volumes: null` definition in the `template` section with a `volumes:` definition referencing the storage volume. The template section should look like the following:
+Open `app.yaml` in a code editor (e.g., `vim app.yaml`). In the `template` section, replace `volumes: null` with a `volumes:` definition referencing the storage volume. Add a `volumeMounts` section to the container. If you haven't changed the `STORAGE_MOUNT_NAME` environment variable, copy the `volumes` and `volumeMounts` sections exactly as shown below. The updated `template` section should look like this:
 ```bash
 template:
   containers:
