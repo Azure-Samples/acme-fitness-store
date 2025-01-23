@@ -270,7 +270,7 @@ Create a virtual machine to serve as a jump box for the virtual network.
 ```bash
 VM_NAME="${UNIQUE_PREFIX}-vm"
 
-# Create vm
+# Create vm, if "SkuNotAvailable" error occurred, use command "az vm list-sizes --location ${LOCATION}" to list all vm sizes and change to a different VM size by adding "--size <new-vm-size>".
 az vm create --name ${VM_NAME} \
     --resource-group ${RESOURCE_GROUP} \
     --image "Canonical:0001-com-ubuntu-minimal-jammy:minimal-22_04-lts-gen2:latest" \
