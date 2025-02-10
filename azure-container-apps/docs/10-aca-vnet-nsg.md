@@ -1,6 +1,10 @@
 # Setting Up Azure Container Apps with Virtual Network Integration
 
-This guide walks you through setting up Azure Container Apps (ACA) within a virtual network (VNet). It includes steps to integrate Azure Storage, Azure Key Vault, and Azure Container Registry (ACR), ensuring a secure, private, and functional deployment.
+This document is not specific to the Acme Fitness Store sample. It guides you through setting up Azure Container Apps within a virtual network (VNet), including:
+
+- Pulling the Nginx image from Azure Container Registry (ACR)
+- Mounting Azure Storage file
+- Reading key-value pairs from Azure Key Vault as environment variables inside the container
 
 ## Prerequisites
 
@@ -10,6 +14,8 @@ Before starting, ensure you have:
 2. **Azure CLI** installed.
 
 ## Steps
+
+You only need to modify some variables in the `Set up environment variables` step. Once the environment variables are set, you can copy and paste the remaining commands directly to complete all steps.
 
 ### 1. Set up environment variables
 
