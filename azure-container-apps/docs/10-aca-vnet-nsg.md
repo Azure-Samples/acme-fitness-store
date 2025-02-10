@@ -2,9 +2,10 @@
 
 This document is not specific to the Acme Fitness Store sample. It guides you through setting up Azure Container Apps within a virtual network (VNet), including:
 
+- Hosting Azure resources inside your owner virtual network
 - Pulling the Nginx image from Azure Container Registry (ACR)
-- Mounting Azure Storage file
-- Reading key-value pairs from Azure Key Vault as environment variables inside the container
+- Mounting Azure Storage file inside the Azure Container Apps app
+- Reading key-value pairs from Azure Key Vault as environment variables inside the Azure Container Apps app
 
 ## Prerequisites
 
