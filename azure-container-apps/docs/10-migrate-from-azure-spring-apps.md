@@ -9,11 +9,11 @@ This document provides instructions on how to migrate Azure Container Apps from 
 - Azure CLI is available locally and the version > `1.27.1`. (Ensure the `az spring export` command is available)
 - Docker tools with WSL are available locally.
 - The Fitness Store source code [repository](https://github.com/Azure-Samples/acme-fitness-store.git) is accessible.
-- The Fitness Store has already been deployed on an ASA instance successfully. Refer to document [acme-fitness-store/azure-spring-apps-enterprise at Azure · Azure-Samples/acme-fitness-store](https://github.com/Azure-Samples/acme-fitness-store/tree/Azure/azure-spring-apps-enterprise) for guidance on setting up the ASA instance.
+- The Fitness Store has already been deployed on an Azure Spring Apps instance successfully. Refer to this [document](https://github.com/Azure-Samples/acme-fitness-store/tree/Azure/azure-spring-apps-enterprise) for guidance on setting up the Azure Spring Apps instance.
 
 ## Prepare resources
 
-### Step 1: Create resource group for migration target
+### 1. Create resource group for migration target
 ```shell
 RESOURCE_GROUP='<migrate-to-resource-group>'
 SUBSCRIPTION='<subscription-id>'
@@ -21,7 +21,7 @@ LOCATION='<location>'
 
 az group create -n $RESOURCE_GROUP --subscription $SUBSCRIPTION --location $LOCATION
 ```
-### Step 2: Create ACR resource
+### 2. Create ACR resource
 ```shell
 # ACR and image tags
 PREFIX='<prefix>'    
@@ -37,13 +37,13 @@ az acr create \
 ```
 
 ## Prepare Fitness Store images
-### Step 1: Get source code
+### 1. Get source code
 ```shell
 git clone https://github.com/Azure-Samples/acme-fitness-store.git
 cd acme-fitness-store
 ```
 
-### Step 2: Change configurations
+### 2. Change configurations
 **Changes in project `acme-catalog`**
 
 - **Update configuration file**: Modify `apps/acme-catalog/src/main/resources/application.yaml` to add config-server support.
@@ -95,7 +95,7 @@ cd acme-fitness-store
 ```
 
 
-### Step 3: Install Pack tools (on Ubuntu)
+### 3. Install Pack tools (on Ubuntu)
 ```shell
 sudo add-apt-repository ppa:cncf-buildpacks/pack-cli
 sudo apt-get update
@@ -103,7 +103,7 @@ sudo apt-get install pack-cli
 ```
 Refer to [Pack · Cloud Native Buildpacks](https://buildpacks.io/docs/for-platform-operators/how-to/integrate-ci/pack/) for other platform
 
-### Step 4: Build Images on Local
+### 4. Build Images on Local
 > Note: Make sure the configurations in source code have been changed before building image.
 ```shell
 ACR_LOGIN_SERVER=${ACR_NAME}.azurecr.io
@@ -149,7 +149,7 @@ pack build ${ACR_LOGIN_SERVER}/${IDENTITY_SERVICE_APP}:${APP_IMAGE_TAG} \
     --builder paketobuildpacks/builder-jammy-base \
     -e BP_JVM_VERSION=17
 ```
-### Step 5: Push images to ACR
+### 5. Push images to ACR
 ```shell
 # Login ACR
 az acr login \
@@ -166,8 +166,8 @@ docker push ${ACR_LOGIN_SERVER}/${FRONTEND_APP}:${APP_IMAGE_TAG}
 docker push ${ACR_LOGIN_SERVER}/${IDENTITY_SERVICE_APP}:${APP_IMAGE_TAG}
 ```
 
-## Migrate Fitness Store from ASA to ACA
-### Step 1: Generate Migrate bicep script through CLI
+## Migrate Fitness Store from Azure Spring Apps to Azure Container Apps
+### 1. Generate Migrate bicep script through CLI
 ```shell
 SOURCE_ASA_NAME=fitness-store
 SOURCE_ASA_RESOURCE_GROUP=fitness-store
@@ -180,7 +180,7 @@ az spring export \
        --subscription $SOURCE_SUBSCRIPTION \
        --output-folder $OUTPUT_FOLDER --verbose --debug
 ```
-### Step 2: Run script to generate ACA resource
+### 2. Run script to generate Azure Container Apps resource
 ```shell
 az deployment group create \
         --resource-group $RESOURCE_GROUP \
@@ -188,9 +188,9 @@ az deployment group create \
         --template-file ${OUTPUT_FOLDER}\main.bicep \
         --parameters ${OUTPUT_FOLDER}\param.bicepparam
 ```
-> Note: Just re-run the script once you get return code:`JavaComponentOperationError` with message `Failed to create config map external-auth-config-map for JavaComponent '' in k8se-system namespace.` This is a known issue of ACA due to some incompatible status issue. Check out `README.md` file in generated script for more guidance on further steps.
+> Note: Just re-run the script once you get return code:`JavaComponentOperationError` with message `Failed to create config map external-auth-config-map for JavaComponent '' in k8se-system namespace.` This is a known issue of Azure Container Apps due to some incompatible status issue. Check out `README.md` file in generated script for more guidance on further steps.
 
-### Step 3: Update image URL with target port
+### 3. Update image URL with target port
 
 Update image URL from `mcr.microsoft.com/azuredocs/containerapps-helloworld:latest` to the corresponding image URL in ACR we created.
 Get the ACR password from the page `Settings` > `Access keys` on portal.
@@ -270,7 +270,7 @@ az containerapp up \
         --target-port 8080
 ```
 
-### Step 4: Correct the probe port
+### 4. Correct the probe port
 Change the health probe (liveness and readiness) port of following container app from `80` to `8080` on portal page `Application` > `Containers`.
 - catalog-service
 - payment-service
@@ -280,7 +280,7 @@ Change the health probe (liveness and readiness) port of following container app
 - identity-service
 > Note: There is no CLI command available to enable health probe for container apps.
 
-## Verify the migrated ACA resource
+## Verify the migrated Azure Container Apps resource
 ### Get the gateway URL
 ```shell
 az containerapp env java-component gateway-for-spring show \
@@ -291,6 +291,6 @@ az containerapp env java-component gateway-for-spring show \
         --query properties.ingress.fqdn
 ```
 Sample return value: `gateway-azure-java.redisland-a2230542.eastus.azurecontainerapps.io`
-> Note: This gateway URL was not available on the ACA portal.
-### Final Step: Access Fitness Store with Gateway URL
+> Note: This gateway URL was not available on the Azure Container Apps portal.
+### Access Fitness Store with Gateway URL
 URL: https://gateway-azure-java.redisland-a2230542.eastus.azurecontainerapps.io
