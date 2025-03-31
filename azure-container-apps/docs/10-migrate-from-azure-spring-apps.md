@@ -8,18 +8,12 @@ This document provides instructions on how to migrate Azure Container Apps from 
 
 - Azure CLI is available locally and the version > `1.27.1`. (Ensure the `az spring export` command is available)
 - Docker tools with WSL are available locally.
-  - Install [Windows | Docker Docs](https://docs.docker.com/desktop/setup/install/windows-install/) if needed.
-- The Fitness Store source code repository is accessible.
-  - https://github.com/Azure-Samples/acme-fitness-store.git
+- The Fitness Store source code [repository](https://github.com/Azure-Samples/acme-fitness-store.git) is accessible.
+- The Fitness Store has already been deployed on an ASA instance successfully. Refer to document [acme-fitness-store/azure-spring-apps-enterprise at Azure · Azure-Samples/acme-fitness-store](https://github.com/Azure-Samples/acme-fitness-store/tree/Azure/azure-spring-apps-enterprise) for guidance on setting up the ASA instance.
 
 ## Prepare resources
 
-### Step 1: Prepare ASA Instance
-- The Fitness Store need to be successfully deployed on an ASA instance.
-
-Refer to document [acme-fitness-store/azure-spring-apps-enterprise at Azure · Azure-Samples/acme-fitness-store](https://github.com/Azure-Samples/acme-fitness-store/tree/Azure/azure-spring-apps-enterprise) for guidance on setting up the ASA instance.
-
-### Step 2: Create resource group for migration target
+### Step 1: Create resource group for migration target
 ```shell
 RESOURCE_GROUP='<migrate-to-resource-group>'
 SUBSCRIPTION='<subscription-id>'
@@ -27,7 +21,7 @@ LOCATION='<location>'
 
 az group create -n $RESOURCE_GROUP --subscription $SUBSCRIPTION --location $LOCATION
 ```
-### Step 3: Create ACR resource
+### Step 2: Create ACR resource
 ```shell
 # ACR and image tags
 PREFIX='<prefix>'    
@@ -41,7 +35,6 @@ az acr create \
     --admin-enabled \
     --sku Premium 
 ```
-> Note: Enable admin for testing purpose is required for ACA to retrieve password automatically.
 
 ## Prepare Fitness Store images
 ### Step 1: Get source code
