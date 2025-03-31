@@ -6,7 +6,7 @@ This document provides instructions on how to migrate Azure Container Apps from 
 
 ## Prerequisites
 
-- Azure CLI is available locally and the version > `1.27.1`. (Ensure the `az spring export` command is available)
+- Azure CLI is available locally and the spring extension version > `1.27`. (Ensure the `az spring export` command is available)
 - Docker tools with WSL are available locally.
 - The Fitness Store source code [repository](https://github.com/Azure-Samples/acme-fitness-store.git) is accessible.
 - The Fitness Store has already been deployed on an Azure Spring Apps instance successfully. Refer to this [document](https://github.com/Azure-Samples/acme-fitness-store/tree/Azure/azure-spring-apps-enterprise) for guidance on setting up the Azure Spring Apps instance.
