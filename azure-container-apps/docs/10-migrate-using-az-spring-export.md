@@ -188,7 +188,7 @@ az deployment group create \
         --template-file ${OUTPUT_FOLDER}\main.bicep \
         --parameters ${OUTPUT_FOLDER}\param.bicepparam
 ```
-> Note: Just re-run the script once you get return code:`JavaComponentOperationError` with message `Failed to create config map external-auth-config-map for JavaComponent '' in k8se-system namespace.` This is a known issue of Azure Container Apps due to some incompatible status issue. Check out `README.md` file in generated script for more guidance on further steps.
+> Note: Just re-run the script once you get return code:`JavaComponentOperationError` with message `Failed to create config map external-auth-config-map for JavaComponent '' in k8se-system namespace.` This is a known limitation of Azure Container Apps due to some incompatible status issue. Check out `README.md` file in generated script for more guidance on further steps.
 
 ### 3. Update image URL with target port
 
