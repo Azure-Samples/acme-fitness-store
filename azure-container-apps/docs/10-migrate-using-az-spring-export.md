@@ -206,7 +206,7 @@ Manually update health probe (liveness/readiness) ports from `80` to `8080` via 
 
 ## Verify Migration
 
-> **Important:** The Azure Container Apps Gateway component is currently in **preview**. For production scenarios, we recommend using a self-hosted gateway solution until the managed gateway component reaches general availability. Refer to the [Azure Container Apps documentation](https://learn.microsoft.com/azure/container-apps/) for more information.
+> **Important:** The Azure Container Apps Gateway component is currently in **preview**. For production scenarios, we recommend using a self-hosted gateway solution until the managed gateway component reaches general availability. Refer to the [Migrate Spring Cloud Gateway for Tanzu to managed Gateway for Spring in Azure Container Apps](https://aka.ms/asa-scg-migration) for more information.
 
 ### Retrieve Gateway URL
 
