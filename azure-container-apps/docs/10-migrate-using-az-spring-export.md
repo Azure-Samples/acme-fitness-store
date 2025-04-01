@@ -271,26 +271,36 @@ az containerapp up \
 ```
 
 ### 4. Correct the probe port
-Change the health probe (liveness and readiness) port of following container app from `80` to `8080` on portal page `Application` > `Containers`.
+Change the health probe (liveness and readiness) port of following container apps from `80` to `8080` on the portal page `Application` > `Containers`.
 - catalog-service
 - payment-service
 - order-service
 - cart-service
 - frontend
 - identity-service
-> Note: There is no CLI command available to enable health probe for container apps.
+> Note: Currently, there is no CLI command available to enable the health probe for existing container apps. Health probe configurations require manual updates via the Azure portal.
 
-## Verify the migrated Azure Container Apps resource
-### Get the gateway URL
+## Verify the migrated Azure Container Apps resources
+### Retrieve the Gateway URL
+Use the following Azure CLI command to obtain the gateway URL:
 ```shell
 az containerapp env java-component gateway-for-spring show \
         --environment ${SOURCE_ASA_NAME} \
         --resource-group ${RESOURCE_GROUP} \
         --name gateway \
         --subscription ${SUBSCRIPTION} \
-        --query properties.ingress.fqdn
+        --query properties.ingress.fqdn \
+        --output tsv
 ```
-Sample return value: `gateway-azure-java.redisland-a2230542.eastus.azurecontainerapps.io`
-> Note: This gateway URL was not available on the Azure Container Apps portal.
-### Access Fitness Store with Gateway URL
-URL: https://gateway-azure-java.redisland-a2230542.eastus.azurecontainerapps.io
+The command returns a URL in the following format:
+```
+gateway-azure-java.<random-value>.<region>.azurecontainerapps.io
+```
+> **Note:** The gateway URL is not displayed in the Azure Container Apps portal. You must use the CLI command above to retrieve it.
+
+### Access the Fitness Store Application
+Open your browser and navigate to the URL obtained above:
+```
+https://gateway-azure-java.<random-value>.<region>.azurecontainerapps.io
+```
+Verify that the Fitness Store application loads correctly.
