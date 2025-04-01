@@ -1,8 +1,8 @@
-# Migrate Azure Container Apps from Azure Spring Apps
+# Setup Azure Container Apps using `az spring export`
 
 ## Introduction
 
-This document provides instructions on how to migrate Azure Container Apps from Azure Spring Apps.
+When many applications are running on the Azure Spring Apps service, you need to set up multiple resources and configure many settings. This document explains how to use Azure CLI command `az spring export` to generate Bicep files from an existing Azure Spring Apps instance.
 
 ## Prerequisites
 
@@ -13,7 +13,7 @@ This document provides instructions on how to migrate Azure Container Apps from 
 
 ## Prepare resources
 
-### 1. Create resource group for migration target
+### 1. Create resource group for target
 ```shell
 RESOURCE_GROUP='<migrate-to-resource-group>'
 SUBSCRIPTION='<subscription-id>'
@@ -21,7 +21,7 @@ LOCATION='<location>'
 
 az group create -n $RESOURCE_GROUP --subscription $SUBSCRIPTION --location $LOCATION
 ```
-### 2. Create ACR resource
+### 2. Create Azure Container Registry resource
 ```shell
 # ACR and image tags
 PREFIX='<prefix>'    
