@@ -7,15 +7,14 @@ When managing multiple applications on Azure Spring Apps, configuring resources 
 ## Prerequisites
 
 Ensure the following prerequisites are met before proceeding:
-
-- Azure CLI installed locally with the `spring` extension version `> 1.27` (confirm availability of the `az spring export` command).
+- Azure CLI installed locally with the `spring` extension version `1.27` or higher. Verify the availability of the `az spring export` command by referring to the [Azure CLI documentation](https://learn.microsoft.com/en-us/cli/azure/spring#az-spring-export).
 - Docker tools and Windows Subsystem for Linux (WSL) installed locally.
 - Access to the Fitness Store source code [repository](https://github.com/Azure-Samples/acme-fitness-store.git).
 - A successfully deployed Fitness Store application on Azure Spring Apps. Refer to [this guide](https://github.com/Azure-Samples/acme-fitness-store/tree/Azure/azure-spring-apps-enterprise) for deployment instructions.
 
 ## Prepare Azure Resources
 
-### 1. Create a Resource Group
+### Create a Resource Group
 
 ```shell
 RESOURCE_GROUP='<migrate-to-resource-group>'
@@ -25,7 +24,7 @@ LOCATION='<location>'
 az group create -n $RESOURCE_GROUP --subscription $SUBSCRIPTION --location $LOCATION
 ```
 
-### 2. Create an Azure Container Registry (ACR)
+### Create an Azure Container Registry (ACR)
 
 ```shell
 PREFIX='<prefix>'
@@ -41,14 +40,14 @@ az acr create \
 
 ## Prepare Fitness Store Images
 
-### 1. Clone the Source Code
+### Clone the Source Code
 
 ```shell
 git clone https://github.com/Azure-Samples/acme-fitness-store.git
 cd acme-fitness-store
 ```
 
-### 2. Update Application Configurations
+### Update Application Configurations
 
 Make the following changes to enable Config Server support:
 
@@ -102,7 +101,7 @@ Make the following changes to enable Config Server support:
   runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
 ```
 
-### 3. Install Pack CLI (Ubuntu)
+### Install Pack CLI (Ubuntu)
 
 ```shell
 sudo add-apt-repository ppa:cncf-buildpacks/pack-cli
@@ -112,7 +111,7 @@ sudo apt-get install pack-cli
 
 For other platforms, refer to [Pack CLI documentation](https://buildpacks.io/docs/for-platform-operators/how-to/integrate-ci/pack/).
 
-### 4. Build Container Images Locally
+### Build Container Images Locally
 
 Ensure configuration changes are complete before building images:
 
@@ -137,7 +136,7 @@ for APP in "${!APPS[@]}"; do
 done
 ```
 
-### 5. Push Images to ACR
+### Push Images to ACR
 
 ```shell
 az acr login -n ${ACR_NAME} --subscription ${SUBSCRIPTION} -g ${RESOURCE_GROUP}
@@ -149,7 +148,7 @@ done
 
 ## Migrate to Azure Container Apps
 
-### 1. Generate Migration Bicep Files
+### Generate Migration Bicep Files
 
 ```shell
 SOURCE_ASA_NAME=fitness-store
@@ -165,7 +164,7 @@ az spring export \
   --verbose --debug
 ```
 
-### 2. Deploy Azure Container Apps Resources
+### Deploy Azure Container Apps Resources
 
 ```shell
 az deployment group create \
@@ -177,7 +176,7 @@ az deployment group create \
 
 > **Note:** If you encounter a `JavaComponentOperationError` with message "Failed to create config map external-auth-config-map for JavaComponent '' in k8se-system namespace"., re-run the deployment command. This is a known limitation of Azure Container Apps due to some incompatible status issue. Refer to the generated `README.md` for additional guidance.
 
-### 3. Update Container Apps with Correct Images
+### Update Container Apps with Correct Images
 
 Replace default images with your ACR images. Retrieve your ACR password from Azure Portal (`Settings` > `Access keys`):
 
@@ -200,13 +199,13 @@ for APP in "${!APPS[@]}"; do
 done
 ```
 
-### 4. Update Health Probe Ports
+### Update Health Probe Ports
 
 Manually update health probe (liveness/readiness) ports from `80` to `8080` via Azure Portal (`Application` > `Containers`) for each container app.
 
 ## Verify Migration
 
-> **Important:** The Azure Container Apps Gateway component is currently in **preview**. For production scenarios, we recommend using a self-hosted gateway solution until the managed gateway component reaches general availability. Refer to the [Migrate Spring Cloud Gateway Document](https://aka.ms/asa-scg-migration) for more information.
+> **Note:** The `az spring export` command generates a Bicep file for the Gateway component of Azure Container Apps, which is currently in preview. For production environments, it is recommended to use a self-hosted gateway solution. For more details, refer to the [Migrate Spring Cloud Gateway documentation](https://aka.ms/asa-scg-migration).
 
 ### Retrieve Gateway URL
 
