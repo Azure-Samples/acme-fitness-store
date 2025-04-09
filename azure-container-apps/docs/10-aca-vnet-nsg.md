@@ -7,6 +7,14 @@ This document is not specific to the Acme Fitness Store sample. It guides you th
 - Mounting Azure Storage file inside the Azure Container Apps app
 - Reading key-value pairs from Azure Key Vault as environment variables inside the Azure Container Apps app
 
+## Architecture Diagram
+
+The following architecture diagram provides a visual overview of the setup described in this document. It includes the key components and their interactions within the Azure environment.
+
+![Architecture Diagram](../media/aca-vnet-diagram.png)
+
+The subsequent sections of this document will guide you through the detailed steps of setting up each component as illustrated in the architecture diagram.
+
 ## Prerequisites
 
 Before starting, ensure you have:
