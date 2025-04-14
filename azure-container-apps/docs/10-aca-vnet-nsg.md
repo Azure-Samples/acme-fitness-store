@@ -55,7 +55,7 @@ az ad signed-in-user show --query id --output tsv
 
 ```bash
 SUBSCRIPTION='subscription-id'                       # replace it with your subscription-id
-PREFIX='unique-prefix'                               # unique prefix for all resources(not use special characters)
+PREFIX='uniqueprefix'                               # unique prefix for all resources(Lowercase letters and numbers only. Start with a lowercase letter.)
 CURRENT_USER_OBJECT_ID='your-current-user-object-id' # replace it with your current user object id
 ```
 
