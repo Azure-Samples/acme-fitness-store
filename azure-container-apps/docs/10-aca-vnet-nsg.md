@@ -24,50 +24,55 @@ Before starting, ensure you have:
 
 ## Steps
 
-You only need to modify some variables in the `Set up environment variables` step. Once the environment variables are set, you can copy and paste the remaining commands directly to complete all steps.
-
-### 1. Set up environment variables
+### 1. Clone the repo
 
 ```bash
-UNIQUE_PREFIX="<uniqueprefix>" # alpha numeric characters only, change this to your preferred prefix
-SUBSCRIPTION_ID="<your-subscription-id>" # change to your subscription
-LOCATION="<region-name>"  # change to your preferred region
-
-CURRENT_USER_OBJECT_ID=$(az ad signed-in-user show --query id --output tsv)
-
-cat <<EOF > setup-env-variables.sh
-UNIQUE_PREFIX=${UNIQUE_PREFIX}
-SUBSCRIPTION_ID=${SUBSCRIPTION_ID}
-LOCATION=${LOCATION}
-RESOURCE_GROUP="${UNIQUE_PREFIX}-aca-vnet"
-CURRENT_USER_OBJECT_ID=${CURRENT_USER_OBJECT_ID}
-
-VNET_NAME="${UNIQUE_PREFIX}-aca-vnet"
-VNET_ADDRESS_PREFIX='10.0.0.0/16'
- 
-ACA_SUBNET_NAME="aca-subnet"
-ACA_ADDRESS_PREFIX='10.0.0.0/23'
- 
-VM_SUBNET_NAME="vm-subnet"
-VM_ADDRESS_PREFIX='10.0.2.0/23'
- 
-PRIVATE_ENDPOINT_SUBNET_NAME="private-endpoint-subnet"
-PRIVATE_ENDPOINT_ADDRESS_PREFIX='10.0.4.0/23'
-EOF
-
+git clone https://github.com/Azure-Samples/acme-fitness-store.git
+cd acme-fitness-store
 ```
 
-```bash
-chmod +x setup-env-variables.sh
-source setup-env-variables.sh
-```
+### 2. Set up environment variables
+
+1. Create environment variables file `setup-vnet-env-variables.sh` based on template.
 
 ```bash
-# If you will run commands in GitBash, run below command to mitigate potential MissingSubscription error.
+cp azure-container-apps/scripts/setup-vnet-env-variables-template.sh setup-vnet-env-variables.sh -i
+```
+
+2. Run below command and record the result.
+
+```bash
+az ad signed-in-user show --query id --output tsv
+```
+
+3. Update below resource information in `setup-vnet-env-variables.sh`:
+
+```bash
+SUBSCRIPTION='subscription-id'                       # replace it with your subscription-id
+PREFIX='unique-prefix'                               # unique prefix for all resources(not use special characters)
+CURRENT_USER_OBJECT_ID='your-current-user-object-id' # replace it with your current user object id
+```
+
+4. Set up the variables for your environment:
+
+```bash
+source setup-vnet-env-variables.sh
+az account set --subscription ${SUBSCRIPTION}
+
+echo "SUBSCRIPTION=${SUBSCRIPTION}"
+echo "RESOURCE_GROUP=${RESOURCE_GROUP}"
+echo "LOCATION=${LOCATION}"
+```
+
+5. (Optional) If you will run commands in `GitBash`, run below command to mitigate potential MissingSubscription error.
+
+```bash
 alias az='MSYS_NO_PATHCONV=1 az'
 ```
 
-### 2. Create a virtual network and subnets
+Now you have set up the environment variables, you can copy and paste the remaining commands directly to complete all steps.
+
+### 3. Create a virtual network and subnets
 
 ```bash
 az login --use-device-code
@@ -278,7 +283,7 @@ az network vnet subnet update \
   --network-security-group ${VM_SUBNET_NAME}-nsg
 ```
 
-### 3. Create a Virtual Machine
+### 4. Create a Virtual Machine
 
 Create a virtual machine to serve as a jump box for the virtual network.
 
@@ -319,7 +324,7 @@ az vm run-command invoke \
   --command-id RunShellScript \
   --name ${VM_NAME} \
   --resource-group ${RESOURCE_GROUP} \
-  --scripts "echo '$(cat setup-env-variables.sh)' > /tmp/setup-env-variables.sh"
+  --scripts "echo '$(cat setup-vnet-env-variables.sh)' > /tmp/setup-vnet-env-variables.sh"
 ```
 
 ```bash
@@ -350,13 +355,13 @@ az login --use-device-code
 ```
 
 ```bash
-source /tmp/setup-env-variables.sh
+source /tmp/setup-vnet-env-variables.sh
 az account set -s $SUBSCRIPTION_ID
 ```
 
 Commands following will run in the vm, you can also run in your local machine if you want, except those data plane commands, including push image, create storage fileshare and create keyvault secret.
 
-### 4. Prepare Azure Container Registry (ACR)
+### 5. Prepare Azure Container Registry (ACR)
 
 ```bash
 ACR_NAME="${UNIQUE_PREFIX}acr"
@@ -447,7 +452,7 @@ docker tag nginx ${ACR_NAME}.azurecr.io/nginx:latest
 docker push ${ACR_NAME}.azurecr.io/nginx:latest
 ```
 
-### 5. Prepare Azure Storage
+### 6. Prepare Azure Storage
 
 ```bash
 STORAGE_ACCOUNT_NAME="${UNIQUE_PREFIX}storage"
@@ -507,7 +512,7 @@ az network private-dns record-set a add-record \
   --ipv4-address $(az network private-endpoint show --name ${STORAGE_PRIVATE_ENDPOINT_NAME} --resource-group ${RESOURCE_GROUP} --query 'customDnsConfigs[0].ipAddresses[0]' --output tsv)
 ```
 
-### 6. Prepare Azure Key Vault
+### 7. Prepare Azure Key Vault
 
 ```bash
 KEYVAULT_NAME="${UNIQUE_PREFIX}keyvault"
@@ -573,7 +578,7 @@ SECRET_URI=$(az keyvault secret set --vault-name ${KEYVAULT_NAME} \
     --output tsv)
 ```
 
-### 7. Create ACA Environment with VNet
+### 8. Create ACA Environment with VNet
 
 ```bash
 ACA_ENVIRONMENT_NAME="${UNIQUE_PREFIX}-aca-env"
@@ -633,7 +638,7 @@ az containerapp env storage set \
   --output table
 ```
 
-### 8. Deploy the Container App
+### 9. Deploy the Container App
 
 ```bash
 ACA_APP_NAME="test-app"
@@ -694,7 +699,7 @@ az containerapp update \
   --output table
 ```
 
-### 9. Verify
+### 10. Verify
 
 ```bash
 # SSH into the container app
@@ -713,7 +718,7 @@ echo $TEST_KEY
 
 You have now successfully deployed Azure Container Apps with integration to a VNet, ACR, Key Vault, and Storage. For further enhancements, consider setting up monitoring using Azure Monitor or Application Insights.  If you want to change the nsg rules, check [Securing a custom VNET in Azure Container Apps with Network Security Groups](https://learn.microsoft.com/en-us/azure/container-apps/firewall-integration?tabs=workload-profiles) for more details about required rules. If you want to control network with Azure Firewall instead of NSG, you can check more information in [Control outbound traffic in Azure Container Apps with user defined routes](https://learn.microsoft.com/en-us/azure/container-apps/user-defined-routes).
 
-### 10. Clean up resources
+### 11. Clean up resources
 
 ```bash
 exit # exit from container app if you haven't
