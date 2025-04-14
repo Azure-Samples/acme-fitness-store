@@ -39,13 +39,19 @@ cd acme-fitness-store
 cp azure-container-apps/scripts/setup-vnet-env-variables-template.sh setup-vnet-env-variables.sh -i
 ```
 
-2. Run below command and record the result.
+2. Login to Azure
+
+```bash
+az login --use-device-code
+```
+
+3. Run below command and record the result.
 
 ```bash
 az ad signed-in-user show --query id --output tsv
 ```
 
-3. Update below resource information in `setup-vnet-env-variables.sh`:
+4. Update below resource information in `setup-vnet-env-variables.sh`.
 
 ```bash
 SUBSCRIPTION='subscription-id'                       # replace it with your subscription-id
@@ -53,7 +59,7 @@ PREFIX='unique-prefix'                               # unique prefix for all res
 CURRENT_USER_OBJECT_ID='your-current-user-object-id' # replace it with your current user object id
 ```
 
-4. Set up the variables for your environment:
+5. Set up the variables for your environment.
 
 ```bash
 source setup-vnet-env-variables.sh
@@ -64,7 +70,7 @@ echo "RESOURCE_GROUP=${RESOURCE_GROUP}"
 echo "LOCATION=${LOCATION}"
 ```
 
-5. (Optional) If you will run commands in `GitBash`, run below command to mitigate potential MissingSubscription error.
+6. (Optional) If you will run commands in `GitBash`, run below command to mitigate potential MissingSubscription error.
 
 ```bash
 alias az='MSYS_NO_PATHCONV=1 az'
@@ -73,11 +79,6 @@ alias az='MSYS_NO_PATHCONV=1 az'
 Now you have set up the environment variables, you can copy and paste the remaining commands directly to complete all steps.
 
 ### 3. Create a virtual network and subnets
-
-```bash
-az login --use-device-code
-az account set -s ${SUBSCRIPTION_ID}
-```
 
 ```bash
 # Create resource group
@@ -720,10 +721,18 @@ You have now successfully deployed Azure Container Apps with integration to a VN
 
 ### 11. Clean up resources
 
+1. Clean up Azure resources.
+
 ```bash
 exit # exit from container app if you haven't
 exit # exit from vm if you haven't
 
 # Delete the resource group.
 az group delete --name ${RESOURCE_GROUP} --yes --no-wait
+```
+
+2. (Optional) Reset your `az` command alias if you are running in `GitBash`.
+
+```bash
+unalias az
 ```
