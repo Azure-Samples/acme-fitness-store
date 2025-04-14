@@ -289,7 +289,7 @@ az network vnet subnet update \
 Create a virtual machine to serve as a jump box for the virtual network.
 
 ```bash
-VM_NAME="${UNIQUE_PREFIX}-vm"
+VM_NAME="${PREFIX}-vm"
 
 # Create vm, if "SkuNotAvailable" error occurred, use command "az vm list-sizes --location ${LOCATION}" to list all vm sizes and change to a different VM size by adding "--size <new-vm-size>".
 az vm create --name ${VM_NAME} \
@@ -365,7 +365,7 @@ Commands following will run in the vm, you can also run in your local machine if
 ### 5. Prepare Azure Container Registry (ACR)
 
 ```bash
-ACR_NAME="${UNIQUE_PREFIX}acr"
+ACR_NAME="${PREFIX}acr"
 ACR_PRIVATE_ENDPOINT_NAME=${ACR_NAME}-private-endpoint
 ACR_PRIVATE_ENDPOINT_CONNECTION_NAME=${ACR_NAME}-private-endpoint-conn
 ACR_PRIVATE_DNS_LINK_NAME=${ACR_NAME}-private-dns-link
@@ -456,7 +456,7 @@ docker push ${ACR_NAME}.azurecr.io/nginx:latest
 ### 6. Prepare Azure Storage
 
 ```bash
-STORAGE_ACCOUNT_NAME="${UNIQUE_PREFIX}storage"
+STORAGE_ACCOUNT_NAME="${PREFIX}storage"
 STORAGE_SHARE_NAME="myfileshare"
 STORAGE_MOUNT_NAME="mystoragemount"
 STORAGE_PRIVATE_ENDPOINT_NAME=${STORAGE_ACCOUNT_NAME}-private-endpoint
@@ -516,7 +516,7 @@ az network private-dns record-set a add-record \
 ### 7. Prepare Azure Key Vault
 
 ```bash
-KEYVAULT_NAME="${UNIQUE_PREFIX}keyvault"
+KEYVAULT_NAME="${PREFIX}keyvault"
 KEYVAULT_SECRET_NAME=test-secret
 KEYVAULT_PRIVATE_ENDPOINT_NAME=${KEYVAULT_NAME}-private-endpoint
 KEYVAULT_PRIVATE_ENDPOINT_CONNECTION_NAME=${KEYVAULT_NAME}-private-endpoint-conn
@@ -582,7 +582,7 @@ SECRET_URI=$(az keyvault secret set --vault-name ${KEYVAULT_NAME} \
 ### 8. Create ACA Environment with VNet
 
 ```bash
-ACA_ENVIRONMENT_NAME="${UNIQUE_PREFIX}-aca-env"
+ACA_ENVIRONMENT_NAME="${PREFIX}-aca-env"
 USER_MI_NAME=${ACA_ENVIRONMENT_NAME}-user-mi
 USER_MI_RESOURCE_ID=/subscriptions/${SUBSCRIPTION_ID}/resourceGroups/${RESOURCE_GROUP}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/${USER_MI_NAME}
 
