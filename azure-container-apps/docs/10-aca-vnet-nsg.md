@@ -726,7 +726,9 @@ You have now successfully deployed Azure Container Apps with integration to a VN
 ```bash
 exit # exit from container app if you haven't
 exit # exit from vm if you haven't
+```
 
+```bash
 # Delete the resource group.
 az group delete --name ${RESOURCE_GROUP} --yes --no-wait
 ```
