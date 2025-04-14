@@ -309,7 +309,7 @@ az role assignment create \
     --assignee-object-id ${CURRENT_USER_OBJECT_ID} \
     --role "Virtual Machine Administrator Login" \
     --assignee-principal-type User \
-    --scope /subscriptions/${SUBSCRIPTION_ID}/resourceGroups/${RESOURCE_GROUP}
+    --scope /subscriptions/${SUBSCRIPTION}/resourceGroups/${RESOURCE_GROUP}
 ```
 
 ```bash
@@ -357,7 +357,7 @@ az login --use-device-code
 
 ```bash
 source /tmp/setup-vnet-env-variables.sh
-az account set -s $SUBSCRIPTION_ID
+az account set -s $SUBSCRIPTION
 ```
 
 Commands following will run in the vm, you can also run in your local machine if you want, except those data plane commands, including push image, create storage fileshare and create keyvault secret.
@@ -584,7 +584,7 @@ SECRET_URI=$(az keyvault secret set --vault-name ${KEYVAULT_NAME} \
 ```bash
 ACA_ENVIRONMENT_NAME="${PREFIX}-aca-env"
 USER_MI_NAME=${ACA_ENVIRONMENT_NAME}-user-mi
-USER_MI_RESOURCE_ID=/subscriptions/${SUBSCRIPTION_ID}/resourceGroups/${RESOURCE_GROUP}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/${USER_MI_NAME}
+USER_MI_RESOURCE_ID=/subscriptions/${SUBSCRIPTION}/resourceGroups/${RESOURCE_GROUP}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/${USER_MI_NAME}
 
 # Update ACA subnet to delegate to Azure Container Apps
 ACA_SUBNET_RESOURCE_ID=$(az network vnet subnet update \
