@@ -1,6 +1,6 @@
 # Resource group and environment names
 SUBSCRIPTION='subscription-id'                 # replace it with your subscription-id
-PREFIX='unique-prefix'                         # unique prefix for all resources(not use special characters)
+PREFIX='uniqueprefix'                               # unique prefix for all resources(Lowercase letters and numbers only. Start with a lowercase letter.)
 RESOURCE_GROUP="${PREFIX}-rg"
 LOCATION='eastus2'
 
