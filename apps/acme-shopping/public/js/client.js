@@ -4,7 +4,7 @@ function getUserInfo(handleUserInfo) {
     console.log('Requesting user details from backend');
 
     $.ajax({
-        url: "/userinfo",
+        url: "https://acme-fitness-store-gateway-7d0d7.svc.azuremicroservices.io/userinfo",
         type: 'GET',
         success: function (json) {
             if (json) {
@@ -33,7 +33,7 @@ function deleteItem(itemid, userid) {
     }
 
     $.ajax({
-        url: "/cart/item/modify/" + userid,
+        url: "https://acme-fitness-store-gateway-7d0d7.svc.azuremicroservices.io/cart/item/modify/" + userid,
         type: "POST",
         data: JSON.stringify(vals),
         success: function(data, textStatus, jqXHR) {
@@ -62,7 +62,7 @@ function updateCart(itemid, quantity, userid) {
 
     $.ajax({
 
-        url: "/cart/item/modify/" + userid,
+        url: "https://acme-fitness-store-gateway-7d0d7.svc.azuremicroservices.io/cart/item/modify/" + userid,
         type: "POST",
         data: JSON.stringify(vals),
         success: function(data, textStatus, jqXHR) {
@@ -87,7 +87,7 @@ function getCartTotal(userid) {
     var cartTotal = 0
     $.ajax({
 
-        url: "/cart/total/" + userid,
+        url: "https://acme-fitness-store-gateway-7d0d7.svc.azuremicroservices.io/cart/total/" + userid,
         type: "GET",
         async: false,
         success: function(body, textStatus, jqXHR) {
@@ -121,7 +121,7 @@ function getImageUrl(productId, setUrl) {
 
     var imageurl = ''
     $.ajax({
-        url: "/products/" + productId,
+        url: "https://acme-fitness-store-gateway-7d0d7.svc.azuremicroservices.io/products/" + productId,
         type: 'GET',
         async: false,
         success: function (body, textStatus, jqXHR) {
