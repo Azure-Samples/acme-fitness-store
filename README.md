@@ -1,4 +1,4 @@
----
+--
 page_type: sample
 languages:
 - java
@@ -7,7 +7,7 @@ products:
 - Azure Database for PostgreSQL
 - Azure Cache for Redis
 - Azure Active Directory
-description: "Deploy Microservice Apps to Azure"
+description: "Deploy Microservice Apps to Azure for acme fitness store example"
 urlFragment: "acme-fitness-store"
 ---
 # ACME Fitness Store
